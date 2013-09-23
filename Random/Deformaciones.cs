@@ -8,7 +8,7 @@ using System.Drawing;
 using Microsoft.DirectX;
 using TgcViewer.Utils.Modifiers;
 
-namespace AlumnoEjemplos.MiGrupo
+namespace AlumnoEjemplos.Random
 {
     /// <summary>
     /// Ejemplo del alumno
@@ -29,7 +29,7 @@ namespace AlumnoEjemplos.MiGrupo
         /// </summary>
         public override string getName()
         {
-            return "Grupo 99";
+            return "Random";
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace AlumnoEjemplos.MiGrupo
         /// </summary>
         public override string getDescription()
         {
-            return "MiIdea - Descripcion de la idea";
+            return "Deformaciones - descripcion";
         }
 
         /// <summary>
