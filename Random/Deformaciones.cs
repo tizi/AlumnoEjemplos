@@ -37,7 +37,7 @@ namespace AlumnoEjemplos.Random
         /// </summary>
         public override string getDescription()
         {
-            return "Deformaciones - descripcion";
+            return "Deformaciones - Una descripcion";
         }
 
         /// <summary>
