@@ -7,44 +7,37 @@ using Microsoft.DirectX.Direct3D;
 using System.Drawing;
 using Microsoft.DirectX;
 using TgcViewer.Utils.Modifiers;
+using TgcViewer.Utils.Terrain;
+using TgcViewer.Utils.TgcSceneLoader;
+using TgcViewer.Utils._2D;
 
 namespace AlumnoEjemplos.Random
 {
-    /// <summary>
-    /// Ejemplo del alumno
-    /// </summary>
     public class EjemploAlumno : TgcExample
     {
-        /// <summary>
-        /// Categoría a la que pertenece el ejemplo.
-        /// Influye en donde se va a haber en el árbol de la derecha de la pantalla.
-        /// </summary>
+        TgcSkyBox skyBox;
+        TgcScene scene;
+        TgcText2d textoCamara;
+
+
         public override string getCategory()
         {
             return "AlumnoEjemplos";
         }
 
-        /// <summary>
-        /// Completar nombre del grupo en formato Grupo NN
-        /// </summary>
         public override string getName()
         {
             return "Random";
         }
-
-        /// <summary>
-        /// Completar con la descripción del TP
-        /// </summary>
+        
         public override string getDescription()
         {
             return "Deformaciones - Una descripcion";
         }
 
-        /// <summary>
         /// Método que se llama una sola vez,  al principio cuando se ejecuta el ejemplo.
         /// Escribir aquí todo el código de inicialización: cargar modelos, texturas, modifiers, uservars, etc.
         /// Borrar todo lo que no haga falta
-        /// </summary>
         public override void init()
         {
             //GuiController.Instance: acceso principal a todas las herramientas del Framework
@@ -55,6 +48,26 @@ namespace AlumnoEjemplos.Random
             //Carpeta de archivos Media del alumno
             string alumnoMediaFolder = GuiController.Instance.AlumnoEjemplosMediaDir;
 
+            //Crear SkyBox
+            skyBox = new TgcSkyBox();
+            skyBox.Center = new Vector3(0, 0, 0);
+            skyBox.Size = new Vector3(10000, 10000, 10000);
+            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Up, alumnoMediaFolder + "Skybox-Top.bmp");
+            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Down, alumnoMediaFolder + "Skybox-Bottom.bmp");
+            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Left, alumnoMediaFolder + "Skybox-Back.bmp");
+            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Right, alumnoMediaFolder + "Skybox-Front.bmp");
+            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Front, alumnoMediaFolder + "Skybox-Left.bmp");
+            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Back, alumnoMediaFolder + "Skybox-Right.bmp");
+            skyBox.updateValues();
+
+            //Cargar escenario de Isla
+            TgcSceneLoader loader = new TgcSceneLoader();
+            scene = loader.loadSceneFromFile(GuiController.Instance.ExamplesDir + "Optimizacion\\Isla\\Isla-TgcScene.xml");
+
+            //Creo texto para mostrar datos de camara
+            textoCamara = new TgcText2d();
+            textoCamara.Text = "Inicial";
+            textoCamara.Color = Color.White;
 
             ///////////////USER VARS//////////////////
 
@@ -84,7 +97,7 @@ namespace AlumnoEjemplos.Random
             //Es la camara que viene por default, asi que no hace falta hacerlo siempre
             GuiController.Instance.RotCamera.Enable = true;
             //Configurar centro al que se mira y distancia desde la que se mira
-            GuiController.Instance.RotCamera.setCamera(new Vector3(0, 0, 0), 100);
+            GuiController.Instance.RotCamera.setCamera(new Vector3(40, 650, 2200), 500);
 
 
             /*
@@ -96,48 +109,24 @@ namespace AlumnoEjemplos.Random
             //Configurar posicion y hacia donde se mira
             GuiController.Instance.FpsCamera.setCamera(new Vector3(0, 0, -20), new Vector3(0, 0, 0));
             */
-
-
-
-            ///////////////LISTAS EN C#//////////////////
-            //crear
-            List<string> lista = new List<string>();
-
-            //agregar elementos
-            lista.Add("elemento1");
-            lista.Add("elemento2");
-
-            //obtener elementos
-            string elemento1 = lista[0];
-
-            //bucle foreach
-            foreach (string elemento in lista)
-            {
-                //Loggear por consola del Framework
-                GuiController.Instance.Logger.log(elemento);
-            }
-
-            //bucle for
-            for (int i = 0; i < lista.Count; i++)
-            {
-                string element = lista[i];
-            }
-
-
         }
 
 
-        /// <summary>
+
         /// Método que se llama cada vez que hay que refrescar la pantalla.
         /// Escribir aquí todo el código referido al renderizado.
-        /// Borrar todo lo que no haga falta
-        /// </summary>
-        /// <param name="elapsedTime">Tiempo en segundos transcurridos desde el último frame</param>
+        /// elapsedTime: Tiempo en segundos transcurridos desde el último frame
         public override void render(float elapsedTime)
         {
             //Device de DirectX para renderizar
             Device d3dDevice = GuiController.Instance.D3dDevice;
 
+            textoCamara.Text = GuiController.Instance.CurrentCamera.getPosition().ToString();
+            textoCamara.render();
+            skyBox.render();
+            scene.renderAll();
+
+            
 
             //Obtener valor de UserVar (hay que castear)
             int valor = (int)GuiController.Instance.UserVars.getValue("variablePrueba");
@@ -166,13 +155,12 @@ namespace AlumnoEjemplos.Random
 
         }
 
-        /// <summary>
         /// Método que se llama cuando termina la ejecución del ejemplo.
-        /// Hacer dispose() de todos los objetos creados.
-        /// </summary>
+        /// Hacer dispose() de todos los objetos creados.        
         public override void close()
         {
-
+            skyBox.dispose();
+            scene.disposeAll();
         }
 
     }
