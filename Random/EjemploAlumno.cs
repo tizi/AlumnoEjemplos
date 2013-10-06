@@ -49,16 +49,7 @@ namespace AlumnoEjemplos.Random
             string alumnoMediaFolder = GuiController.Instance.AlumnoEjemplosMediaDir;
 
             //Crear SkyBox
-            skyBox = new TgcSkyBox();
-            skyBox.Center = new Vector3(0, 0, 0);
-            skyBox.Size = new Vector3(10000, 10000, 10000);
-            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Up, alumnoMediaFolder + "Skybox-Top.bmp");
-            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Down, alumnoMediaFolder + "Skybox-Bottom.bmp");
-            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Left, alumnoMediaFolder + "Skybox-Back.bmp");
-            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Right, alumnoMediaFolder + "Skybox-Front.bmp");
-            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Front, alumnoMediaFolder + "Skybox-Left.bmp");
-            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Back, alumnoMediaFolder + "Skybox-Right.bmp");
-            skyBox.updateValues();
+            createSkyBox(alumnoMediaFolder);
 
             //Cargar escenario de Isla
             TgcSceneLoader loader = new TgcSceneLoader();
@@ -161,6 +152,25 @@ namespace AlumnoEjemplos.Random
         {
             skyBox.dispose();
             scene.disposeAll();
+        }
+        
+        private void createSkyBox(string alumnoMediaFolder)
+        {
+            //Crear SkyBox 
+            skyBox = new TgcSkyBox();
+            skyBox.Center = new Vector3(0, 0, 0);
+            skyBox.Size = new Vector3(10000, 10000, 10000);
+
+            //Configuracion de las texturas para cada una de las 6 caras
+            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Up, alumnoMediaFolder + "Random\\Textures\\SkyBox2\\Skybox-Top.bmp");
+            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Down, alumnoMediaFolder + "Random\\Textures\\SkyBox2\\Skybox-Bottom.bmp");
+            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Left, alumnoMediaFolder + "Random\\Textures\\SkyBox2\\Skybox-Back.bmp");
+            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Right, alumnoMediaFolder + "Random\\Textures\\SkyBox2\\Skybox-Front.bmp");
+            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Front, alumnoMediaFolder + "Random\\Textures\\SkyBox2\\Skybox-Left.bmp");
+            skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Back, alumnoMediaFolder + "Random\\Textures\\SkyBox2\\Skybox-Right.bmp");
+
+            //Actualizacion de los valores
+            skyBox.updateValues();
         }
 
     }
