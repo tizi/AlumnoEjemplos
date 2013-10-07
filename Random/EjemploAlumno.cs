@@ -171,10 +171,6 @@ namespace AlumnoEjemplos.Random
 
 
 
-
-
-
-
         private void createSkyBox(string alumnoMediaFolder)
         {
             //Crear SkyBox 
