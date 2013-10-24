@@ -12,7 +12,7 @@ using TgcViewer.Utils.TgcSceneLoader;
 using TgcViewer.Utils._2D;
 using TgcViewer.Utils.TgcGeometry;
 
-namespace AlumnoEjemplos.Random
+namespace AlumnoEjemplos.RandomGroup
 {
     public class EjemploAlumno : TgcExample
     {
@@ -20,6 +20,7 @@ namespace AlumnoEjemplos.Random
         //TgcScene scene;
         TgcBox suelo;
         TgcText2d textoCamara;
+        ChapaDeformable chapa; 
 
 
         public override string getCategory()
@@ -57,6 +58,8 @@ namespace AlumnoEjemplos.Random
             //suelo
             TgcTexture pisoTexture = TgcTexture.createTexture(d3dDevice, alumnoMediaFolder + "Random\\Textures\\Terrain\\tileable_grass.jpg");
             suelo = TgcBox.fromSize(new Vector3(500, 0, 500), new Vector3(7000, 0, 7000), pisoTexture);
+
+            chapa = new ChapaDeformable(new Vector3(0, 0, 0), 100, 100, "XY", 0.5F, alumnoMediaFolder + "Random\\Textures\\brick1.jpg");
 
             //Cargar escenario de Isla
             TgcSceneLoader loader = new TgcSceneLoader();
@@ -96,7 +99,7 @@ namespace AlumnoEjemplos.Random
             GuiController.Instance.RotCamera.Enable = true;
             //Configurar centro al que se mira y distancia desde la que se mira
             GuiController.Instance.RotCamera.setCamera(new Vector3(40, 650, 2200), 500);
-            */
+            */                                           
    
             ///////////////CONFIGURAR CAMARA PRIMERA PERSONA//////////////////
             //Camara en primera persona, tipo videojuego FPS
@@ -125,6 +128,7 @@ namespace AlumnoEjemplos.Random
             skyBox.render();
             //scene.renderAll();
             suelo.render();
+            chapa.render(elapsedTime);
             
 
             //Obtener valor de UserVar (hay que castear)

@@ -13,7 +13,7 @@ using TgcViewer.Utils.Input;
 using Microsoft.DirectX.DirectInput;
 
 
-namespace AlumnoEjemplos.Random.Prueba1
+namespace AlumnoEjemplos.RandomGroup.Prueba1
 {
     /// <summary>
 
@@ -203,9 +203,9 @@ namespace AlumnoEjemplos.Random.Prueba1
             vertexData[4] = new MyCustomVertex(new Vector3(med.X, med.Y, med.Z), Vector3.Normalize(new Vector3(5, 1, 1)), color5);
             vertexData[5] = new MyCustomVertex(new Vector3(max.X, med.Y, med.Z), Vector3.Normalize(new Vector3(1, 1, 1)), color6);
             //superior
-            vertexData[6] = new MyCustomVertex(new Vector3(min.X, max.Y, max.Z), Vector3.Normalize(new Vector3(1, 1, 1)), color7);
-            vertexData[7] = new MyCustomVertex(new Vector3(med.X, max.Y, max.Z), Vector3.Normalize(new Vector3(1, 1, 1)), color8);
-            vertexData[8] = new MyCustomVertex(new Vector3(max.X, max.Y, max.Z), Vector3.Normalize(new Vector3(1, 1, 1)), color9);
+            vertexData[6] = new MyCustomVertex(new Vector3(min.X, max.Y, min.Z), Vector3.Normalize(new Vector3(1, 1, 1)), color7);
+            vertexData[7] = new MyCustomVertex(new Vector3(med.X, max.Y, min.Z), Vector3.Normalize(new Vector3(1, 1, 1)), color8);
+            vertexData[8] = new MyCustomVertex(new Vector3(max.X, max.Y, min.Z), Vector3.Normalize(new Vector3(1, 1, 1)), color9);
 
             //Setear información en VertexBuffer
             vertexBuffer.SetData(vertexData, 0, LockFlags.None);
@@ -330,7 +330,7 @@ namespace AlumnoEjemplos.Random.Prueba1
                 for (int i = 0; i < vertexCount; i++)
                 {
                     MyCustomVertex v = vertexData[i];
-                    vertexData[4].Position.Y -= 0.01f;
+                    vertexData[4].Position.Z -= 0.01f;
                 }
                 vertexBuffer.SetData(vertexData, 0, LockFlags.None); //Manda la informacion actualizada a la GPU
             }
