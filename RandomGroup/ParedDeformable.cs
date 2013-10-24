@@ -448,10 +448,14 @@ namespace AlumnoEjemplos.RandomGroup
                     }
                     else if (orientation == "XZ")
                     {
+                        Vertices[i].Position.Z += deformacion * Direccion.Z / 2;
                         Vertices[i].Position.Y += deformacion;
+                        Vertices[i].Position.X += deformacion * Direccion.X / 2;
                     }
                     else if (orientation == "YZ")
                     {
+                        Vertices[i].Position.Z += deformacion * Direccion.Z / 2;
+                        Vertices[i].Position.Y += deformacion * Direccion.Y / 2;
                         Vertices[i].Position.X += deformacion;
                     }
                 }

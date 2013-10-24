@@ -11,6 +11,7 @@ using TgcViewer.Utils.Terrain;
 using TgcViewer.Utils.TgcSceneLoader;
 using TgcViewer.Utils._2D;
 using TgcViewer.Utils.TgcGeometry;
+using AlumnoEjemplos.RandomGroup;
 
 namespace AlumnoEjemplos.RandomGroup
 {
@@ -20,7 +21,7 @@ namespace AlumnoEjemplos.RandomGroup
         //TgcScene scene;
         TgcBox suelo;
         TgcText2d textoCamara;
-        ParedDeformable pared; 
+        ParedDeformable pared;
 
 
         public override string getCategory()
@@ -154,7 +155,9 @@ namespace AlumnoEjemplos.RandomGroup
             //Capturar Input Mouse
             if (GuiController.Instance.D3dInput.buttonPressed(TgcViewer.Utils.Input.TgcD3dInput.MouseButtons.BUTTON_LEFT))
             {
-                //Boton izq apretado
+                //collisionableList = technique.getShoot(bulletDrawing);
+                //ShootSound.play();
+
             }
 
         }

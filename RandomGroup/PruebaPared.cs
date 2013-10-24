@@ -267,7 +267,7 @@ namespace AlumnoEjemplos.RandomGroup
                 for (int i = 0; i < vertexCount; i++)
                 {
                     //MyCustomVertex v = vertexData[i];
-                    vertexData[4].Position.Y -= 0.01f;
+                    vertexData[4].Position.Z -= 0.01f;
                 }
                 vertexBuffer.SetData(vertexData, 0, LockFlags.None); //Manda la informacion actualizada a la GPU
             }       

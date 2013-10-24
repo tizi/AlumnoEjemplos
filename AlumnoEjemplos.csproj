@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomGroup\Drawable.cs" />
     <Compile Include="RandomGroup\EjemploAlumno.cs" />
     <Compile Include="RandomGroup\ParedDeformable.cs" />
     <Compile Include="RandomGroup\PruebaPared.cs" />
