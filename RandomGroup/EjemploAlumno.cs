@@ -59,7 +59,7 @@ namespace AlumnoEjemplos.RandomGroup
             TgcTexture pisoTexture = TgcTexture.createTexture(d3dDevice, alumnoMediaFolder + "Random\\Textures\\Terrain\\tileable_grass.jpg");
             suelo = TgcBox.fromSize(new Vector3(500, 0, 500), new Vector3(7000, 0, 7000), pisoTexture);
 
-            pared = new ParedDeformable(new Vector3(0, 0, 0), 60, 60, "XY", 0.5F, alumnoMediaFolder + "Random\\Textures\\brick1.jpg");
+            pared = new ParedDeformable(new Vector3(0, 0, 0), 60, 60, "XY", 0.5F, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg");
 
             //Cargar escenario de Isla
             TgcSceneLoader loader = new TgcSceneLoader();
