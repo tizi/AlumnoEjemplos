@@ -176,7 +176,11 @@ namespace AlumnoEjemplos.RandomGroup
                 collisionableList.AddRange(weapon.doAction());
 
             }
-
+            for (int i = 0; i <= (collisionableList.Count - 1); i++)
+            {
+                Colisionador collisionable = collisionableList[i];
+                if (collisionable.update(elapsedTime)) collisionableList.Remove(collisionable); else collisionable.render();
+            }
             weapon.update();
             weapon.render();
 
