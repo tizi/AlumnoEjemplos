@@ -18,10 +18,11 @@ namespace AlumnoEjemplos.RandomGroup
     public class EjemploAlumno : TgcExample
     {
         TgcSkyBox skyBox;
-        //TgcScene scene;
         TgcBox suelo;
         TgcText2d textoCamara;
         ParedDeformable pared;
+        List<Colisionador> collisionableList = new List<Colisionador>();
+        FireGunWeapon weapon;
 
 
         public override string getCategory()
@@ -53,6 +54,56 @@ namespace AlumnoEjemplos.RandomGroup
             //Carpeta de archivos Media del alumno
             string alumnoMediaFolder = GuiController.Instance.AlumnoEjemplosMediaDir;
 
+
+
+            /*
+            ///////////////CONFIGURAR CAMARA ROTACIONAL//////////////////
+            //Es la camara que viene por default, asi que no hace falta hacerlo siempre
+            GuiController.Instance.RotCamera.Enable = true;
+            //Configurar centro al que se mira y distancia desde la que se mira
+            GuiController.Instance.RotCamera.setCamera(new Vector3(40, 650, 2200), 500);
+            */
+
+            ///////////////CONFIGURAR CAMARA PRIMERA PERSONA//////////////////
+            //Camara en primera persona, tipo videojuego FPS
+            //Solo puede haber una camara habilitada a la vez. Al habilitar la camara FPS se deshabilita la camara rotacional
+            //Por default la camara FPS viene desactivada
+            GuiController.Instance.FpsCamera.Enable = true;
+            GuiController.Instance.FpsCamera.MovementSpeed = 400;
+            GuiController.Instance.FpsCamera.JumpSpeed = 400;
+            //Configurar posicion y hacia donde se mira
+            GuiController.Instance.FpsCamera.setCamera(new Vector3(61.8657f, 403.7024f, -527.558f), new Vector3(379.7143f, 12.9713f, 336.3295f));
+
+            /*
+            ///////////////CONFIGURAR CAMARA TERCERA PERSONA//////////////////
+            GuiController.Instance.ThirdPersonCamera.Enable = true;
+            GuiController.Instance.ThirdPersonCamera.setCamera(new Vector3(61.8657f, 403.7024f, -527.558f), 20, -120);
+            GuiController.Instance.ThirdPersonCamera.TargetDisplacement = new Vector3(0, 45, 0);
+            */
+             
+            ///////////////MODIFIERS//////////////////
+
+            GuiController.Instance.Modifiers.addFloat("gravity", -0.2f, 0.2f, 0.05f);
+            GuiController.Instance.Modifiers.addFloat("speed", 50f, 200f, 100f);
+            ShootTechnique[] opciones = new ShootTechnique[] { new ShootTechnique() };
+            FireGunWeapon[] armas = new FireGunWeapon[] { WeaponFactory.getGun() };
+            GuiController.Instance.Modifiers.addInterval("tecnicas", opciones, 0);
+            GuiController.Instance.Modifiers.addInterval("armas", armas, 0);
+            GuiController.Instance.Modifiers.addFloat("mass", 1, 50f, 1);
+            GuiController.Instance.Modifiers.addBoolean("boundingSphere", "Mostrar Bounding Sphere", false);
+            GuiController.Instance.Modifiers.addBoolean("boundingBox", "Mostrar Bounding Box", false);
+
+            /*Crear un modifier para un valor FLOAT
+            GuiController.Instance.Modifiers.addFloat("valorFloat", -50f, 200f, 0f);
+
+            //Crear un modifier para un ComboBox con opciones
+            string[] opciones = new string[] { "opcion1", "opcion2", "opcion3" };
+            GuiController.Instance.Modifiers.addInterval("valorIntervalo", opciones, 0);
+
+            //Crear un modifier para modificar un vértice
+            GuiController.Instance.Modifiers.addVertex3f("valorVertice", new Vector3(-100, -100, -100), new Vector3(50, 50, 50), new Vector3(0, 0, 0));
+            */
+
             //Crear SkyBox
             createSkyBox(alumnoMediaFolder);
 
@@ -60,11 +111,7 @@ namespace AlumnoEjemplos.RandomGroup
             TgcTexture pisoTexture = TgcTexture.createTexture(d3dDevice, alumnoMediaFolder + "Random\\Textures\\Terrain\\tileable_grass.jpg");
             suelo = TgcBox.fromSize(new Vector3(500, 0, 500), new Vector3(7000, 0, 7000), pisoTexture);
 
-            pared = new ParedDeformable(new Vector3(0, 0, 0), 60, 60, "XY", 0.5F, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg");
 
-            //Cargar escenario de Isla
-            TgcSceneLoader loader = new TgcSceneLoader();
-            //scene = loader.loadSceneFromFile(GuiController.Instance.ExamplesDir + "Optimizacion\\Isla\\Isla-TgcScene.xml");
 
             //Creo texto para mostrar datos de camara
             textoCamara = new TgcText2d();
@@ -80,38 +127,8 @@ namespace AlumnoEjemplos.RandomGroup
             GuiController.Instance.UserVars.setValue("variablePrueba", 5451);
 
 
-
-            ///////////////MODIFIERS//////////////////
-
-            //Crear un modifier para un valor FLOAT
-            GuiController.Instance.Modifiers.addFloat("valorFloat", -50f, 200f, 0f);
-
-            //Crear un modifier para un ComboBox con opciones
-            string[] opciones = new string[]{"opcion1", "opcion2", "opcion3"};
-            GuiController.Instance.Modifiers.addInterval("valorIntervalo", opciones, 0);
-
-            //Crear un modifier para modificar un vértice
-            GuiController.Instance.Modifiers.addVertex3f("valorVertice", new Vector3(-100, -100, -100), new Vector3(50, 50, 50), new Vector3(0, 0, 0));
-
-
-            /*
-            ///////////////CONFIGURAR CAMARA ROTACIONAL//////////////////
-            //Es la camara que viene por default, asi que no hace falta hacerlo siempre
-            GuiController.Instance.RotCamera.Enable = true;
-            //Configurar centro al que se mira y distancia desde la que se mira
-            GuiController.Instance.RotCamera.setCamera(new Vector3(40, 650, 2200), 500);
-            */                                           
-   
-            ///////////////CONFIGURAR CAMARA PRIMERA PERSONA//////////////////
-            //Camara en primera persona, tipo videojuego FPS
-            //Solo puede haber una camara habilitada a la vez. Al habilitar la camara FPS se deshabilita la camara rotacional
-            //Por default la camara FPS viene desactivada
-            GuiController.Instance.FpsCamera.Enable = true;
-            GuiController.Instance.FpsCamera.MovementSpeed = 400;
-            GuiController.Instance.FpsCamera.JumpSpeed = 400;
-            //Configurar posicion y hacia donde se mira
-            GuiController.Instance.FpsCamera.setCamera(new Vector3(61.8657f, 403.7024f, -527.558f), new Vector3(379.7143f, 12.9713f, 336.3295f));
-
+            pared = new ParedDeformable(new Vector3(0, 0, 0), 60, 60, "XY", 0.5F, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg");
+            weapon = WeaponFactory.getGun();
         }
 
 
@@ -137,10 +154,11 @@ namespace AlumnoEjemplos.RandomGroup
 
 
             //Obtener valores de Modifiers
+            /*
             float valorFloat = (float)GuiController.Instance.Modifiers["valorFloat"];
             string opcionElegida = (string)GuiController.Instance.Modifiers["valorIntervalo"];
             Vector3 valorVertice = (Vector3)GuiController.Instance.Modifiers["valorVertice"];
-
+            */
 
             ///////////////INPUT//////////////////
             //conviene deshabilitar ambas camaras para que no haya interferencia
@@ -153,12 +171,14 @@ namespace AlumnoEjemplos.RandomGroup
             }
 
             //Capturar Input Mouse
-            if (GuiController.Instance.D3dInput.buttonPressed(TgcViewer.Utils.Input.TgcD3dInput.MouseButtons.BUTTON_LEFT))
+            if (GuiController.Instance.D3dInput.buttonPressed(TgcViewer.Utils.Input.TgcD3dInput.MouseButtons.BUTTON_RIGHT))
             {
-                //collisionableList = technique.getShoot(bulletDrawing);
-                //ShootSound.play();
+                collisionableList.AddRange(weapon.doAction());
 
             }
+
+            weapon.update();
+            weapon.render();
 
         }
 

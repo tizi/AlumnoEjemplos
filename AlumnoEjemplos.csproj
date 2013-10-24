@@ -88,10 +88,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomGroup\FireGunWeapon.cs" />
+    <Compile Include="RandomGroup\Colisionador.cs" />
     <Compile Include="RandomGroup\Drawable.cs" />
     <Compile Include="RandomGroup\EjemploAlumno.cs" />
+    <Compile Include="RandomGroup\MathUtil.cs" />
+    <Compile Include="RandomGroup\MeshFactory.cs" />
+    <Compile Include="RandomGroup\MeshPropio.cs" />
     <Compile Include="RandomGroup\ParedDeformable.cs" />
     <Compile Include="RandomGroup\PruebaPared.cs" />
+    <Compile Include="RandomGroup\ShootTechnique.cs" />
+    <Compile Include="RandomGroup\Weapon.cs" />
+    <Compile Include="RandomGroup\WeaponFactory.cs" />
+    <Compile Include="RandomGroup\XMesh.cs" />
+    <Compile Include="RandomGroup\XMLMesh.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TgcViewer\TgcViewer.csproj">
