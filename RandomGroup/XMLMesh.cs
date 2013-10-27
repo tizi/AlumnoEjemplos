@@ -8,6 +8,7 @@ namespace AlumnoEjemplos.RandomGroup
     public class XMLMesh : MeshPropio
     {
         TgcMesh mesh;
+        //TgcScene mesh2;
 
         public Vector3 escala = new Vector3(1,1,1);
         protected float angleY = 0;
@@ -24,6 +25,7 @@ namespace AlumnoEjemplos.RandomGroup
         {
             TgcSceneLoader cargador = new TgcSceneLoader();
             mesh = cargador.loadSceneFromFile(meshPath).Meshes[0];
+            //mesh2 = cargador.loadSceneFromFile(meshPath).Meshes.Count;
             mesh.AutoTransformEnable=false;
             mesh.AutoUpdateBoundingBox = true;
         }
@@ -46,6 +48,7 @@ namespace AlumnoEjemplos.RandomGroup
             mesh.BoundingBox.transform(mesh.Transform);
             if ((bool)GuiController.Instance.Modifiers["boundingBox"]) mesh.BoundingBox.render();
             mesh.render();
+            //mesh2.renderAll();
         }
 
         public override Drawable clone()

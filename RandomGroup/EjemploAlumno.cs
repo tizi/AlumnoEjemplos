@@ -32,7 +32,7 @@ namespace AlumnoEjemplos.RandomGroup
 
         public override string getName()
         {
-            return "Random";
+            return "Random group";
         }
         
         public override string getDescription()
@@ -86,7 +86,7 @@ namespace AlumnoEjemplos.RandomGroup
             GuiController.Instance.Modifiers.addFloat("gravity", -0.2f, 0.2f, 0.05f);
             GuiController.Instance.Modifiers.addFloat("speed", 50f, 200f, 100f);
             ShootTechnique[] opciones = new ShootTechnique[] { new ShootTechnique() };
-            FireGunWeapon[] armas = new FireGunWeapon[] { WeaponFactory.getGun() };
+            FireGunWeapon[] armas = new FireGunWeapon[] { WeaponFactory.getCannion(), WeaponFactory.getGun() };
             GuiController.Instance.Modifiers.addInterval("tecnicas", opciones, 0);
             GuiController.Instance.Modifiers.addInterval("armas", armas, 0);
             GuiController.Instance.Modifiers.addFloat("mass", 1, 50f, 1);
@@ -128,7 +128,8 @@ namespace AlumnoEjemplos.RandomGroup
 
 
             pared = new ParedDeformable(new Vector3(0, 0, 0), 60, 60, "XY", 0.5F, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg");
-            weapon = WeaponFactory.getGun();
+            //weapon = WeaponFactory.getGun();
+            weapon = WeaponFactory.getCannion();
         }
 
 
@@ -154,6 +155,7 @@ namespace AlumnoEjemplos.RandomGroup
 
 
             //Obtener valores de Modifiers
+            weapon = (FireGunWeapon)GuiController.Instance.Modifiers["armas"];
             /*
             float valorFloat = (float)GuiController.Instance.Modifiers["valorFloat"];
             string opcionElegida = (string)GuiController.Instance.Modifiers["valorIntervalo"];
