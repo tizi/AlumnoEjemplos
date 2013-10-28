@@ -82,14 +82,6 @@ namespace AlumnoEjemplos.RandomGroup
             scene.Add(new ParedSolida(new Vector3(-2500, 0, -2500), new Vector3(5000, 0, 5000), "XZ", alumnoMediaFolder + "Random\\Textures\\Terrain\\tileable_grass.jpg"));
             //pared deformable
             deformableWallsList.Add(new ParedDeformable(new Vector3(0, 0, 0), 60, 60, "XY", 0.5F, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
-
-<<<<<<< HEAD
-            weapon = WeaponFactory.getCannon();
-=======
-            pared = new ParedDeformable(new Vector3(0, 0, 0), 60, 60, "XY", 0.5F, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg");
-            //weapon = WeaponFactory.getGun();
-            weapon = WeaponFactory.getTanque();
->>>>>>> 0a258e37f871b83b41e9935944709823dd022beb
         }
 
 
