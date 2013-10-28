@@ -9,7 +9,7 @@ using TgcViewer.Utils.TgcGeometry;
 
 namespace AlumnoEjemplos.RandomGroup
 {
-    class ParedDeformable
+    public class ParedDeformable
     {
         private bool enabled;
         public bool getEnabled()
@@ -417,11 +417,11 @@ namespace AlumnoEjemplos.RandomGroup
 
        
 
-        public Boolean deformarPared(BBOpt BB)
+        public Boolean deformarPared(Projectile proyectil, BBOpt BB)
         {
-            float Radio = 5f;
-            Vector3 Position = new Vector3(30, 30, 0);
-            Vector3 Direccion = new Vector3(5, 2, 1);
+            float Radio = proyectil.boundingBall.Radius;
+            Vector3 Position = proyectil.getPosition();
+            Vector3 Direccion = proyectil.getDirection();
             int i=0;
             float DefoMod = 100*15f;
             Boolean deformo = false;

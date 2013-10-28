@@ -24,6 +24,7 @@ namespace AlumnoEjemplos.RandomGroup
 
         public virtual void render()
         {
+            this.update();
             weaponDrawing.render();
             GuiController.Instance.Drawer2D.beginDrawSprite();
             crosshair.render();
