@@ -86,7 +86,7 @@ namespace AlumnoEjemplos.RandomGroup
             GuiController.Instance.Modifiers.addFloat("gravity", -0.2f, 0.2f, 0.02f);
             GuiController.Instance.Modifiers.addFloat("speed", 50f, 500f, 200f);
             ShootTechnique[] opciones = new ShootTechnique[] { new ShootTechnique() };
-            ProjectileWeapon[] armas = new ProjectileWeapon[] { WeaponFactory.getCannon(), WeaponFactory.getGun() };
+            ProjectileWeapon[] armas = new ProjectileWeapon[] { WeaponFactory.getTanque(), WeaponFactory.getCannon(), WeaponFactory.getGun() };
             GuiController.Instance.Modifiers.addInterval("tecnicas", opciones, 0);
             GuiController.Instance.Modifiers.addInterval("armas", armas, 0);
             GuiController.Instance.Modifiers.addFloat("mass", 1, 50f, 1);
@@ -129,7 +129,7 @@ namespace AlumnoEjemplos.RandomGroup
 
             pared = new ParedDeformable(new Vector3(0, 0, 0), 60, 60, "XY", 0.5F, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg");
             //weapon = WeaponFactory.getGun();
-            weapon = WeaponFactory.getCannon();
+            weapon = WeaponFactory.getTanque();
         }
 
 
