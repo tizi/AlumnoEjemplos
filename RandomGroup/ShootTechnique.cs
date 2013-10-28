@@ -17,12 +17,12 @@ namespace AlumnoEjemplos.RandomGroup
         public Vector3 pos;
         public Vector3 dir;
         public Vector3 initPos;
-        public Colisionador tmpBullet;
+        public Projectile tmpBullet;
         TgcCamera camera;
 
-        public List<Colisionador> getShoot(Drawable bulletDrawing)
+        public List<Projectile> getShoot(Drawable bulletDrawing)
         {
-            List<Colisionador> tmpList = new List<Colisionador>();
+            List<Projectile> tmpList = new List<Projectile>();
             if (System.DateTime.Now.TimeOfDay.TotalMilliseconds - lastShootTime > timeBetweenShoots)
             {
                 lastShootTime = System.DateTime.Now.TimeOfDay.TotalMilliseconds;
@@ -39,9 +39,9 @@ namespace AlumnoEjemplos.RandomGroup
             return tmpList;
         }
 
-        public virtual void getRealShoot(List<Colisionador> tmpList, Drawable bulletDrawing)
+        public virtual void getRealShoot(List<Projectile> tmpList, Drawable bulletDrawing)
         {
-            Colisionador tmpColisionador = new Colisionador(initPos, bulletDrawing.clone(), initDir);
+            Projectile tmpColisionador = new Projectile(initPos, bulletDrawing.clone(), initDir);
             tmpList.Add(tmpColisionador);
         }
 

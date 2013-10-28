@@ -21,8 +21,8 @@ namespace AlumnoEjemplos.RandomGroup
         TgcBox suelo;
         TgcText2d textoCamara;
         ParedDeformable pared;
-        List<Colisionador> collisionableList = new List<Colisionador>();
-        FireGunWeapon weapon;
+        List<Projectile> collisionableList = new List<Projectile>();
+        ProjectileWeapon weapon;
 
 
         public override string getCategory()
@@ -72,7 +72,7 @@ namespace AlumnoEjemplos.RandomGroup
             GuiController.Instance.FpsCamera.MovementSpeed = 400;
             GuiController.Instance.FpsCamera.JumpSpeed = 400;
             //Configurar posicion y hacia donde se mira
-            GuiController.Instance.FpsCamera.setCamera(new Vector3(61.8657f, 403.7024f, -527.558f), new Vector3(379.7143f, 12.9713f, 336.3295f));
+            GuiController.Instance.FpsCamera.setCamera(new Vector3(65f, 5f, -325f), new Vector3(379.7143f, 12.9713f, 336.3295f));
 
             /*
             ///////////////CONFIGURAR CAMARA TERCERA PERSONA//////////////////
@@ -83,10 +83,10 @@ namespace AlumnoEjemplos.RandomGroup
              
             ///////////////MODIFIERS//////////////////
 
-            GuiController.Instance.Modifiers.addFloat("gravity", -0.2f, 0.2f, 0.05f);
-            GuiController.Instance.Modifiers.addFloat("speed", 50f, 200f, 100f);
+            GuiController.Instance.Modifiers.addFloat("gravity", -0.2f, 0.2f, 0.02f);
+            GuiController.Instance.Modifiers.addFloat("speed", 50f, 500f, 200f);
             ShootTechnique[] opciones = new ShootTechnique[] { new ShootTechnique() };
-            FireGunWeapon[] armas = new FireGunWeapon[] { WeaponFactory.getCannion(), WeaponFactory.getGun() };
+            ProjectileWeapon[] armas = new ProjectileWeapon[] { WeaponFactory.getCannon(), WeaponFactory.getGun() };
             GuiController.Instance.Modifiers.addInterval("tecnicas", opciones, 0);
             GuiController.Instance.Modifiers.addInterval("armas", armas, 0);
             GuiController.Instance.Modifiers.addFloat("mass", 1, 50f, 1);
@@ -129,7 +129,7 @@ namespace AlumnoEjemplos.RandomGroup
 
             pared = new ParedDeformable(new Vector3(0, 0, 0), 60, 60, "XY", 0.5F, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg");
             //weapon = WeaponFactory.getGun();
-            weapon = WeaponFactory.getCannion();
+            weapon = WeaponFactory.getCannon();
         }
 
 
@@ -155,7 +155,7 @@ namespace AlumnoEjemplos.RandomGroup
 
 
             //Obtener valores de Modifiers
-            weapon = (FireGunWeapon)GuiController.Instance.Modifiers["armas"];
+            weapon = (ProjectileWeapon)GuiController.Instance.Modifiers["armas"];
             /*
             float valorFloat = (float)GuiController.Instance.Modifiers["valorFloat"];
             string opcionElegida = (string)GuiController.Instance.Modifiers["valorIntervalo"];
@@ -180,7 +180,7 @@ namespace AlumnoEjemplos.RandomGroup
             }
             for (int i = 0; i <= (collisionableList.Count - 1); i++)
             {
-                Colisionador collisionable = collisionableList[i];
+                Projectile collisionable = collisionableList[i];
                 if (collisionable.update(elapsedTime)) collisionableList.Remove(collisionable); else collisionable.render();
             }
             weapon.update();

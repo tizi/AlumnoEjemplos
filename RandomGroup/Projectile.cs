@@ -4,22 +4,19 @@ using TgcViewer.Utils.TgcGeometry;
 
 namespace AlumnoEjemplos.RandomGroup
 {
-    public class Colisionador
+    public class Projectile
     {
         public TgcBoundingSphere boundingBall;
         private float speed = (float)GuiController.Instance.Modifiers["speed"];
-        public double lifeTime = 250000 / (float)GuiController.Instance.Modifiers["speed"];
+        public double lifeTime = 10000000;
         public float mass = (float) GuiController.Instance.Modifiers["mass"];
 
         private double creationTime;
         private Drawable drawing;
         public Vector3 direction;
-        public int cantColisiones=30; //Luego de colisionar 30 veces la elimino
         GuiController instance =GuiController.Instance;
 
-        public Colisionador setSpeed(float speed){
-            //Al setear la velocidad calculamos el tiempo que deberia de existir el objeto colisionable
-            lifeTime = (200000 / speed);
+        public Projectile setSpeed(float speed){
             direction.Multiply(speed/this.speed);
             this.speed = speed;
             return this;
@@ -43,11 +40,11 @@ namespace AlumnoEjemplos.RandomGroup
             boundingBall.moveCenter(direction * time);
             drawing.setPosition(boundingBall.Center);
             
-            if ((System.DateTime.Now.TimeOfDay.TotalMilliseconds - creationTime > lifeTime) || (cantColisiones <= 0)) return true;  
+            if ((System.DateTime.Now.TimeOfDay.TotalMilliseconds - creationTime > lifeTime)) return true;  
             return false;
         }
 
-        public Colisionador(Vector3 position, Drawable drawing, Vector3 direction)
+        public Projectile(Vector3 position, Drawable drawing, Vector3 direction)
         {
             this.drawing = drawing;
             this.direction = direction;
@@ -55,7 +52,7 @@ namespace AlumnoEjemplos.RandomGroup
             boundingBall = new TgcBoundingSphere(position, drawing.getRadiusSize());
         }
 
-        public Colisionador setDrawing(Drawable drawing) {
+        public Projectile setDrawing(Drawable drawing) {
             this.drawing = drawing;
             return this;
         }

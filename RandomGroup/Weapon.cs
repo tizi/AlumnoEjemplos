@@ -36,8 +36,7 @@ namespace AlumnoEjemplos.RandomGroup
             weaponDrawing.setPosition(camera.getPosition());
             weaponDrawing.moveOrientedZ(initPosition.Z);
             weaponDrawing.moveOrientedX(initPosition.X);
-            weaponDrawing.moveOrientedY(initPosition.Y);
-
+            weaponDrawing.moveOrientedY(initPosition.Y); 
 
             //Y rotarla segun rota la camara
             tmplookAt = camera.getLookAt() - camera.getPosition();
@@ -47,7 +46,7 @@ namespace AlumnoEjemplos.RandomGroup
             weaponDrawing.setRotationXZ(tmpRotationXZ, initRotation.Y - (float)Math.Acos(Vector3.Dot(tmplookAt, axisY)));
         }
 
-        public abstract List<Colisionador> doAction();
+        public abstract List<Projectile> doAction();
 
         public override string ToString()
         {
