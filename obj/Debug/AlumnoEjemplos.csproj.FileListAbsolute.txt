@@ -6,3 +6,11 @@ D:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\AlumnoEjemplos.pdb
 D:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\TgcViewer.exe
 D:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\Ionic.Zip.dll
 D:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\TgcViewer.pdb
+C:\Users\Tizi\Desktop\TgcViewer\AlumnoEjemplos\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Tizi\Desktop\TgcViewer\AlumnoEjemplos\obj\Debug\AlumnoEjemplos.dll
+C:\Users\Tizi\Desktop\TgcViewer\AlumnoEjemplos\obj\Debug\AlumnoEjemplos.pdb
+C:\Users\Tizi\Desktop\TgcViewer\AlumnoEjemplos\AlumnoEjemplos.dll
+C:\Users\Tizi\Desktop\TgcViewer\AlumnoEjemplos\AlumnoEjemplos.pdb
+C:\Users\Tizi\Desktop\TgcViewer\AlumnoEjemplos\TgcViewer.exe
+C:\Users\Tizi\Desktop\TgcViewer\AlumnoEjemplos\Ionic.Zip.dll
+C:\Users\Tizi\Desktop\TgcViewer\AlumnoEjemplos\TgcViewer.pdb

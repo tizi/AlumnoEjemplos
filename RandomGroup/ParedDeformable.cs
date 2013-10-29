@@ -423,7 +423,7 @@ namespace AlumnoEjemplos.RandomGroup
             Vector3 Position = proyectil.getPosition();
             Vector3 Direccion = proyectil.getDirection();
             int i=0;
-            float DefoMod = 100*15f;
+            float DefoMod = proyectil.getSpeed() * proyectil.mass * 0.001F;
             Boolean deformo = false;
             float deformacion = 0;
             //GuiController.Instance.Logger.log("Position: " + Position.ToString());
@@ -434,7 +434,7 @@ namespace AlumnoEjemplos.RandomGroup
             {
                 if (TgcVectorUtils.lengthSq(Vertices[i].Position, Position) <= (Radio * Radio) + DefoMod)
                 {
-                    //Vertices[i].Color = Color.Red.ToArgb();
+                    Vertices[i].Color = Color.Red.ToArgb();
                     deformo = true;
                     deformacion = Math.Sign(Vector3.Dot(Vertices[i].Normal, Direccion)) * (FastMath.Pow2(1 / TgcVectorUtils.lengthSq(Vertices[i].Position, Position)) * DefoMod);
                     if (deformacion > 1) deformacion = 1;
@@ -442,9 +442,9 @@ namespace AlumnoEjemplos.RandomGroup
 
                     if (orientation == "XY")
                     {
-                        Vertices[i].Position.Z += deformacion;
-                        Vertices[i].Position.Y += deformacion * Direccion.Y / 2;
-                        Vertices[i].Position.X += deformacion * Direccion.X / 2;
+                        Vertices[i].Position.Z += deformacion * Direccion.Z;
+                        Vertices[i].Position.Y += deformacion * Direccion.Y;
+                        Vertices[i].Position.X += deformacion * Direccion.X;
                     }
                     else if (orientation == "XZ")
                     {
@@ -454,9 +454,9 @@ namespace AlumnoEjemplos.RandomGroup
                     }
                     else if (orientation == "YZ")
                     {
-                        Vertices[i].Position.Z += deformacion * Direccion.Z / 2;
-                        Vertices[i].Position.Y += deformacion * Direccion.Y / 2;
-                        Vertices[i].Position.X += deformacion;
+                        Vertices[i].Position.Z += deformacion * FastMath.Abs(Direccion.Z / 100);
+                        Vertices[i].Position.Y += deformacion * FastMath.Abs(Direccion.Y / 100);
+                        Vertices[i].Position.X += deformacion * FastMath.Abs(Direccion.X / 100);
                     }
                 }
             }

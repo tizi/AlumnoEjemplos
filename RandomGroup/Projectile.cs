@@ -8,9 +8,9 @@ namespace AlumnoEjemplos.RandomGroup
     public class Projectile
     {
         public TgcBoundingSphere boundingBall;
-        private float speed = (float)GuiController.Instance.Modifiers["speed"];
+        private float speed;
         public double lifeTime = 10000000;
-        public float mass = (float) GuiController.Instance.Modifiers["mass"];
+        public float mass;
 
         private double creationTime;
         private Drawable drawing;
@@ -63,10 +63,12 @@ namespace AlumnoEjemplos.RandomGroup
         {
             this.drawing = drawing;
             this.direction = direction;
+            this.mass = (float)GuiController.Instance.Modifiers["mass"];
+            this.speed = (float)GuiController.Instance.Modifiers["speed"];
             creationTime = System.DateTime.Now.TimeOfDay.TotalMilliseconds;
             boundingBall = new TgcBoundingSphere(position, drawing.getRadiusSize());
             paredSolidaSound.loadSound(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\MetalHitsSolid.wav");
-            paredDeformableSound.loadSound(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\MetalHitsSolid.wav");
+            paredDeformableSound.loadSound(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\DeformableHit.wav");
             proyectilSound.loadSound(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\MetalHitsSolid.wav");
         }
 
@@ -84,9 +86,9 @@ namespace AlumnoEjemplos.RandomGroup
         public void collisionWithProjectile(Projectile projectile)
         {
             this.setSpeed((this.getSpeed() * this.mass + projectile.getSpeed() * projectile.mass) / projectile.mass * projectile.mass);
-            this.direction = -this.direction;
+            this.direction *= -1;
             projectile.setSpeed((this.getSpeed() * this.mass + projectile.getSpeed() * projectile.mass) / this.mass * this.mass);
-            projectile.direction = -projectile.direction;
+            projectile.direction *= -1;
             proyectilSound.play();
         }
 
@@ -131,6 +133,8 @@ namespace AlumnoEjemplos.RandomGroup
                     //this.direction = -this.direction;
                     //GuiController.Instance.Logger.log("Direccion actual pelota: " + this.direction.ToString());
                     //GuiController.Instance.Logger.log("Entre!!! Inicio: " + BB.inicio.ToString() + " Fin: " + BB.fin.ToString());
+                    this.direction *= -1;
+                    this.setSpeed(this.getSpeed() * 0.4f);
                     this.lifeTime = 0;
                     
                 }

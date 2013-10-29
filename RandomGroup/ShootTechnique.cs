@@ -9,15 +9,12 @@ namespace AlumnoEjemplos.RandomGroup
     public class ShootTechnique
     {
         public double lastShootTime = 0;
-        //public Drawable bulletDrawing= new Ball(1,5);
-
         public float distance = 8;
         public int timeBetweenShoots = 500;
         public Vector3 initDir;
         public Vector3 pos;
         public Vector3 dir;
         public Vector3 initPos;
-        public Projectile tmpBullet;
         TgcCamera camera;
 
         public List<Projectile> getShoot(Drawable bulletDrawing)
