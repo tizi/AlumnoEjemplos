@@ -1,40 +1,8 @@
-C:\Users\Tizi\Downloads\TgcViewer - 2013-2C\TgcViewer\AlumnoEjemplos\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\Tizi\Downloads\TgcViewer - 2013-2C\TgcViewer\AlumnoEjemplos\obj\Debug\AlumnoEjemplos.dll
-C:\Users\Tizi\Downloads\TgcViewer - 2013-2C\TgcViewer\AlumnoEjemplos\obj\Debug\AlumnoEjemplos.pdb
-C:\Users\Tizi\Downloads\TgcViewer - 2013-2C\TgcViewer\AlumnoEjemplos\AlumnoEjemplos.dll
-C:\Users\Tizi\Downloads\TgcViewer - 2013-2C\TgcViewer\AlumnoEjemplos\AlumnoEjemplos.pdb
-C:\Users\Tizi\Downloads\TgcViewer - 2013-2C\TgcViewer\AlumnoEjemplos\TgcViewer.exe
-C:\Users\Tizi\Downloads\TgcViewer - 2013-2C\TgcViewer\AlumnoEjemplos\Ionic.Zip.dll
-C:\Users\Tizi\Downloads\TgcViewer - 2013-2C\TgcViewer\AlumnoEjemplos\TgcViewer.pdb
-C:\Users\Tizi\Desktop\TgcViewer\AlumnoEjemplos\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\Tizi\Desktop\TgcViewer\AlumnoEjemplos\obj\Debug\AlumnoEjemplos.dll
-C:\Users\Tizi\Desktop\TgcViewer\AlumnoEjemplos\obj\Debug\AlumnoEjemplos.pdb
-C:\Users\Tizi\Desktop\TgcViewer\AlumnoEjemplos\AlumnoEjemplos.dll
-C:\Users\Tizi\Desktop\TgcViewer\AlumnoEjemplos\AlumnoEjemplos.pdb
-C:\Users\Tizi\Desktop\TgcViewer\AlumnoEjemplos\TgcViewer.exe
-C:\Users\Tizi\Desktop\TgcViewer\AlumnoEjemplos\Ionic.Zip.dll
-C:\Users\Tizi\Desktop\TgcViewer\AlumnoEjemplos\TgcViewer.pdb
-D:\Facultad\Tecnicas de graficos por computadora\TgcViewer\AlumnoEjemplos\obj\Debug\ResolveAssemblyReference.cache
-D:\Facultad\Tecnicas de graficos por computadora\TgcViewer\AlumnoEjemplos\obj\Debug\AlumnoEjemplos.dll
-D:\Facultad\Tecnicas de graficos por computadora\TgcViewer\AlumnoEjemplos\obj\Debug\AlumnoEjemplos.pdb
-D:\Facultad\Tecnicas de graficos por computadora\TgcViewer\AlumnoEjemplos\AlumnoEjemplos.dll
-D:\Facultad\Tecnicas de graficos por computadora\TgcViewer\AlumnoEjemplos\AlumnoEjemplos.pdb
-D:\Facultad\Tecnicas de graficos por computadora\TgcViewer\AlumnoEjemplos\TgcViewer.exe
-D:\Facultad\Tecnicas de graficos por computadora\TgcViewer\AlumnoEjemplos\Ionic.Zip.dll
-D:\Facultad\Tecnicas de graficos por computadora\TgcViewer\AlumnoEjemplos\TgcViewer.pdb
-C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\obj\Debug\AlumnoEjemplos.dll
-C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\obj\Debug\AlumnoEjemplos.pdb
-C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\AlumnoEjemplos.dll
-C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\AlumnoEjemplos.pdb
-C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\TgcViewer.exe
-C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\Ionic.Zip.dll
-C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\TgcViewer.pdb
-E:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\obj\Debug\ResolveAssemblyReference.cache
-E:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\obj\Debug\AlumnoEjemplos.dll
-E:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\obj\Debug\AlumnoEjemplos.pdb
-E:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\AlumnoEjemplos.dll
-E:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\AlumnoEjemplos.pdb
-E:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\TgcViewer.exe
-E:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\Ionic.Zip.dll
-E:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\TgcViewer.pdb
+D:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\obj\Debug\ResolveAssemblyReference.cache
+D:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\obj\Debug\AlumnoEjemplos.dll
+D:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\obj\Debug\AlumnoEjemplos.pdb
+D:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\AlumnoEjemplos.dll
+D:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\AlumnoEjemplos.pdb
+D:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\TgcViewer.exe
+D:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\Ionic.Zip.dll
+D:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\TgcViewer.pdb

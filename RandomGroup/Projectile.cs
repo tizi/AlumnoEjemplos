@@ -55,8 +55,7 @@ namespace AlumnoEjemplos.RandomGroup
             direction.Y -= (float)instance.Modifiers["gravity"];
             boundingBall.moveCenter(direction * time);
             drawing.setPosition(boundingBall.Center);
-            
-            if ((System.DateTime.Now.TimeOfDay.TotalMilliseconds - creationTime > lifeTime)) return true;  
+            if ((System.DateTime.Now.TimeOfDay.TotalMilliseconds - creationTime > this.lifeTime)) return true;  
             return false;
         }
 
@@ -119,13 +118,19 @@ namespace AlumnoEjemplos.RandomGroup
         }
 
         public void collisionWithDeformableWall(ParedDeformable pared)
-        {paredDeformableSound.play();
+        {
+            paredDeformableSound.play();
             foreach (ParedDeformable.BBOpt BB in pared.LBBoxOpt)
             {
                 if (TgcCollisionUtils.testSphereAABB(this.boundingBall, BB.BBoxOpt))
                 {
+                    GuiController.Instance.Logger.log("Direccion inicial pelota: " + this.direction.ToString());
+                    //GuiController.Instance.Logger.log("Entre!!! Inicio: " + BB.inicio.ToString() + " Fin: " + BB.fin.ToString());
                     pared.deformarPared(this, BB);
                     paredDeformableSound.play();
+                    //this.direction = -this.direction;
+                    //GuiController.Instance.Logger.log("Direccion actual pelota: " + this.direction.ToString());
+                    //GuiController.Instance.Logger.log("Entre!!! Inicio: " + BB.inicio.ToString() + " Fin: " + BB.fin.ToString());
                     this.lifeTime = 0;
                     
                 }

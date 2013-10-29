@@ -93,7 +93,7 @@ namespace AlumnoEjemplos.RandomGroup
 
             textoCamara.Text = GuiController.Instance.CurrentCamera.getPosition().ToString();
             textoCamara.render();
-            skyBox.render();
+            
             foreach (ParedSolida pared in scene)
             {
                 pared.render(elapsedTime);
@@ -118,14 +118,14 @@ namespace AlumnoEjemplos.RandomGroup
                 projectilesList.AddRange(weapon.doAction());
 
             }
-            for (int i = 0; i <= (projectilesList.Count - 1); i++)
+            /*for (int i = 0; i <= (projectilesList.Count - 1); i++)
             {
                 Projectile collisionable = projectilesList[i];
                 if (collisionable.update(elapsedTime)) projectilesList.Remove(collisionable); else collisionable.render();
-            }
-   
+            }*/
+            deteccionDeColisiones(elapsedTime);
             weapon.render();
-
+            skyBox.render();
         }
 
        
