@@ -80,6 +80,7 @@ namespace AlumnoEjemplos.RandomGroup
             deformableWallsList.Add(new ParedDeformable(new Vector3(0, 0, 0), 60, 60, "XY", 0.5F, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
             deformableWallsList.Add(new ParedDeformable(new Vector3(0, 0, 0), 60, 60, "YZ", 0.5F, alumnoMediaFolder + "Random\\Textures\\Walls\\bricks.jpg"));
             deformableWallsList.Add(new ParedDeformable(new Vector3(0, 60, 0), 60, 60, "XZ", 0.5F, alumnoMediaFolder + "Random\\Textures\\Walls\\bricks.jpg"));
+            deformableWallsList.Add(new ParedDeformable(new Vector3(150, 10, -100), new Vector3(1, 0, 0), 10, alumnoMediaFolder + "Random\\Textures\\Walls\\bricks.jpg", 1.0f));
         }
 
 

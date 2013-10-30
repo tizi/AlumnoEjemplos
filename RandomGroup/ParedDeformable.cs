@@ -83,10 +83,10 @@ namespace AlumnoEjemplos.RandomGroup
             set { technique = value; }
         }
 
-        TgcBoundingBox BoundingBox;
+        TgcBoundingBox boundingBox;
         public TgcBoundingBox getBoundingBox()
         {
-            return BoundingBox;
+            return boundingBox;
         }
 
         public static readonly VertexElement[] ParedVertexElement =
@@ -116,6 +116,67 @@ namespace AlumnoEjemplos.RandomGroup
         private const VertexFormats ParedVertexFormat = (VertexFormats.Position | VertexFormats.Normal | VertexFormats.Diffuse | VertexFormats.Texture0 | VertexFormats.Texture1);
         VertexDeclaration ParedVertexDeclaration;
 
+        public ParedDeformable(Vector3 origen, Vector3 normal, int verticesLado, string texturePath, float sizeMultiplier)
+        {
+            Vector3 direccionNormalizada = Vector3.Cross(normal, new Vector3(0,1,0));            
+            direccionNormalizada.Normalize();
+
+            //crear la textura
+            texture = TextureLoader.FromFile(device, texturePath);
+            int numVertices = verticesLado*verticesLado;
+            
+            //settear atributos
+            //La pared va de abajo para arriba asi 
+            this.normal = normal;
+            Origin = origen;
+            Array.Resize(ref Pared, numVertices);
+            Array.Resize(ref Vertices, numVertices);            
+            boundingBox = new TgcBoundingBox();
+
+            //setear el material
+            Material material = new Material
+            {
+                Diffuse = Color.White,
+                Specular = Color.LightGray,
+                SpecularSharpness = 15.0F
+            };
+            device.Material = material;
+
+            //Vertex Declaration y Vertex Buffer
+            ParedVertexDeclaration = new VertexDeclaration(device, ParedVertexElement);
+            vertexBuffer = new VertexBuffer(typeof(ParedVertex), numVertices, device, Usage.Dynamic, ParedVertexFormat, Pool.Default);
+
+            //horizontal
+            int i;
+            for (i = 0; i < verticesLado; i++)
+            {
+                //vertical
+                for (int j = 0; j < verticesLado; j++)
+                {                    
+                    ParedVertex paredVertex = new ParedVertex
+                    {
+                        //La posicion es el origen, mas la direccion, mas la elevacion
+                        Position = new Vector3(Origin.X+j*direccionNormalizada.X*sizeMultiplier,
+                                                Origin.Y+i*sizeMultiplier, 
+                                                Origin.Z+j*direccionNormalizada.Z*sizeMultiplier),
+                        Normal = Normal,
+                        Color = Color.White.ToArgb(),
+                        Tu = i,
+                        Tv = j,
+                        Tu1 = 0,
+                        Tv1 = 0
+                    };
+                    Pared[i] = paredVertex;                    
+                }
+            }            
+            boundingBox.setExtremes(Origin, new Vector3(verticesLado*direccionNormalizada.X*sizeMultiplier, 
+                sizeMultiplier*verticesLado*verticesLado,
+                verticesLado * direccionNormalizada.Z * sizeMultiplier
+                ));
+
+            vertexBuffer.SetData(Pared, 0, LockFlags.None);
+        }
+
         public ParedDeformable(Vector3 Origen, float Alto, float Ancho, string Orientation, float Tessellation, string Texture)
         {
             int numVertices = (int)FastMath.Ceiling(Alto * Ancho * (1 / Tessellation) * (1 / Tessellation) * (1 / Tessellation));
@@ -135,7 +196,7 @@ namespace AlumnoEjemplos.RandomGroup
 
 
             //crear bounding box 
-            BoundingBox = new TgcBoundingBox();
+            boundingBox = new TgcBoundingBox();
 
             //setear el material
             Material material = new Material
@@ -217,7 +278,7 @@ namespace AlumnoEjemplos.RandomGroup
                         LBBoxOpt.Add(BB);
                         xy++;
                     }
-                    BoundingBox.setExtremes(Origen, new Vector3(Origen.X + Ancho, Origen.Y + Alto, Origen.Z));
+                    boundingBox.setExtremes(Origen, new Vector3(Origen.X + Ancho, Origen.Y + Alto, Origen.Z));
                 }
                     break;
 
@@ -279,7 +340,7 @@ namespace AlumnoEjemplos.RandomGroup
                         LBBoxOpt.Add(BB);
                         xy++;
                     }
-                    BoundingBox.setExtremes(Origen, new Vector3(Origen.X + Ancho, Origen.Y, Origen.Z + Alto));
+                    boundingBox.setExtremes(Origen, new Vector3(Origen.X + Ancho, Origen.Y, Origen.Z + Alto));
 
                 }
                     break;
@@ -342,7 +403,7 @@ namespace AlumnoEjemplos.RandomGroup
                         LBBoxOpt.Add(BB);
                         xy++;
                     }
-                    BoundingBox.setExtremes(Origen, new Vector3(Origen.X, Origen.Y + Alto, Origen.Z + Ancho));
+                    boundingBox.setExtremes(Origen, new Vector3(Origen.X, Origen.Y + Alto, Origen.Z + Ancho));
                 }
                     break;
             }
@@ -398,7 +459,7 @@ namespace AlumnoEjemplos.RandomGroup
             float deformacion = 0;
             Vertices = (ParedVertex[])vertexBuffer.Lock(BB.inicio * 44, typeof(ParedVertex), LockFlags.None, BB.fin);
 
-            GuiController.Instance.Logger.log("DefoMod: " + defoMod.ToString() +
+            GuiController.Instance.Logger.log("DefoMod: " + defoMod +
                 "\nDireccion Proyectil: "+ direccionProyectil.ToString() + "Contacto: "+ posicionContacto.ToString());
             //GuiController.Instance.Logger.log("Direccion: " + Direccion.ToString());
             //GuiController.Instance.Logger.log("Entre!!! Inicio: " + BB.inicio.ToString() + " Fin: " + BB.fin.ToString());
@@ -435,12 +496,12 @@ namespace AlumnoEjemplos.RandomGroup
                 case "XY":
                     if (Math.Sign(Vector3.Dot(normal, direccionProyectil)) > 0)
                     {
-                        BoundingBox.setExtremes(BoundingBox.PMin, BoundingBox.PMax + new Vector3(0, 0, deformacion));
+                        boundingBox.setExtremes(boundingBox.PMin, boundingBox.PMax + new Vector3(0, 0, deformacion));
                         BB.BBoxOpt.setExtremes(BB.BBoxOpt.PMin, BB.BBoxOpt.PMax + new Vector3(0, 0, deformacion));
                     }
                     else
                     {
-                        BoundingBox.setExtremes(BoundingBox.PMin + new Vector3(0, 0, deformacion), BoundingBox.PMax);
+                        boundingBox.setExtremes(boundingBox.PMin + new Vector3(0, 0, deformacion), boundingBox.PMax);
                         BB.BBoxOpt.setExtremes(BB.BBoxOpt.PMin + new Vector3(0, 0, deformacion), BB.BBoxOpt.PMax);
                     }
                     break;
@@ -448,12 +509,12 @@ namespace AlumnoEjemplos.RandomGroup
                 case "XZ":
                     if (Math.Sign(Vector3.Dot(normal, direccionProyectil)) > 0)
                     {
-                        BoundingBox.setExtremes(BoundingBox.PMin, BoundingBox.PMax + new Vector3(0, deformacion, 0));
+                        boundingBox.setExtremes(boundingBox.PMin, boundingBox.PMax + new Vector3(0, deformacion, 0));
                         BB.BBoxOpt.setExtremes(BB.BBoxOpt.PMin, BB.BBoxOpt.PMax + new Vector3(0, deformacion, 0));
                     }
                     else
                     {
-                        BoundingBox.setExtremes(BoundingBox.PMin + new Vector3(0, deformacion, 0), BoundingBox.PMax);
+                        boundingBox.setExtremes(boundingBox.PMin + new Vector3(0, deformacion, 0), boundingBox.PMax);
                         BB.BBoxOpt.setExtremes(BB.BBoxOpt.PMin + new Vector3(0, deformacion, 0), BB.BBoxOpt.PMax);
                     }
                     break;
@@ -461,12 +522,12 @@ namespace AlumnoEjemplos.RandomGroup
                 case "YZ":
                     if (Math.Sign(Vector3.Dot(normal, direccionProyectil)) > 0)
                     {
-                        BoundingBox.setExtremes(BoundingBox.PMin, BoundingBox.PMax + new Vector3(deformacion, 0, 0));
+                        boundingBox.setExtremes(boundingBox.PMin, boundingBox.PMax + new Vector3(deformacion, 0, 0));
                         BB.BBoxOpt.setExtremes(BB.BBoxOpt.PMin, BB.BBoxOpt.PMax + new Vector3(deformacion, 0, 0));
                     }
                     else
                     {
-                        BoundingBox.setExtremes(BoundingBox.PMin + new Vector3(deformacion, 0, 0), BoundingBox.PMax);
+                        boundingBox.setExtremes(boundingBox.PMin + new Vector3(deformacion, 0, 0), boundingBox.PMax);
                         BB.BBoxOpt.setExtremes(BB.BBoxOpt.PMin + new Vector3(deformacion, 0, 0), BB.BBoxOpt.PMax);
                     }
                     break;
