@@ -167,7 +167,7 @@ namespace AlumnoEjemplos.RandomGroup
                     {
                         proyectil.collisionWithSolidWall(pared);
                     }
-                }
+                }                
 
                 //Deteccion contra las paredes SI deformables
                 foreach (ParedDeformable pared in deformableWallsList)

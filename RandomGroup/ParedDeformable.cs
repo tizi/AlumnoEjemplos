@@ -398,45 +398,34 @@ namespace AlumnoEjemplos.RandomGroup
             float deformacion = 0;
             Vertices = (ParedVertex[])vertexBuffer.Lock(BB.inicio * 44, typeof(ParedVertex), LockFlags.None, BB.fin);
 
-            GuiController.Instance.Logger.log("DefoMod: " + defoMod.ToString());
+            GuiController.Instance.Logger.log("DefoMod: " + defoMod.ToString() +
+                "\nDireccion Proyectil: "+ direccionProyectil.ToString() + "Contacto: "+ posicionContacto.ToString());
             //GuiController.Instance.Logger.log("Direccion: " + Direccion.ToString());
             //GuiController.Instance.Logger.log("Entre!!! Inicio: " + BB.inicio.ToString() + " Fin: " + BB.fin.ToString());
 
             
             for (int i = 0; i < Vertices.Length; i++)
-            {
-
-                if (TgcVectorUtils.lengthSq(Vertices[i].Position, posicionContacto) > (radio*radio) + defoMod) continue;
+            {                
+                float distanciaVerticeCentro = FastMath.Pow2(TgcVectorUtils.lengthSq(Vertices[i].Position, posicionContacto));
+                if (distanciaVerticeCentro > (radio*radio) + defoMod) continue;
 
                 Vertices[i].Color = Color.Red.ToArgb();
                 deformo = true;
-                deformacion = Math.Sign(Vector3.Dot(Vertices[i].Normal, direccionProyectil)) * 
-                                FastMath.Pow2(1 / TgcVectorUtils.lengthSq(Vertices[i].Position, posicionContacto)) * 
-                                defoMod;
+
+                deformacion = Math.Sign(Vector3.Dot(Vertices[i].Normal, direccionProyectil))*
+                              (1/distanciaVerticeCentro)*
+                              defoMod;                              
 
                 if (deformacion > 1) deformacion = 1;
                 if (deformacion < -1) deformacion = -1;
 
-                switch (orientation)
-                {
-                    case "XY":
-                        Vertices[i].Position.Z += deformacion * direccionProyectil.Z;
-                        Vertices[i].Position.Y += deformacion * direccionProyectil.Y;
-                        Vertices[i].Position.X += deformacion * direccionProyectil.X;
-                        break;
-                    case "XZ":
-                        Vertices[i].Position.Z += deformacion * direccionProyectil.Z / 2;
-                        Vertices[i].Position.Y += deformacion;
-                        Vertices[i].Position.X += deformacion * direccionProyectil.X / 2;
-                        break;
-                    case "YZ":
-                        Vertices[i].Position.Z += deformacion * FastMath.Abs(direccionProyectil.Z / 100);
-                        Vertices[i].Position.Y += deformacion * FastMath.Abs(direccionProyectil.Y / 100);
-                        Vertices[i].Position.X += deformacion * FastMath.Abs(direccionProyectil.X / 100);
-                        break;
-                }
+                Vertices[i].Position.Z += deformacion * FastMath.Abs(direccionProyectil.Z / 75);
+                Vertices[i].Position.Y += deformacion * FastMath.Abs(direccionProyectil.Y / 75);
+                Vertices[i].Position.X += deformacion * FastMath.Abs(direccionProyectil.X / 75);
+
             }
             vertexBuffer.Unlock();
+
 
             //Agrando el bounding box para que las colisiones futuras chequeen contra las deformaciones
             if (!deformo) return false;
