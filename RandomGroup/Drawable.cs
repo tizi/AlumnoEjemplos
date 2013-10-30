@@ -16,7 +16,7 @@ namespace AlumnoEjemplos.RandomGroup
         {
             Device d3dDevice = GuiController.Instance.D3dDevice;
             d3dDevice.Transform.World = tran;
-            this.renderReal();
+            renderReal();
         }
         public virtual void move(Vector3 position)
         {

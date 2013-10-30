@@ -1,17 +1,15 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
+using Microsoft.DirectX.DirectInput;
 using TgcViewer.Example;
 using TgcViewer;
-using Microsoft.DirectX.Direct3D;
 using System.Drawing;
 using Microsoft.DirectX;
-using TgcViewer.Utils.Modifiers;
+using TgcViewer.Utils.Input;
 using TgcViewer.Utils.Terrain;
 using TgcViewer.Utils.TgcSceneLoader;
 using TgcViewer.Utils._2D;
 using TgcViewer.Utils.TgcGeometry;
-using AlumnoEjemplos.RandomGroup;
+using Device = Microsoft.DirectX.Direct3D.Device;
 
 namespace AlumnoEjemplos.RandomGroup
 {
@@ -20,7 +18,7 @@ namespace AlumnoEjemplos.RandomGroup
         TgcSkyBox skyBox;
         TgcText2d textoCamara;
         List<Projectile> projectilesList = new List<Projectile>();
-        List<ParedSolida> scene = new List<ParedSolida>();
+        List<ParedSolida> solidWallsList = new List<ParedSolida>();
         List<ParedDeformable> deformableWallsList = new List<ParedDeformable>();
         ProjectileWeapon weapon;
 
@@ -60,8 +58,8 @@ namespace AlumnoEjemplos.RandomGroup
             ///////////////MODIFIERS//////////////////
             GuiController.Instance.Modifiers.addFloat("gravity", -0.2f, 0.2f, 0.02f);
             GuiController.Instance.Modifiers.addFloat("speed", 50f, 500f, 200f);
-            ShootTechnique[] opciones = new ShootTechnique[] { new ShootTechnique() };
-            ProjectileWeapon[] armas = new ProjectileWeapon[] { WeaponFactory.getTanque(), WeaponFactory.getCannon(), WeaponFactory.getGun() };
+            ShootTechnique[] opciones = { new ShootTechnique() };
+            ProjectileWeapon[] armas = { WeaponFactory.getTanque(), WeaponFactory.getCannon(), WeaponFactory.getGun() };
             GuiController.Instance.Modifiers.addInterval("tecnicas", opciones, 0);
             GuiController.Instance.Modifiers.addInterval("armas", armas, 0);
             GuiController.Instance.Modifiers.addFloat("mass", 1, 50f, 1);
@@ -72,14 +70,12 @@ namespace AlumnoEjemplos.RandomGroup
             createSkyBox(alumnoMediaFolder);
 
             //Creo texto para mostrar datos de camara
-            textoCamara = new TgcText2d();
-            textoCamara.Text = "Inicial";
-            textoCamara.Color = Color.White;
+            textoCamara = new TgcText2d {Text = "Inicial", Color = Color.White};
 
             //paredes
             //suelo
-            TgcTexture pisoTexture = TgcTexture.createTexture(d3dDevice, alumnoMediaFolder + "Random\\Textures\\Terrain\\tileable_grass.jpg");
-            scene.Add(new ParedSolida(new Vector3(-2500, 0, -2500), new Vector3(5000, 0, 5000), "XZ", alumnoMediaFolder + "Random\\Textures\\Terrain\\tileable_grass.jpg"));
+            TgcTexture.createTexture(d3dDevice, alumnoMediaFolder + "Random\\Textures\\Terrain\\tileable_grass.jpg");
+            solidWallsList.Add(new ParedSolida(new Vector3(-2500, 0, -2500), new Vector3(5000, 0, 5000), "XZ", alumnoMediaFolder + "Random\\Textures\\Terrain\\tileable_grass.jpg"));
             //pared deformable
             deformableWallsList.Add(new ParedDeformable(new Vector3(0, 0, 0), 60, 60, "XY", 0.5F, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
             deformableWallsList.Add(new ParedDeformable(new Vector3(0, 0, 0), 60, 60, "YZ", 0.5F, alumnoMediaFolder + "Random\\Textures\\Walls\\bricks.jpg"));
@@ -91,12 +87,12 @@ namespace AlumnoEjemplos.RandomGroup
         /// elapsedTime: Tiempo en segundos transcurridos desde el último frame
         public override void render(float elapsedTime)
         {
-            Device d3dDevice = GuiController.Instance.D3dDevice;
+            //Device d3dDevice = GuiController.Instance.D3dDevice;
 
             textoCamara.Text = GuiController.Instance.CurrentCamera.getPosition().ToString();
             textoCamara.render();
             
-            foreach (ParedSolida pared in scene)
+            foreach (ParedSolida pared in solidWallsList)
             {
                 pared.render(elapsedTime);
             }
@@ -110,12 +106,12 @@ namespace AlumnoEjemplos.RandomGroup
 
             ///////////////INPUT//////////////////
             //Capturar Input teclado 
-            if (GuiController.Instance.D3dInput.keyPressed(Microsoft.DirectX.DirectInput.Key.F))
+            if (GuiController.Instance.D3dInput.keyPressed(Key.F))
             {
             }
 
             //Capturar Input Mouse
-            if (GuiController.Instance.D3dInput.buttonPressed(TgcViewer.Utils.Input.TgcD3dInput.MouseButtons.BUTTON_RIGHT))
+            if (GuiController.Instance.D3dInput.buttonPressed(TgcD3dInput.MouseButtons.BUTTON_RIGHT))
             {
                 projectilesList.AddRange(weapon.doAction());
 
@@ -136,10 +132,12 @@ namespace AlumnoEjemplos.RandomGroup
         public override void close()
         {
             skyBox.dispose();
-            foreach (ParedSolida pared in scene)
+
+            foreach (ParedSolida pared in solidWallsList)
             {
                 pared.dispose();
             }
+
             foreach (ParedDeformable pared in deformableWallsList)
             {
                 pared.dispose();
@@ -149,12 +147,11 @@ namespace AlumnoEjemplos.RandomGroup
 
         private void deteccionDeColisiones(float elapsedTime)
         {
-            Projectile proyectil;
-
             for (int i = 0; i <= (projectilesList.Count - 1); i++)
             {
-                proyectil = projectilesList[i];
+                Projectile proyectil = projectilesList[i];
                 TgcBoundingSphere boundingBall = proyectil.boundingBall;
+
                 //Deteccion entre pelotas
                 for (int j = i + 1; j < projectilesList.Count; j++)
                 {
@@ -163,8 +160,9 @@ namespace AlumnoEjemplos.RandomGroup
                         proyectil.collisionWithProjectile(projectilesList[j]);
                     }
                 }
+
                 //Deteccion contra las paredes no deformables
-                foreach (ParedSolida pared in scene)
+                foreach (ParedSolida pared in solidWallsList)
                 {
                     if (TgcCollisionUtils.testSphereAABB(boundingBall, pared.getBoundingBox()))
                     {
@@ -182,16 +180,18 @@ namespace AlumnoEjemplos.RandomGroup
                 }
 
                 //Dibujado y borrado en caso de que se acaba su lifeTime
-                if (proyectil.update(elapsedTime)) projectilesList.Remove(proyectil); else proyectil.render();
+                if (proyectil.update(elapsedTime)) projectilesList.Remove(proyectil); 
+                    else proyectil.render();
             }
         }
 
         private void createSkyBox(string alumnoMediaFolder)
         {
             //Crear SkyBox 
-            skyBox = new TgcSkyBox();
-            skyBox.Center = new Vector3(0, 0, 0);
-            skyBox.Size = new Vector3(10000, 10000, 10000);
+            skyBox = new TgcSkyBox {
+                Center = new Vector3(0, 0, 0), 
+                Size = new Vector3(10000, 10000, 10000)
+            };
 
             //Configuracion de las texturas para cada una de las 6 caras
             skyBox.setFaceTexture(TgcSkyBox.SkyFaces.Up, alumnoMediaFolder + "Random\\Textures\\SkyBox2\\Skybox-Top.bmp");

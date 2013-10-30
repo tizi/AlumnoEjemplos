@@ -1,4 +1,5 @@
-﻿using TgcViewer;
+﻿using System;
+using TgcViewer;
 using Microsoft.DirectX;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.Sound;
@@ -22,15 +23,15 @@ namespace AlumnoEjemplos.RandomGroup
         TgcStaticSound proyectilSound = new TgcStaticSound();
 
 
-        public Projectile setSpeed(float speed){
-            direction.Multiply(speed/this.speed);
-            this.speed = speed;
+        public Projectile setSpeed(float speedValue){
+            direction.Multiply(speedValue/speed);
+            speed = speedValue;
             return this;
         }
 
         public Vector3 getDirection()
         {
-            return this.direction;
+            return direction;
         }
 
         public void setDirection(Vector3 direction)
@@ -55,7 +56,7 @@ namespace AlumnoEjemplos.RandomGroup
             direction.Y -= (float)instance.Modifiers["gravity"];
             boundingBall.moveCenter(direction * time);
             drawing.setPosition(boundingBall.Center);
-            if ((System.DateTime.Now.TimeOfDay.TotalMilliseconds - creationTime > this.lifeTime)) return true;  
+            if ((DateTime.Now.TimeOfDay.TotalMilliseconds - creationTime > lifeTime)) return true;  
             return false;
         }
 
@@ -63,9 +64,9 @@ namespace AlumnoEjemplos.RandomGroup
         {
             this.drawing = drawing;
             this.direction = direction;
-            this.mass = (float)GuiController.Instance.Modifiers["mass"];
-            this.speed = (float)GuiController.Instance.Modifiers["speed"];
-            creationTime = System.DateTime.Now.TimeOfDay.TotalMilliseconds;
+            mass = (float)GuiController.Instance.Modifiers["mass"];
+            speed = (float)GuiController.Instance.Modifiers["speed"];
+            creationTime = DateTime.Now.TimeOfDay.TotalMilliseconds;
             boundingBall = new TgcBoundingSphere(position, drawing.getRadiusSize());
             paredSolidaSound.loadSound(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\MetalHitsSolid.wav");
             paredDeformableSound.loadSound(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\DeformableHit.wav");
@@ -85,38 +86,38 @@ namespace AlumnoEjemplos.RandomGroup
 
         public void collisionWithProjectile(Projectile projectile)
         {
-            this.setSpeed((this.getSpeed() * this.mass + projectile.getSpeed() * projectile.mass) / projectile.mass * projectile.mass);
-            this.direction *= -1;
-            projectile.setSpeed((this.getSpeed() * this.mass + projectile.getSpeed() * projectile.mass) / this.mass * this.mass);
+            setSpeed((getSpeed() * mass + projectile.getSpeed() * projectile.mass) / projectile.mass * projectile.mass);
+            direction *= -1;
+            projectile.setSpeed((getSpeed() * mass + projectile.getSpeed() * projectile.mass) / mass * mass);
             projectile.direction *= -1;
             proyectilSound.play();
         }
 
         public void collisionWithSolidWall(ParedSolida pared)
         {
-            Vector3 tmpPos = this.getPosition();
-            float radius = this.boundingBall.Radius;
+            Vector3 tmpPos = getPosition();
+            float radius = boundingBall.Radius;
             switch (pared.wall.Orientation)
             {
                 case TgcPlaneWall.Orientations.XYplane:
-                    this.direction.Z *= -1;
+                    direction.Z *= -1;
                     tmpPos.Z = pared.wall.Position.Z;
                     if (pared.wall.Position.Z - boundingBall.Center.Z > 0) tmpPos.Z -= radius; else tmpPos.Z += radius;
-                    this.setPosition(tmpPos);
+                    setPosition(tmpPos);
                     break;
                 case TgcPlaneWall.Orientations.XZplane:
-                    this.direction.Y *= -1;
+                    direction.Y *= -1;
                     tmpPos.Y = radius;
-                    this.setPosition(tmpPos);
+                    setPosition(tmpPos);
                     break;
                 case TgcPlaneWall.Orientations.YZplane:
-                    this.direction.X *= -1;
+                    direction.X *= -1;
                     tmpPos.X = pared.wall.Position.X;
                     if (pared.wall.Position.X - boundingBall.Center.X > 0) tmpPos.X -= radius; else tmpPos.X += radius;
                     break;
             }
             paredSolidaSound.play();
-            this.setSpeed(this.getSpeed() * 0.9f);
+            setSpeed(getSpeed() * 0.9f);
         }
 
         public void collisionWithDeformableWall(ParedDeformable pared)
@@ -124,18 +125,18 @@ namespace AlumnoEjemplos.RandomGroup
             paredDeformableSound.play();
             foreach (ParedDeformable.BBOpt BB in pared.LBBoxOpt)
             {
-                if (TgcCollisionUtils.testSphereAABB(this.boundingBall, BB.BBoxOpt))
+                if (TgcCollisionUtils.testSphereAABB(boundingBall, BB.BBoxOpt))
                 {
-                    GuiController.Instance.Logger.log("Direccion inicial pelota: " + this.direction.ToString());
+                    GuiController.Instance.Logger.log("Direccion inicial pelota: " + direction.ToString());
                     //GuiController.Instance.Logger.log("Entre!!! Inicio: " + BB.inicio.ToString() + " Fin: " + BB.fin.ToString());
                     pared.deformarPared(this, BB);
                     paredDeformableSound.play();
                     //this.direction = -this.direction;
                     //GuiController.Instance.Logger.log("Direccion actual pelota: " + this.direction.ToString());
                     //GuiController.Instance.Logger.log("Entre!!! Inicio: " + BB.inicio.ToString() + " Fin: " + BB.fin.ToString());
-                    this.direction *= -1;
-                    this.setSpeed(this.getSpeed() * 0.4f);
-                    this.lifeTime = 0;
+                    direction *= -1;
+                    setSpeed(getSpeed() * 0.4f);
+                    lifeTime = 0;
                     
                 }
             }

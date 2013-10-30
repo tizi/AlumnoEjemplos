@@ -18,23 +18,16 @@ namespace AlumnoEjemplos.RandomGroup
         {
             return enabled;
         }
-        public void setEnabled(bool enabled)
+        public void setEnabled(bool setting)
         {
-            this.enabled = enabled;
+            enabled = setting;
         }
-        String meshPath;
-        public String MeshPath
-        {
-            get{ return meshPath; }
-            set { meshPath = value; }
-        }
+
+        public string MeshPath { get; set; }
+
         //public MeshPropio malla;
-        String rutaDeLaTextura;
-        public String RutaDeLaTextura
-        {
-            get { return rutaDeLaTextura; }
-            set { rutaDeLaTextura = value; }
-        }
+        public string RutaDeLaTextura { get; set; }
+
         public short[] bufferDeIndices;
         public CustomVertex.PositionNormalTextured[] bufferDeVertices;
         public abstract MeshPropio scale(Vector3 scale);

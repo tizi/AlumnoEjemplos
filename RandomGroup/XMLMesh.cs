@@ -106,7 +106,7 @@ namespace AlumnoEjemplos.RandomGroup
 
         public override MeshPropio scale(Vector3 scale)
         {
-            this.escala = scale;
+            escala = scale;
             return this;
         }
     }

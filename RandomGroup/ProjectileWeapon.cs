@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using AlumnoEjemplos.RandomGroup;
 using TgcViewer.Utils._2D;
 using TgcViewer;
 using Microsoft.DirectX;
@@ -29,7 +28,7 @@ namespace AlumnoEjemplos.RandomGroup
         public ProjectileWeapon(Drawable weaponDrawing, TgcSprite sprite, string path)
         {
             this.weaponDrawing = weaponDrawing;
-            this.crosshair = sprite;
+            crosshair = sprite;
             NoAmmo.loadSound(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\CannonShoot.wav");
             ShootSound.loadSound(path);
         }

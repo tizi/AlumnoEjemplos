@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TgcViewer;
 using Microsoft.DirectX;
 using TgcViewer.Utils.Input;
-using AlumnoEjemplos.RandomGroup;
+
 
 namespace AlumnoEjemplos.RandomGroup
 {
@@ -20,9 +21,9 @@ namespace AlumnoEjemplos.RandomGroup
         public List<Projectile> getShoot(Drawable bulletDrawing)
         {
             List<Projectile> tmpList = new List<Projectile>();
-            if (System.DateTime.Now.TimeOfDay.TotalMilliseconds - lastShootTime > timeBetweenShoots)
+            if (DateTime.Now.TimeOfDay.TotalMilliseconds - lastShootTime > timeBetweenShoots)
             {
-                lastShootTime = System.DateTime.Now.TimeOfDay.TotalMilliseconds;
+                lastShootTime = DateTime.Now.TimeOfDay.TotalMilliseconds;
 
                 camera = GuiController.Instance.CurrentCamera;
 

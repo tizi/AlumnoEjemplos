@@ -13,13 +13,12 @@ namespace AlumnoEjemplos.RandomGroup
         {
             return enabled;
         }
-        public void setEnabled(bool enabled)
+        public void setEnabled(bool setting)
         {
-            this.enabled = enabled;
+            enabled = setting;
         }
 
         public TgcPlaneWall wall;
-        TgcTexture currentTexture;
 
         public ParedSolida(Vector3 Origen, Vector3 Dimension, string Orientation, string TexturePath)
         {
@@ -29,7 +28,7 @@ namespace AlumnoEjemplos.RandomGroup
             wall = new TgcPlaneWall();
 
             //textura
-            currentTexture = TgcTexture.createTexture(d3dDevice, TexturePath);
+            TgcTexture currentTexture = TgcTexture.createTexture(d3dDevice, TexturePath);
             wall.setTexture(currentTexture);
 
             //parametros basicos
@@ -59,7 +58,6 @@ namespace AlumnoEjemplos.RandomGroup
 
         public void render(float elapsedTime)
         {
-            Device d3dDevice = GuiController.Instance.D3dDevice;
             wall.render();
         }
 
