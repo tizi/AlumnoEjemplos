@@ -390,27 +390,29 @@ namespace AlumnoEjemplos.RandomGroup
 
         public Boolean deformarPared(Projectile proyectil, BBOpt BB)
         {
-            float Radio = proyectil.boundingBall.Radius;
-            Vector3 Position = proyectil.getPosition();
-            Vector3 Direccion = proyectil.getDirection();
-            int i;
-            float DefoMod = proyectil.getSpeed() * proyectil.mass * 0.001F;
+            float radio = proyectil.boundingBall.Radius;
+            Vector3 posicionContacto = proyectil.getPosition();
+            Vector3 direccionProyectil = proyectil.getDirection();            
+            float defoMod = proyectil.getSpeed() * proyectil.mass * 0.001F;
             Boolean deformo = false;
             float deformacion = 0;
-            //GuiController.Instance.Logger.log("Position: " + Position.ToString());
+            Vertices = (ParedVertex[])vertexBuffer.Lock(BB.inicio * 44, typeof(ParedVertex), LockFlags.None, BB.fin);
+
+            GuiController.Instance.Logger.log("DefoMod: " + defoMod.ToString());
             //GuiController.Instance.Logger.log("Direccion: " + Direccion.ToString());
             //GuiController.Instance.Logger.log("Entre!!! Inicio: " + BB.inicio.ToString() + " Fin: " + BB.fin.ToString());
-            Vertices = (ParedVertex[])vertexBuffer.Lock(BB.inicio*44, typeof(ParedVertex), LockFlags.None, BB.fin);
-            for (i = 0; i < Vertices.Length; i++)
+
+            
+            for (int i = 0; i < Vertices.Length; i++)
             {
 
-                if (TgcVectorUtils.lengthSq(Vertices[i].Position, Position) > (Radio*Radio) + DefoMod) continue;
+                if (TgcVectorUtils.lengthSq(Vertices[i].Position, posicionContacto) > (radio*radio) + defoMod) continue;
 
                 Vertices[i].Color = Color.Red.ToArgb();
                 deformo = true;
-                deformacion = Math.Sign(Vector3.Dot(Vertices[i].Normal, Direccion)) * 
-                                FastMath.Pow2(1 / TgcVectorUtils.lengthSq(Vertices[i].Position, Position)) * 
-                                DefoMod;
+                deformacion = Math.Sign(Vector3.Dot(Vertices[i].Normal, direccionProyectil)) * 
+                                FastMath.Pow2(1 / TgcVectorUtils.lengthSq(Vertices[i].Position, posicionContacto)) * 
+                                defoMod;
 
                 if (deformacion > 1) deformacion = 1;
                 if (deformacion < -1) deformacion = -1;
@@ -418,19 +420,19 @@ namespace AlumnoEjemplos.RandomGroup
                 switch (orientation)
                 {
                     case "XY":
-                        Vertices[i].Position.Z += deformacion * Direccion.Z;
-                        Vertices[i].Position.Y += deformacion * Direccion.Y;
-                        Vertices[i].Position.X += deformacion * Direccion.X;
+                        Vertices[i].Position.Z += deformacion * direccionProyectil.Z;
+                        Vertices[i].Position.Y += deformacion * direccionProyectil.Y;
+                        Vertices[i].Position.X += deformacion * direccionProyectil.X;
                         break;
                     case "XZ":
-                        Vertices[i].Position.Z += deformacion * Direccion.Z / 2;
+                        Vertices[i].Position.Z += deformacion * direccionProyectil.Z / 2;
                         Vertices[i].Position.Y += deformacion;
-                        Vertices[i].Position.X += deformacion * Direccion.X / 2;
+                        Vertices[i].Position.X += deformacion * direccionProyectil.X / 2;
                         break;
                     case "YZ":
-                        Vertices[i].Position.Z += deformacion * FastMath.Abs(Direccion.Z / 100);
-                        Vertices[i].Position.Y += deformacion * FastMath.Abs(Direccion.Y / 100);
-                        Vertices[i].Position.X += deformacion * FastMath.Abs(Direccion.X / 100);
+                        Vertices[i].Position.Z += deformacion * FastMath.Abs(direccionProyectil.Z / 100);
+                        Vertices[i].Position.Y += deformacion * FastMath.Abs(direccionProyectil.Y / 100);
+                        Vertices[i].Position.X += deformacion * FastMath.Abs(direccionProyectil.X / 100);
                         break;
                 }
             }
@@ -442,7 +444,7 @@ namespace AlumnoEjemplos.RandomGroup
             switch (orientation)
             {
                 case "XY":
-                    if (Math.Sign(Vector3.Dot(normal, Direccion)) > 0)
+                    if (Math.Sign(Vector3.Dot(normal, direccionProyectil)) > 0)
                     {
                         BoundingBox.setExtremes(BoundingBox.PMin, BoundingBox.PMax + new Vector3(0, 0, deformacion));
                         BB.BBoxOpt.setExtremes(BB.BBoxOpt.PMin, BB.BBoxOpt.PMax + new Vector3(0, 0, deformacion));
@@ -455,7 +457,7 @@ namespace AlumnoEjemplos.RandomGroup
                     break;
 
                 case "XZ":
-                    if (Math.Sign(Vector3.Dot(normal, Direccion)) > 0)
+                    if (Math.Sign(Vector3.Dot(normal, direccionProyectil)) > 0)
                     {
                         BoundingBox.setExtremes(BoundingBox.PMin, BoundingBox.PMax + new Vector3(0, deformacion, 0));
                         BB.BBoxOpt.setExtremes(BB.BBoxOpt.PMin, BB.BBoxOpt.PMax + new Vector3(0, deformacion, 0));
@@ -468,7 +470,7 @@ namespace AlumnoEjemplos.RandomGroup
                     break;
 
                 case "YZ":
-                    if (Math.Sign(Vector3.Dot(normal, Direccion)) > 0)
+                    if (Math.Sign(Vector3.Dot(normal, direccionProyectil)) > 0)
                     {
                         BoundingBox.setExtremes(BoundingBox.PMin, BoundingBox.PMax + new Vector3(deformacion, 0, 0));
                         BB.BBoxOpt.setExtremes(BB.BBoxOpt.PMin, BB.BBoxOpt.PMax + new Vector3(deformacion, 0, 0));

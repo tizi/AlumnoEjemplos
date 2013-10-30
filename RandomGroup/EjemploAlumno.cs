@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.DirectX.DirectInput;
 using TgcViewer.Example;
 using TgcViewer;
@@ -53,7 +54,7 @@ namespace AlumnoEjemplos.RandomGroup
             GuiController.Instance.FpsCamera.Enable = true;
             GuiController.Instance.FpsCamera.MovementSpeed = 400;
             GuiController.Instance.FpsCamera.JumpSpeed = 400;
-            GuiController.Instance.FpsCamera.setCamera(new Vector3(65f, 10f, -325f), new Vector3(379.7143f, 12.9713f, 336.3295f));
+            GuiController.Instance.FpsCamera.setCamera(new Vector3(65f, 20f, -325f), new Vector3(1f, 1f, 1f));
              
             ///////////////MODIFIERS//////////////////
             GuiController.Instance.Modifiers.addFloat("gravity", -0.2f, 0.2f, 0.02f);
@@ -72,7 +73,6 @@ namespace AlumnoEjemplos.RandomGroup
             //Creo texto para mostrar datos de camara
             textoCamara = new TgcText2d {Text = "Inicial", Color = Color.White};
 
-            //paredes
             //suelo
             TgcTexture.createTexture(d3dDevice, alumnoMediaFolder + "Random\\Textures\\Terrain\\tileable_grass.jpg");
             solidWallsList.Add(new ParedSolida(new Vector3(-2500, 0, -2500), new Vector3(5000, 0, 5000), "XZ", alumnoMediaFolder + "Random\\Textures\\Terrain\\tileable_grass.jpg"));
@@ -150,12 +150,11 @@ namespace AlumnoEjemplos.RandomGroup
             for (int i = 0; i <= (projectilesList.Count - 1); i++)
             {
                 Projectile proyectil = projectilesList[i];
-                TgcBoundingSphere boundingBall = proyectil.boundingBall;
 
                 //Deteccion entre pelotas
                 for (int j = i + 1; j < projectilesList.Count; j++)
                 {
-                    if (TgcCollisionUtils.testSphereSphere(boundingBall, projectilesList[j].boundingBall))
+                    if (TgcCollisionUtils.testSphereSphere(proyectil.boundingBall, projectilesList[j].boundingBall))
                     {
                         proyectil.collisionWithProjectile(projectilesList[j]);
                     }
@@ -164,7 +163,7 @@ namespace AlumnoEjemplos.RandomGroup
                 //Deteccion contra las paredes no deformables
                 foreach (ParedSolida pared in solidWallsList)
                 {
-                    if (TgcCollisionUtils.testSphereAABB(boundingBall, pared.getBoundingBox()))
+                    if (TgcCollisionUtils.testSphereAABB(proyectil.boundingBall, pared.getBoundingBox()))
                     {
                         proyectil.collisionWithSolidWall(pared);
                     }
