@@ -36,7 +36,7 @@ namespace AlumnoEjemplos.RandomGroup
         
         public override string getDescription()
         {
-            return "Para que el cañon quede alineado con la camara, mantener el click izquierdo apretado";
+            return "Para que el cañon quede alineado con la camara, mantener el click izquierdo apretado; Click Derecho para disparar.";
         }
 
 
@@ -52,9 +52,9 @@ namespace AlumnoEjemplos.RandomGroup
 
             ///////////////CONFIGURAR CAMARA PRIMERA PERSONA//////////////////
             GuiController.Instance.FpsCamera.Enable = true;
-            GuiController.Instance.FpsCamera.MovementSpeed = 400;
-            GuiController.Instance.FpsCamera.JumpSpeed = 400;
-            GuiController.Instance.FpsCamera.setCamera(new Vector3(65f, 20f, -325f), new Vector3(1f, 1f, 1f));
+            GuiController.Instance.FpsCamera.MovementSpeed = 100;
+            GuiController.Instance.FpsCamera.JumpSpeed = 100;
+            GuiController.Instance.FpsCamera.setCamera(new Vector3(-150f, 20f, 40f), new Vector3(1f, 1f, 1f));
              
             ///////////////MODIFIERS//////////////////
             GuiController.Instance.Modifiers.addFloat("gravity", -0.2f, 0.2f, 0.02f);
@@ -63,7 +63,7 @@ namespace AlumnoEjemplos.RandomGroup
             ProjectileWeapon[] armas = { WeaponFactory.getTanque(), WeaponFactory.getCannon(), WeaponFactory.getGun() };
             GuiController.Instance.Modifiers.addInterval("tecnicas", opciones, 0);
             GuiController.Instance.Modifiers.addInterval("armas", armas, 0);
-            GuiController.Instance.Modifiers.addFloat("mass", 1, 50f, 1);
+            GuiController.Instance.Modifiers.addFloat("mass", 1, 20f, 1);
             GuiController.Instance.Modifiers.addBoolean("boundingSphere", "Mostrar Bounding Sphere", false);
             GuiController.Instance.Modifiers.addBoolean("boundingBox", "Mostrar Bounding Box", false);
 
@@ -79,8 +79,8 @@ namespace AlumnoEjemplos.RandomGroup
             //pared deformable
             deformableWallsList.Add(new ParedDeformable(new Vector3(0, 0, 0), 60, 60, "XY", 0.5F, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
             deformableWallsList.Add(new ParedDeformable(new Vector3(0, 0, 0), 60, 60, "YZ", 0.5F, alumnoMediaFolder + "Random\\Textures\\Walls\\bricks.jpg"));
-            deformableWallsList.Add(new ParedDeformable(new Vector3(0, 60, 0), 60, 60, "XZ", 0.5F, alumnoMediaFolder + "Random\\Textures\\Walls\\bricks.jpg"));
-            deformableWallsList.Add(new ParedDeformable(new Vector3(150, 10, -100), new Vector3(1, 0, 0), 10, alumnoMediaFolder + "Random\\Textures\\Walls\\bricks.jpg", 1.0f));
+            deformableWallsList.Add(new ParedDeformable(new Vector3(0, 0, 60), 60, 60, "YZ", 0.5F, alumnoMediaFolder + "Random\\Textures\\Walls\\bricks.jpg"));
+            deformableWallsList.Add(new ParedDeformable(new Vector3(-60, 0, 0), 60, 60, "XY", 0.5F, alumnoMediaFolder + "Random\\Textures\\Walls\\bricks.jpg"));
         }
 
 

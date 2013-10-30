@@ -468,21 +468,24 @@ namespace AlumnoEjemplos.RandomGroup
             for (int i = 0; i < Vertices.Length; i++)
             {                
                 float distanciaVerticeCentro = FastMath.Pow2(TgcVectorUtils.lengthSq(Vertices[i].Position, posicionContacto));
-                if (distanciaVerticeCentro > (radio*radio) + defoMod) continue;
+                if (distanciaVerticeCentro > FastMath.Pow2(radio) + defoMod) continue;
 
                 Vertices[i].Color = Color.Red.ToArgb();
                 deformo = true;
 
                 deformacion = Math.Sign(Vector3.Dot(Vertices[i].Normal, direccionProyectil))*
-                              (1/distanciaVerticeCentro)*
-                              defoMod;                              
+                               (1/distanciaVerticeCentro) * defoMod;                              
 
                 if (deformacion > 1) deformacion = 1;
                 if (deformacion < -1) deformacion = -1;
 
-                Vertices[i].Position.Z += deformacion * FastMath.Abs(direccionProyectil.Z / 75);
-                Vertices[i].Position.Y += deformacion * FastMath.Abs(direccionProyectil.Y / 75);
-                Vertices[i].Position.X += deformacion * FastMath.Abs(direccionProyectil.X / 75);
+                /*Vertices[i].Position.Z += /*deformacion * FastMath.Abs(direccionProyectil.Z / 75);
+                Vertices[i].Position.Y += /*deformacion * FastMath.Abs(direccionProyectil.Y / 75);
+                Vertices[i].Position.X += /*deformacion * FastMath.Abs(direccionProyectil.X / 75);*/
+
+                Vertices[i].Position.Z += direccionProyectil.Z * defoMod / 100;
+                Vertices[i].Position.Y += direccionProyectil.Y * defoMod / 100;
+                Vertices[i].Position.X += direccionProyectil.X * defoMod / 100;
 
             }
             vertexBuffer.Unlock();
