@@ -22,3 +22,11 @@ D:\Facultad\Tecnicas de graficos por computadora\TgcViewer\AlumnoEjemplos\Alumno
 D:\Facultad\Tecnicas de graficos por computadora\TgcViewer\AlumnoEjemplos\TgcViewer.exe
 D:\Facultad\Tecnicas de graficos por computadora\TgcViewer\AlumnoEjemplos\Ionic.Zip.dll
 D:\Facultad\Tecnicas de graficos por computadora\TgcViewer\AlumnoEjemplos\TgcViewer.pdb
+C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\obj\Debug\AlumnoEjemplos.dll
+C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\obj\Debug\AlumnoEjemplos.pdb
+C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\AlumnoEjemplos.dll
+C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\AlumnoEjemplos.pdb
+C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\TgcViewer.exe
+C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\Ionic.Zip.dll
+C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\TgcViewer.pdb
