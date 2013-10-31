@@ -52,8 +52,8 @@ namespace AlumnoEjemplos.RandomGroup
 
             ///////////////CONFIGURAR CAMARA PRIMERA PERSONA//////////////////
             GuiController.Instance.FpsCamera.Enable = true;
-            GuiController.Instance.FpsCamera.MovementSpeed = 100;
-            GuiController.Instance.FpsCamera.JumpSpeed = 100;
+            GuiController.Instance.FpsCamera.MovementSpeed = 50;
+            GuiController.Instance.FpsCamera.JumpSpeed = 50;
             GuiController.Instance.FpsCamera.setCamera(new Vector3(-150f, 20f, 40f), new Vector3(1f, 1f, 1f));
              
             ///////////////MODIFIERS//////////////////

@@ -58,6 +58,7 @@ namespace AlumnoEjemplos.RandomGroup
 
         public void render(float elapsedTime)
         {
+            if ((bool)GuiController.Instance.Modifiers["boundingBox"]) this.wall.BoundingBox.render();
             wall.render();
         }
 

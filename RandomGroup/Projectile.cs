@@ -95,6 +95,7 @@ namespace AlumnoEjemplos.RandomGroup
 
         public void collisionWithSolidWall(ParedSolida pared)
         {
+            GuiController.Instance.Logger.log("Colisione con el piso");
             Vector3 tmpPos = getPosition();
             float radius = boundingBall.Radius;
             switch (pared.wall.Orientation)
@@ -118,7 +119,7 @@ namespace AlumnoEjemplos.RandomGroup
                     break;
             }
             paredSolidaSound.play();
-            setSpeed(getSpeed() * 0.9f);            
+            setSpeed(getSpeed() * 0.7f);            
         }
 
         public void collisionWithDeformableWall(ParedDeformable pared)
@@ -128,7 +129,7 @@ namespace AlumnoEjemplos.RandomGroup
             {
                 if (TgcCollisionUtils.testSphereAABB(boundingBall, BB.BBoxOpt))
                 {
-                    GuiController.Instance.Logger.log("Direccion inicial pelota: " + direction.ToString());
+                    GuiController.Instance.Logger.log("Direccion inicial pelota: " + direction.ToString() + "Estoy en Projectile");
                     //GuiController.Instance.Logger.log("Entre!!! Inicio: " + BB.inicio.ToString() + " Fin: " + BB.fin.ToString());
                     pared.deformarPared(this, BB);
                     paredDeformableSound.play();

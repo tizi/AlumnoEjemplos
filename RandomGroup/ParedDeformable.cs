@@ -466,20 +466,21 @@ namespace AlumnoEjemplos.RandomGroup
 
             
             for (int i = 0; i < Vertices.Length; i++)
-            {                
+            {   
+                //GuiController.Instance.Logger.log("estoy en un lugar que no deberia estar");
                 float distanciaVerticeCentro = FastMath.Pow2(TgcVectorUtils.lengthSq(Vertices[i].Position, posicionContacto));
-                if (distanciaVerticeCentro > FastMath.Pow2(radio) + defoMod) continue;
+                if (distanciaVerticeCentro > 20/*FastMath.Pow2(radio) + defoMod*/) continue;
 
-                Vertices[i].Color = Color.Red.ToArgb();
+                Vertices[i].Color = Color.Blue.ToArgb();
                 deformo = true;
 
-                deformacion = Math.Sign(Vector3.Dot(Vertices[i].Normal, direccionProyectil))*
+                /*deformacion = Math.Sign(Vector3.Dot(Vertices[i].Normal, direccionProyectil))*
                                (1/distanciaVerticeCentro) * defoMod;                              
 
                 if (deformacion > 1) deformacion = 1;
                 if (deformacion < -1) deformacion = -1;
 
-                /*Vertices[i].Position.Z += /*deformacion * FastMath.Abs(direccionProyectil.Z / 75);
+                Vertices[i].Position.Z += /*deformacion * FastMath.Abs(direccionProyectil.Z / 75);
                 Vertices[i].Position.Y += /*deformacion * FastMath.Abs(direccionProyectil.Y / 75);
                 Vertices[i].Position.X += /*deformacion * FastMath.Abs(direccionProyectil.X / 75);*/
 
