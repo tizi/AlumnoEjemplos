@@ -16,30 +16,32 @@ namespace AlumnoEjemplos.RandomGroup
         {
             return enabled;
         }
-        public void setEnabled(bool setting)
+        public void setEnabled(bool enabled)
         {
-            enabled = setting;
+            this.enabled = enabled;
         }
 
         Effect effect;
-        
         VertexBuffer vertexBuffer;
         Texture texture;
+        Material material;
         Device device = GuiController.Instance.D3dDevice;
 
-        public struct BBOpt
+        public TgcBoundingBox BoundingBox;
+
+        Vector3 origin;
+        public Vector3 Origin
         {
-            public TgcBoundingBox BBoxOpt;
-            public int inicio;
-            public int fin;
+            get { return origin; }
+            set { origin = value; }
         }
 
-        public List<BBOpt> LBBoxOpt = new List<BBOpt>();
-
-
-        public Vector3 Origin { get; set; }
-
-        public Vector3 Size { get; set; }
+        Vector3 size;
+        public Vector3 Size
+        {
+            get { return size; }
+            set { size = value; }
+        }
 
         Vector3 normal;
         public Vector3 Normal
@@ -55,18 +57,31 @@ namespace AlumnoEjemplos.RandomGroup
             set { orientation = value; }
         }
 
-        public float Alto { get; set; }
-
-        public float Ancho { get; set; }
-
+        float alto;
+        public float Alto
+        {
+            get { return alto; }
+            set { alto = value; }
+        }
+        float ancho;
+        public float Ancho
+        {
+            get { return ancho; }
+            set { ancho = value; }
+        }
         float teselation;
         public float Teselation
         {
             get { return teselation; }
             set { teselation = value; }
         }
+        float energia;
+        public float Energia
+        {
+            get { return energia; }
+            set { energia = value; }
+        }
 
-        public float Energia { get; set; }
 
 
         Boolean shaderEnabled;
@@ -83,13 +98,7 @@ namespace AlumnoEjemplos.RandomGroup
             set { technique = value; }
         }
 
-        TgcBoundingBox boundingBox;
-        public TgcBoundingBox getBoundingBox()
-        {
-            return boundingBox;
-        }
-
-        public static readonly VertexElement[] ParedVertexElement =
+        public static readonly VertexElement[] ParedVertexElement = new VertexElement[]
         {
             new VertexElement(0, 0, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.Position, 0),
             new VertexElement(0, 12, DeclarationType.Float3, DeclarationMethod.Default, DeclarationUsage.Normal, 0),
@@ -110,102 +119,54 @@ namespace AlumnoEjemplos.RandomGroup
             public float Tv1; //Textura 1
         };
 
+        int numVertices = 0;
         ParedVertex[] Pared = new ParedVertex[0];
         ParedVertex[] Vertices = new ParedVertex[0];
+        int[] ParedIndices = new int[0];
 
-        private const VertexFormats ParedVertexFormat = (VertexFormats.Position | VertexFormats.Normal | VertexFormats.Diffuse | VertexFormats.Texture0 | VertexFormats.Texture1);
+        VertexFormats ParedVertexFormat = (VertexFormats.Position | VertexFormats.Normal | VertexFormats.Diffuse | VertexFormats.Texture0 | VertexFormats.Texture1);
         VertexDeclaration ParedVertexDeclaration;
-
-        public ParedDeformable(Vector3 origen, Vector3 normal, int verticesLado, string texturePath, float sizeMultiplier)
-        {
-            Vector3 direccionNormalizada = Vector3.Cross(normal, new Vector3(0,1,0));            
-            direccionNormalizada.Normalize();
-
-            //crear la textura
-            texture = TextureLoader.FromFile(device, texturePath);
-            int numVertices = verticesLado*verticesLado;
-            
-            //settear atributos
-            //La pared va de abajo para arriba asi 
-            this.normal = normal;
-            Origin = origen;
-            Array.Resize(ref Pared, numVertices);
-            Array.Resize(ref Vertices, numVertices);            
-            boundingBox = new TgcBoundingBox();
-
-            //setear el material
-            Material material = new Material
-            {
-                Diffuse = Color.White,
-                Specular = Color.LightGray,
-                SpecularSharpness = 15.0F
-            };
-            device.Material = material;
-
-            //Vertex Declaration y Vertex Buffer
-            ParedVertexDeclaration = new VertexDeclaration(device, ParedVertexElement);
-            vertexBuffer = new VertexBuffer(typeof(ParedVertex), numVertices, device, Usage.Dynamic, ParedVertexFormat, Pool.Default);
-
-            //horizontal
-            int i;
-            for (i = 0; i < verticesLado; i++)
-            {
-                //vertical
-                for (int j = 0; j < verticesLado; j++)
-                {                    
-                    ParedVertex paredVertex = new ParedVertex
-                    {
-                        //La posicion es el origen, mas la direccion, mas la elevacion
-                        Position = new Vector3(Origin.X+j*direccionNormalizada.X*sizeMultiplier,
-                                                Origin.Y+i*sizeMultiplier, 
-                                                Origin.Z+j*direccionNormalizada.Z*sizeMultiplier),
-                        Normal = Normal,
-                        Color = Color.White.ToArgb(),
-                        Tu = i,
-                        Tv = j,
-                        Tu1 = 0,
-                        Tv1 = 0
-                    };
-                    Pared[i] = paredVertex;                    
-                }
-            }            
-            boundingBox.setExtremes(Origin, new Vector3(verticesLado*direccionNormalizada.X*sizeMultiplier, 
-                sizeMultiplier*verticesLado*verticesLado,
-                verticesLado * direccionNormalizada.Z * sizeMultiplier
-                ));
-
-            vertexBuffer.SetData(Pared, 0, LockFlags.None);
-        }
 
         public ParedDeformable(Vector3 Origen, float Alto, float Ancho, string Orientation, float Tessellation, string Texture)
         {
-            int numVertices = (int)FastMath.Ceiling(Alto * Ancho * (1 / Tessellation) * (1 / Tessellation) * (1 / Tessellation));
+            numVertices = (int)FastMath.Ceiling(Alto * Ancho * (1 / Tessellation) * (1 / Tessellation) * (1 / Tessellation));
             ParedVertex v = new ParedVertex();
             Array.Resize(ref Pared, numVertices);
             Array.Resize(ref Vertices, numVertices);
             //Array.Resize(ref ParedIndices, numVertices);
             int i = 0;
-            float x, y, z;            
+            float x = 0, y = 0, z = 0;
+            Random rand = new Random();
             orientation = Orientation;
             shaderEnabled = false;
             teselation = Tessellation;
-            this.Ancho = Ancho;
-            this.Alto = Alto;
-            Energia = Alto * Ancho;
-            Origin = Origen;
+            ancho = Ancho;
+            alto = Alto;
+            energia = Alto * Ancho;
+            origin = Origen;
 
 
             //crear bounding box 
-            boundingBox = new TgcBoundingBox();
+ 
+            BoundingBox = new TgcBoundingBox();
+            
 
             //setear el material
-            Material material = new Material
-            {
-                Diffuse = Color.White,
-                Specular = Color.LightGray,
-                SpecularSharpness = 15.0F
-            };
+            material = new Material();
+            material.Diffuse = Color.White;
+            material.Specular = Color.LightGray;
+            material.SpecularSharpness = 15.0F;
             device.Material = material;
+
+            //luz
+            /*light = new Light();
+            device.RenderState.Lighting = true;
+            device.Lights[0].Type = LightType.Directional;
+            device.Lights[0].Diffuse = Color.Red;
+            device.Lights[0].Position = new Vector3(13, 1, 13);
+            device.Lights[0].Direction = new Vector3(13, 3, 13);
+            device.Lights[0].Range = 10;
+            device.Lights[0].Enabled = true;*/
 
             //crear la textura
             texture = TextureLoader.FromFile(device, Texture);
@@ -216,196 +177,158 @@ namespace AlumnoEjemplos.RandomGroup
             //Crear vertexBuffer
             vertexBuffer = new VertexBuffer(typeof(ParedVertex), numVertices, device, Usage.Dynamic, ParedVertexFormat, Pool.Default);
 
-            switch (Orientation)
+            if (Orientation == "XY")
             {
-                case "XY":
+                Normal = new Vector3(0, 0, 1);
+                for (y = 0; y < (float)(Alto); y = y + Tessellation)
                 {
-                    Normal = new Vector3(0, 0, 1);
-                    for (y = 0; y < Alto; y = y + Tessellation)
+                    for (x = 0; x < (float)(Ancho); x = x + Tessellation)
                     {
-                        for (x = 0; x < Ancho; x = x + Tessellation)
-                        {
-                            v.Position = new Vector3(Origen.X + x, Origen.Y + y, Origen.Z);
-                            v.Normal = Normal;
-                            v.Color = Color.White.ToArgb();
-                            v.Tu = x / (Ancho - Tessellation);
-                            v.Tv = y / Alto;
-                            v.Tu1 = 0;
-                            v.Tv1 = 0;
-                            Pared[i] = v;
-                            i++;
+                        v.Position = new Vector3(Origen.X + x, Origen.Y + y, Origen.Z);
+                        v.Normal = Normal;
+                        v.Color = Color.White.ToArgb();
+                        v.Tu = x / (Ancho - Tessellation);
+                        v.Tv = y / Alto;
+                        v.Tu1 = 0;
+                        v.Tv1 = 0;
+                        Pared[i] = v;
+                        i++;
 
-                            v.Position = new Vector3(Origen.X + x, Origen.Y + y + Tessellation, Origen.Z);
-                            //v.Normal = v.Position;
-                            //v.Color = Color.White.ToArgb();
-                            //v.Tu = x / (Ancho - Teselation);
-                            v.Tv = (y + Tessellation) / Alto;
-                            Pared[i] = v;
-                            i++;
-                        }
-
-                        y = y + Tessellation;
-
-                        for (x = Ancho - Tessellation; x >= 0; x = x - Tessellation)
-                        {
-                            v.Position = new Vector3(Origen.X + x, Origen.Y + y, Origen.Z);
-                            v.Normal = Normal;
-                            v.Color = Color.White.ToArgb();
-                            v.Tu = x / (Ancho - Tessellation);
-                            v.Tv = y / Alto;
-                            v.Tu1 = 0;
-                            v.Tv1 = 0;
-                            Pared[i] = v;
-                            i++;
-
-                            v.Position = new Vector3(Origen.X + x, Origen.Y + y + Tessellation, Origen.Z);
-                            //v.Color = Color.White.ToArgb();
-                            //v.Tu = x / Ancho;
-                            v.Tv = (y + Tessellation) / Alto;
-                            Pared[i] = v;
-                            i++;
-                        }
-
+                        v.Position = new Vector3(Origen.X + x, Origen.Y + y + Tessellation, Origen.Z);
+                        //v.Normal = v.Position;
+                        //v.Color = Color.White.ToArgb();
+                        //v.Tu = x / (Ancho - Teselation);
+                        v.Tv = (y + Tessellation) / Alto;
+                        Pared[i] = v;
+                        i++;
                     }
-                    Size = Origen + (new Vector3(Ancho, Alto, 0));
-                    BBOpt BB = new BBOpt();
-                    for (int xy = 0; xy < Alto; xy++)
+
+                    y = y + Tessellation;
+
+                    for (x = (float)(Ancho - Tessellation); x >= 0; x = x - Tessellation)
                     {
-                        BB.BBoxOpt = new TgcBoundingBox();
-                        BB.BBoxOpt.setExtremes(Origen + new Vector3(0, xy, 0), Origen + new Vector3(Ancho, xy + 2, 0));
-                        BB.inicio = (xy * (int)(2 * Ancho * (1 / Tessellation)) * 4) / 2;
-                        BB.fin = (int)(2 * Ancho * (1 / Tessellation)) * 4;
-                        LBBoxOpt.Add(BB);
-                        xy++;
+                        v.Position = new Vector3(Origen.X + x, Origen.Y + y, Origen.Z);
+                        v.Normal = Normal;
+                        v.Color = Color.White.ToArgb();
+                        v.Tu = x / (Ancho - Tessellation);
+                        v.Tv = y / Alto;
+                        v.Tu1 = 0;
+                        v.Tv1 = 0;
+                        Pared[i] = v;
+                        i++;
+
+                        v.Position = new Vector3(Origen.X + x, Origen.Y + y + Tessellation, Origen.Z);
+                        //v.Color = Color.White.ToArgb();
+                        //v.Tu = x / Ancho;
+                        v.Tv = (y + Tessellation) / Alto;
+                        Pared[i] = v;
+                        i++;
                     }
-                    boundingBox.setExtremes(Origen, new Vector3(Origen.X + Ancho, Origen.Y + Alto, Origen.Z));
-                }
-                    break;
-
-                case "XZ":
-                {
-                    Normal = new Vector3(0, 1, 0);
-                    for (z = 0; z < Alto - teselation; z = z + Tessellation)
-                    {
-                        for (x = 0; x < Ancho; x = x + Tessellation)
-                        {
-                            v.Position = new Vector3(Origen.X + x, Origen.Y, Origen.Z + z);
-                            v.Normal = Normal;
-                            v.Color = Color.White.ToArgb();
-                            v.Tu = x / Ancho;
-                            v.Tv = z / Alto;
-                            v.Tu1 = 0;
-                            v.Tv1 = 0;
-                            Pared[i] = v;
-                            i++;
-
-                            v.Position = new Vector3(Origen.X + x, Origen.Y, Origen.Z + z + Tessellation);
-                            //v.Normal = new Vector3(0, 1, 0);
-                            //v.Color = Color.White.ToArgb();
-                            //v.Tu = x / Ancho;
-                            v.Tv = (z + Tessellation) / Alto;
-                            Pared[i] = v;
-                            i++;
-                        }
-                        z = z + Tessellation;
-                        for (x = Ancho - Tessellation; x >= 0; x = x - Tessellation)
-                        {
-                            v.Position = new Vector3(Origen.X + x, Origen.Y, Origen.Z + z);
-                            v.Normal = Normal;
-                            v.Color = Color.White.ToArgb();
-                            v.Tu = x / Ancho;
-                            v.Tv = z / Alto;
-                            v.Tu1 = 0;
-                            v.Tv1 = 0;
-                            Pared[i] = v;
-                            i++;
-
-                            v.Position = new Vector3(Origen.X + x, Origen.Y, Origen.Z + z + Tessellation);
-                            //v.Color = Color.White.ToArgb();
-                            //v.Tu = x / Ancho;
-                            v.Tv = (z + Tessellation) / Alto;
-                            Pared[i] = v;
-                            i++;
-
-                        }
-                    }
-                    Size = Origen + (new Vector3(Ancho, 0, Alto));
-                    BBOpt BB = new BBOpt();
-                    for (int xy = 0; xy < Alto; xy++)
-                    {
-                        BB.BBoxOpt = new TgcBoundingBox();
-                        BB.BBoxOpt.setExtremes(Origen + new Vector3(0, 0, xy), Origen + new Vector3(Ancho, 0, xy + 2));
-                        BB.inicio = (xy * (int)(2 * Ancho * (1 / Tessellation)) * 4) / 2;
-                        BB.fin = (int)(2 * Ancho * (1 / Tessellation)) * 4;
-                        LBBoxOpt.Add(BB);
-                        xy++;
-                    }
-                    boundingBox.setExtremes(Origen, new Vector3(Origen.X + Ancho, Origen.Y, Origen.Z + Alto));
 
                 }
-                    break;
-
-                case "YZ":
+                size = Origen + (new Vector3((float)Ancho, (float)Alto, 0));
+                BoundingBox.setExtremes(Origen, new Vector3(Origen.X + (float)Ancho, Origen.Y + (float)Alto, Origen.Z));
+            }
+            else if (Orientation == "XZ")
+            {
+                Normal = new Vector3(0, 1, 0);
+                for (z = 0; z < (float)(Alto - teselation); z = z + Tessellation)
                 {
-                    Normal = new Vector3(1, 0, 0);
-                    for (y = 0; y < Alto; y = y + Tessellation)
+                    for (x = 0; x < (float)(Ancho); x = x + Tessellation)
                     {
-                        for (z = 0; z < Ancho; z = z + Tessellation)
-                        {
-                            v.Position = new Vector3(Origen.X, Origen.Y + y, Origen.Z + z);
-                            v.Normal = Normal;
-                            v.Color = Color.White.ToArgb();
-                            v.Tu = z / Ancho;
-                            v.Tv = y / Alto;
-                            v.Tu1 = 0;
-                            v.Tv1 = 0;
-                            Pared[i] = v;
-                            i++;
+                        v.Position = new Vector3(Origen.X + x, Origen.Y, Origen.Z + z);
+                        v.Normal = Normal;
+                        v.Color = Color.White.ToArgb();
+                        v.Tu = x / Ancho;
+                        v.Tv = z / Alto;
+                        v.Tu1 = 0;
+                        v.Tv1 = 0;
+                        Pared[i] = v;
+                        i++;
 
-                            v.Position = new Vector3(Origen.X, Origen.Y + y + Tessellation, Origen.Z + z);
-                            //v.Normal = v.Position;
-                            //v.Color = Color.White.ToArgb();
-                            //v.Tu = z / Ancho;
-                            v.Tv = (y + Tessellation) / Alto;
-                            Pared[i] = v;
-                            i++;
-                        }
-                        y = y + Tessellation;
-                        for (z = Ancho - Tessellation; z >= 0; z = z - Tessellation)
-                        {
-                            v.Position = new Vector3(Origen.X, Origen.Y + y, Origen.Z + z);
-                            v.Normal = Normal;
-                            v.Color = Color.White.ToArgb();
-                            v.Tu = z / Ancho;
-                            v.Tv = y / Alto;
-                            v.Tu1 = 0;
-                            v.Tv1 = 0;
-                            Pared[i] = v;
-                            i++;
-
-                            v.Position = new Vector3(Origen.X, Origen.Y + y + Tessellation, Origen.Z + z);
-                            //v.Color = Color.White.ToArgb();
-                            //v.Tu = z / Ancho;
-                            v.Tv = (y + Tessellation) / Alto;
-                            Pared[i] = v;
-                            i++;
-
-                        }
+                        v.Position = new Vector3(Origen.X + x, Origen.Y, Origen.Z + z + Tessellation);
+                        //v.Normal = new Vector3(0, 1, 0);
+                        //v.Color = Color.White.ToArgb();
+                        //v.Tu = x / Ancho;
+                        v.Tv = (z + Tessellation) / Alto;
+                        Pared[i] = v;
+                        i++;
                     }
-                    Size = Origen + (new Vector3(0, Alto, Ancho));
-                    BBOpt BB = new BBOpt();
-                    for (int xy = 0; xy < Alto; xy++)
+                    z = z + Tessellation;
+                    for (x = (float)(Ancho - Tessellation); x >= 0; x = x - Tessellation)
                     {
-                        BB.BBoxOpt = new TgcBoundingBox();
-                        BB.BBoxOpt.setExtremes(Origen + new Vector3(0, xy, 0), Origen + new Vector3(0, xy + 2, Ancho));
-                        BB.inicio = (xy * (int)(2 * Ancho * (1 / Tessellation)) * 4) / 2;
-                        BB.fin = (int)(2 * Ancho * (1 / Tessellation)) * 4;
-                        LBBoxOpt.Add(BB);
-                        xy++;
+                        v.Position = new Vector3(Origen.X + x, Origen.Y, Origen.Z + z);
+                        v.Normal = Normal;
+                        v.Color = Color.White.ToArgb();
+                        v.Tu = x / Ancho;
+                        v.Tv = z / Alto;
+                        v.Tu1 = 0;
+                        v.Tv1 = 0;
+                        Pared[i] = v;
+                        i++;
+
+                        v.Position = new Vector3(Origen.X + x, Origen.Y, Origen.Z + z + Tessellation);
+                        //v.Color = Color.White.ToArgb();
+                        //v.Tu = x / Ancho;
+                        v.Tv = (z + Tessellation) / Alto;
+                        Pared[i] = v;
+                        i++;
+
                     }
-                    boundingBox.setExtremes(Origen, new Vector3(Origen.X, Origen.Y + Alto, Origen.Z + Ancho));
                 }
-                    break;
+                size = Origen + (new Vector3((float)Ancho, 0, (float)Alto));
+                BoundingBox.setExtremes(Origen, new Vector3(Origen.X + (float)Ancho, Origen.Y, Origen.Z + (float)Alto));
+
+            }
+            else if (Orientation == "YZ")
+            {
+                Normal = new Vector3(1, 0, 0);
+                for (y = 0; y < (float)Alto; y = y + Tessellation)
+                {
+                    for (z = 0; z < (float)Ancho; z = z + Tessellation)
+                    {
+                        v.Position = new Vector3(Origen.X, Origen.Y + y, Origen.Z + z);
+                        v.Normal = Normal;
+                        v.Color = Color.White.ToArgb();
+                        v.Tu = z / Ancho;
+                        v.Tv = y / Alto;
+                        v.Tu1 = 0;
+                        v.Tv1 = 0;
+                        Pared[i] = v;
+                        i++;
+
+                        v.Position = new Vector3(Origen.X, Origen.Y + y + Tessellation, Origen.Z + z);
+                        //v.Normal = v.Position;
+                        //v.Color = Color.White.ToArgb();
+                        //v.Tu = z / Ancho;
+                        v.Tv = (y + Tessellation) / Alto;
+                        Pared[i] = v;
+                        i++;
+                    }
+                    y = y + Tessellation;
+                    for (z = (float)(Ancho - Tessellation); z >= 0; z = z - Tessellation)
+                    {
+                        v.Position = new Vector3(Origen.X, Origen.Y + y, Origen.Z + z);
+                        v.Normal = Normal;
+                        v.Color = Color.White.ToArgb();
+                        v.Tu = z / Ancho;
+                        v.Tv = y / Alto;
+                        v.Tu1 = 0;
+                        v.Tv1 = 0;
+                        Pared[i] = v;
+                        i++;
+
+                        v.Position = new Vector3(Origen.X, Origen.Y + y + Tessellation, Origen.Z + z);
+                        //v.Color = Color.White.ToArgb();
+                        //v.Tu = z / Ancho;
+                        v.Tv = (y + Tessellation) / Alto;
+                        Pared[i] = v;
+                        i++;
+
+                    }
+                }
+                size = Origen + (new Vector3(0, (float)Alto, (float)Ancho));
+                BoundingBox.setExtremes(Origen, new Vector3(Origen.X, Origen.Y + (float)Alto, Origen.Z + (float)Ancho));
             }
 
             vertexBuffer.SetData(Pared, 0, LockFlags.None);
@@ -449,102 +372,91 @@ namespace AlumnoEjemplos.RandomGroup
 
        
 
-        public Boolean deformarPared(Projectile proyectil, BBOpt BB)
+        public Boolean deformarPared(Projectile proyectil, TgcBoundingBox BB)
         {
-            float radio = proyectil.boundingBall.Radius;
-            Vector3 posicionContacto = proyectil.getPosition();
-            Vector3 direccionProyectil = proyectil.getDirection();            
-            float defoMod = proyectil.getSpeed() * proyectil.mass * 0.001F;
+            float Radio = 5f;
+            Vector3 Position = proyectil.getPosition(); // new Vector3(30, 30, 0);
+            Vector3 Direccion = proyectil.direction; // new Vector3(5, 2, 1);
+            int i=0;
+            float DefoMod = 100*15f;
             Boolean deformo = false;
             float deformacion = 0;
-            Vertices = (ParedVertex[])vertexBuffer.Lock(BB.inicio * 44, typeof(ParedVertex), LockFlags.None, BB.fin);
-
-            GuiController.Instance.Logger.log("DefoMod: " + defoMod +
-                "\nDireccion Proyectil: "+ direccionProyectil.ToString() + "Contacto: "+ posicionContacto.ToString());
+            //GuiController.Instance.Logger.log("Position: " + Position.ToString());
             //GuiController.Instance.Logger.log("Direccion: " + Direccion.ToString());
             //GuiController.Instance.Logger.log("Entre!!! Inicio: " + BB.inicio.ToString() + " Fin: " + BB.fin.ToString());
+            Vertices = (ParedVertex[])vertexBuffer.Lock(0, typeof(ParedVertex), LockFlags.None, numVertices);
+            for (i = 0; i < Vertices.Length; i++)
+            {
+                if (TgcVectorUtils.lengthSq(Vertices[i].Position, Position) <= (Radio) + DefoMod)
+                {
+                    Vertices[i].Color = Color.Green.ToArgb();
+                    deformo = true;
+                    deformacion = Math.Sign(Vector3.Dot(Vertices[i].Normal, Direccion)) * (FastMath.Pow2(1 / TgcVectorUtils.lengthSq(Vertices[i].Position, Position)) * DefoMod);
+                    if (deformacion > 1) deformacion = 1;
+                    if (deformacion < -1) deformacion = -1;
 
-            
-            for (int i = 0; i < Vertices.Length; i++)
-            {   
-                //GuiController.Instance.Logger.log("estoy en un lugar que no deberia estar");
-                float distanciaVerticeCentro = FastMath.Pow2(TgcVectorUtils.lengthSq(Vertices[i].Position, posicionContacto));
-                if (distanciaVerticeCentro > 20/*FastMath.Pow2(radio) + defoMod*/) continue;
-
-                Vertices[i].Color = Color.Blue.ToArgb();
-                deformo = true;
-
-                /*deformacion = Math.Sign(Vector3.Dot(Vertices[i].Normal, direccionProyectil))*
-                               (1/distanciaVerticeCentro) * defoMod;                              
-
-                if (deformacion > 1) deformacion = 1;
-                if (deformacion < -1) deformacion = -1;
-
-                Vertices[i].Position.Z += /*deformacion * FastMath.Abs(direccionProyectil.Z / 75);
-                Vertices[i].Position.Y += /*deformacion * FastMath.Abs(direccionProyectil.Y / 75);
-                Vertices[i].Position.X += /*deformacion * FastMath.Abs(direccionProyectil.X / 75);*/
-
-                Vertices[i].Position.Z += direccionProyectil.Z * defoMod / 100;
-                Vertices[i].Position.Y += direccionProyectil.Y * defoMod / 100;
-                Vertices[i].Position.X += direccionProyectil.X * defoMod / 100;
-
+                    if (orientation == "XY")
+                    {
+                        Vertices[i].Position.Z += deformacion;
+                        Vertices[i].Position.Y += deformacion;
+                        Vertices[i].Position.X += deformacion;
+                    }
+                    else if (orientation == "XZ")
+                    {
+                        Vertices[i].Position.Z += deformacion;
+                        Vertices[i].Position.Y += deformacion;
+                        Vertices[i].Position.X += deformacion;
+                    }
+                    else if (orientation == "YZ")
+                    {
+                        Vertices[i].Position.Z += deformacion;
+                        Vertices[i].Position.Y += deformacion;
+                        Vertices[i].Position.X += deformacion;
+                    }
+                }
             }
             vertexBuffer.Unlock();
 
-
             //Agrando el bounding box para que las colisiones futuras chequeen contra las deformaciones
-            if (!deformo) return false;
+            if (deformo == true)
+                if (orientation == "XY")
+                if (Math.Sign(Vector3.Dot(normal, Direccion)) > 0)
+                {
+                    BoundingBox.setExtremes(BoundingBox.PMin, BoundingBox.PMax + new Vector3(0, 0, deformacion));
+                }
+                else
+                {
+                    BoundingBox.setExtremes(BoundingBox.PMin + new Vector3(0, 0, deformacion), BoundingBox.PMax);
 
-            switch (orientation)
-            {
-                case "XY":
-                    if (Math.Sign(Vector3.Dot(normal, direccionProyectil)) > 0)
-                    {
-                        boundingBox.setExtremes(boundingBox.PMin, boundingBox.PMax + new Vector3(0, 0, deformacion));
-                        BB.BBoxOpt.setExtremes(BB.BBoxOpt.PMin, BB.BBoxOpt.PMax + new Vector3(0, 0, deformacion));
-                    }
-                    else
-                    {
-                        boundingBox.setExtremes(boundingBox.PMin + new Vector3(0, 0, deformacion), boundingBox.PMax);
-                        BB.BBoxOpt.setExtremes(BB.BBoxOpt.PMin + new Vector3(0, 0, deformacion), BB.BBoxOpt.PMax);
-                    }
-                    break;
+                }
+            else if (orientation == "XZ")
+                if (Math.Sign(Vector3.Dot(normal, Direccion)) > 0)
+                {
+                    BoundingBox.setExtremes(BoundingBox.PMin, BoundingBox.PMax + new Vector3(0, deformacion, 0));
+                }
+                else
+                {
+                    BoundingBox.setExtremes(BoundingBox.PMin + new Vector3(0, deformacion, 0), BoundingBox.PMax);
+                }
+            else if (orientation == "YZ")
+                if (Math.Sign(Vector3.Dot(normal, Direccion)) > 0)
+                {
+                    BoundingBox.setExtremes(BoundingBox.PMin, BoundingBox.PMax + new Vector3(deformacion, 0, 0));
+                }
+                else
+                {
+                    BoundingBox.setExtremes(BoundingBox.PMin + new Vector3(deformacion, 0, 0), BoundingBox.PMax);
+                }
 
-                case "XZ":
-                    if (Math.Sign(Vector3.Dot(normal, direccionProyectil)) > 0)
-                    {
-                        boundingBox.setExtremes(boundingBox.PMin, boundingBox.PMax + new Vector3(0, deformacion, 0));
-                        BB.BBoxOpt.setExtremes(BB.BBoxOpt.PMin, BB.BBoxOpt.PMax + new Vector3(0, deformacion, 0));
-                    }
-                    else
-                    {
-                        boundingBox.setExtremes(boundingBox.PMin + new Vector3(0, deformacion, 0), boundingBox.PMax);
-                        BB.BBoxOpt.setExtremes(BB.BBoxOpt.PMin + new Vector3(0, deformacion, 0), BB.BBoxOpt.PMax);
-                    }
-                    break;
-
-                case "YZ":
-                    if (Math.Sign(Vector3.Dot(normal, direccionProyectil)) > 0)
-                    {
-                        boundingBox.setExtremes(boundingBox.PMin, boundingBox.PMax + new Vector3(deformacion, 0, 0));
-                        BB.BBoxOpt.setExtremes(BB.BBoxOpt.PMin, BB.BBoxOpt.PMax + new Vector3(deformacion, 0, 0));
-                    }
-                    else
-                    {
-                        boundingBox.setExtremes(boundingBox.PMin + new Vector3(deformacion, 0, 0), boundingBox.PMax);
-                        BB.BBoxOpt.setExtremes(BB.BBoxOpt.PMin + new Vector3(deformacion, 0, 0), BB.BBoxOpt.PMax);
-                    }
-                    break;
-            }
-
-            //Se deformo
-            return true;
+            return deformo;
         }
 
         public void dispose()
         {
             
         }
+
+
 
     }
 }

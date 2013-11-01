@@ -125,15 +125,13 @@ namespace AlumnoEjemplos.RandomGroup
         public void collisionWithDeformableWall(ParedDeformable pared)
         {
             paredDeformableSound.play();
-            foreach (ParedDeformable.BBOpt BB in pared.LBBoxOpt)
-            {
-                if (TgcCollisionUtils.testSphereAABB(boundingBall, BB.BBoxOpt))
+
+                if (TgcCollisionUtils.testSphereAABB(boundingBall, pared.BoundingBox))
                 {
                     GuiController.Instance.Logger.log("Direccion inicial pelota: " + direction.ToString() + "Estoy en Projectile");
                     //GuiController.Instance.Logger.log("Entre!!! Inicio: " + BB.inicio.ToString() + " Fin: " + BB.fin.ToString());
-                    pared.deformarPared(this, BB);
+                    pared.deformarPared(this, pared.BoundingBox);
                     paredDeformableSound.play();
-                    direction.Multiply(-1);
                     //GuiController.Instance.Logger.log("Direccion actual pelota: " + this.direction.ToString());
                     //GuiController.Instance.Logger.log("Entre!!! Inicio: " + BB.inicio.ToString() + " Fin: " + BB.fin.ToString());
                     direction *= -1;
@@ -141,7 +139,6 @@ namespace AlumnoEjemplos.RandomGroup
                     lifeTime = 0;
                     
                 }
-            }
         }
     }
 }

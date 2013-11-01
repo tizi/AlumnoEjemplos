@@ -173,7 +173,7 @@ namespace AlumnoEjemplos.RandomGroup
                 //Deteccion contra las paredes SI deformables
                 foreach (ParedDeformable pared in deformableWallsList)
                 {
-                    if (TgcCollisionUtils.testSphereAABB(proyectil.boundingBall, pared.getBoundingBox()))
+                    if (TgcCollisionUtils.testSphereAABB(proyectil.boundingBall, pared.BoundingBox))
                     {
                         proyectil.collisionWithDeformableWall(pared);
                     }
