@@ -352,6 +352,7 @@ namespace AlumnoEjemplos.RandomGroup
                     effect.EndPass();
                 }
                 effect.End();
+                if ((bool)GuiController.Instance.Modifiers["boundingBox"]) this.BoundingBox.render();
             }
             else
             {
@@ -360,6 +361,7 @@ namespace AlumnoEjemplos.RandomGroup
                 device.SetStreamSource(0, vertexBuffer, 0);
                 device.SetTexture(0, texture);
                 device.DrawPrimitives(PrimitiveType.TriangleStrip, 0, Pared.Length - 2);
+                if ((bool)GuiController.Instance.Modifiers["boundingBox"]) this.BoundingBox.render();
             }
         }
 
@@ -373,8 +375,10 @@ namespace AlumnoEjemplos.RandomGroup
             int i = 0;
             float DefoMod = proyectil.getSpeed() * proyectil.mass * 0.1f;  //100 * 15f;
             Boolean deformo = false;
-            float deformacion = 0;
 
+            float deformacionX = 0;
+            float deformacionY = 0;
+            float deformacionZ = 0;
 
             //MAGIA DE DEFORMACION
             Vertices = (ParedVertex[])vertexBuffer.Lock(0, typeof(ParedVertex), LockFlags.None, numVertices);
@@ -383,32 +387,38 @@ namespace AlumnoEjemplos.RandomGroup
                 float distanciaCentroVertex = TgcVectorUtils.lengthSq(Vertices[i].Position, Position);
                 if (distanciaCentroVertex > (Radio) + DefoMod) continue;
 
-                Vertices[i].Color = Color.Green.ToArgb();
+                //Vertices[i].Color = Color.Green.ToArgb();
                 
-                deformacion = Math.Sign(Vector3.Dot(Vertices[i].Normal, Direccion)) * (FastMath.Pow2(1 / distanciaCentroVertex) * DefoMod);
-                
-                //if (deformacion > 1) deformacion = 1;
-                //if (deformacion < -1) deformacion = -1;
+                deformacionX = Math.Sign(Vector3.Dot(new Vector3(1, 0, 0), Direccion)) * (FastMath.Pow2(1 / distanciaCentroVertex) * DefoMod);
+                deformacionY = Math.Sign(Vector3.Dot(new Vector3(0, 1, 0), Direccion)) * (FastMath.Pow2(1 / distanciaCentroVertex) * DefoMod);
+                deformacionZ = Math.Sign(Vector3.Dot(new Vector3(0, 0, 1), Direccion)) * (FastMath.Pow2(1 / distanciaCentroVertex) * DefoMod);
+
+                if (deformacionX > 1) deformacionX = 1;
+                if (deformacionX < -1) deformacionX = -1;
+                if (deformacionY > 1) deformacionY = 1;
+                if (deformacionY < -1) deformacionY = -1;
+                if (deformacionZ > 1) deformacionZ = 1;
+                if (deformacionZ < -1) deformacionZ = -1;
 
 
                 if (orientation == "XY")
                 {
-                    Vertices[i].Position.Z += deformacion;
-                    Vertices[i].Position.Y += deformacion;
-                    Vertices[i].Position.X += deformacion;
+                    Vertices[i].Position.X += deformacionX/2;
+                    Vertices[i].Position.Y += deformacionY/2;
+                    Vertices[i].Position.Z += deformacionZ;
 
                 }
                 else if (orientation == "XZ")
                 {
-                    Vertices[i].Position.Z += deformacion;
-                    Vertices[i].Position.Y += deformacion;
-                    Vertices[i].Position.X += deformacion;
+                    Vertices[i].Position.X += deformacionX/2;
+                    Vertices[i].Position.Y += deformacionY;
+                    Vertices[i].Position.Z += deformacionZ/2;
                 }
                 else if (orientation == "YZ")
                 {
-                    Vertices[i].Position.Z += deformacion;
-                    Vertices[i].Position.Y += deformacion;
-                    Vertices[i].Position.X += deformacion;
+                    Vertices[i].Position.X += deformacionX;
+                    Vertices[i].Position.Y += deformacionY/2;
+                    Vertices[i].Position.Z += deformacionZ/2;
                 }
 
                 deformo = true;
@@ -417,41 +427,100 @@ namespace AlumnoEjemplos.RandomGroup
             //FIN MAGIA DEFORMACION
 
             //Agrando el bounding box para que las colisiones futuras chequeen contra las deformaciones
-            if (!deformo) return false;            
+            if (!deformo) return false;
+
+
+            /* BUSCAR UNA FORMA DE TRAER TODOS LOS PUNTOS DE LA PARED Y CREAR EL NUEVO BB DE AHI
             switch (orientation)
             {
                 case "XY":
-                    if (Math.Sign(Vector3.Dot(Normal, Direccion)) > 0)
+                    if(Math.Sign(Vector3.Dot(new Vector3(1, 0, 0), Direccion)) > 0)
                     {
-                        BoundingBox.setExtremes(BoundingBox.PMin, BoundingBox.PMax + new Vector3(0, 0, deformacion));
+                        BoundingBox.setExtremes(BoundingBox.PMin, BoundingBox.PMax + new Vector3(deformacionX, 0, 0));
                     }
                     else
                     {
-                        BoundingBox.setExtremes(BoundingBox.PMin + new Vector3(0, 0, deformacion), BoundingBox.PMax);
+                        BoundingBox.setExtremes(BoundingBox.PMin + new Vector3(deformacionX, 0, 0), BoundingBox.PMax);
+
+                    }
+                    if (Math.Sign(Vector3.Dot(new Vector3(0, 1, 0), Direccion)) > 0)
+                    {
+                        BoundingBox.setExtremes(BoundingBox.PMin, BoundingBox.PMax + new Vector3(0, deformacionY, 0));
+                    }
+                    else
+                    {
+                        BoundingBox.setExtremes(BoundingBox.PMin + new Vector3(0, deformacionY, 0), BoundingBox.PMax);
+
+                    }
+                    if (Math.Sign(Vector3.Dot(new Vector3(0, 0, 1), Direccion)) > 0)
+                    {
+                        BoundingBox.setExtremes(BoundingBox.PMin, BoundingBox.PMax + new Vector3(0, 0, deformacionZ));
+                    }
+                    else
+                    {
+                        BoundingBox.setExtremes(BoundingBox.PMin + new Vector3(0, 0, deformacionZ), BoundingBox.PMax);
 
                     }
                     break;
                 case "XZ":
-                    if (Math.Sign(Vector3.Dot(Normal, Direccion)) > 0)
+                    if(Math.Sign(Vector3.Dot(new Vector3(1, 0, 0), Direccion)) > 0)
                     {
-                        BoundingBox.setExtremes(BoundingBox.PMin, BoundingBox.PMax + new Vector3(0, deformacion, 0));
+                        BoundingBox.setExtremes(BoundingBox.PMin, BoundingBox.PMax + new Vector3(deformacionX, 0, 0));
                     }
                     else
                     {
-                        BoundingBox.setExtremes(BoundingBox.PMin + new Vector3(0, deformacion, 0), BoundingBox.PMax);
+                        BoundingBox.setExtremes(BoundingBox.PMin + new Vector3(deformacionX, 0, 0), BoundingBox.PMax);
+
+                    }
+                    if (Math.Sign(Vector3.Dot(new Vector3(0, 1, 0), Direccion)) > 0)
+                    {
+                        BoundingBox.setExtremes(BoundingBox.PMin, BoundingBox.PMax + new Vector3(0, deformacionY, 0));
+                    }
+                    else
+                    {
+                        BoundingBox.setExtremes(BoundingBox.PMin + new Vector3(0, deformacionY, 0), BoundingBox.PMax);
+
+                    }
+                    if (Math.Sign(Vector3.Dot(new Vector3(0, 0, 1), Direccion)) > 0)
+                    {
+                        BoundingBox.setExtremes(BoundingBox.PMin, BoundingBox.PMax + new Vector3(0, 0, deformacionZ));
+                    }
+                    else
+                    {
+                        BoundingBox.setExtremes(BoundingBox.PMin + new Vector3(0, 0, deformacionZ), BoundingBox.PMax);
+
                     }
                     break;
                 case "YZ":
-                    if (Math.Sign(Vector3.Dot(Normal, Direccion)) > 0)
+                    if(Math.Sign(Vector3.Dot(new Vector3(1, 0, 0), Direccion)) > 0)
                     {
-                        BoundingBox.setExtremes(BoundingBox.PMin, BoundingBox.PMax + new Vector3(deformacion, 0, 0));
+                        BoundingBox.setExtremes(BoundingBox.PMin, BoundingBox.PMax + new Vector3(deformacionX, 0, 0));
                     }
                     else
                     {
-                        BoundingBox.setExtremes(BoundingBox.PMin + new Vector3(deformacion, 0, 0), BoundingBox.PMax);
+                        BoundingBox.setExtremes(BoundingBox.PMin + new Vector3(deformacionX, 0, 0), BoundingBox.PMax);
+
+                    }
+                    if (Math.Sign(Vector3.Dot(new Vector3(0, 1, 0), Direccion)) > 0)
+                    {
+                        BoundingBox.setExtremes(BoundingBox.PMin, BoundingBox.PMax + new Vector3(0, deformacionY, 0));
+                    }
+                    else
+                    {
+                        BoundingBox.setExtremes(BoundingBox.PMin + new Vector3(0, deformacionY, 0), BoundingBox.PMax);
+
+                    }
+                    if (Math.Sign(Vector3.Dot(new Vector3(0, 0, 1), Direccion)) > 0)
+                    {
+                        BoundingBox.setExtremes(BoundingBox.PMin, BoundingBox.PMax + new Vector3(0, 0, deformacionZ));
+                    }
+                    else
+                    {
+                        BoundingBox.setExtremes(BoundingBox.PMin + new Vector3(0, 0, deformacionZ), BoundingBox.PMax);
+
                     }
                     break;
-            }
+            }*/
 
             return true;
         }

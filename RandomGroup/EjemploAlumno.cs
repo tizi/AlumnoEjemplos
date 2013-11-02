@@ -60,10 +60,10 @@ namespace AlumnoEjemplos.RandomGroup
             ///////////////MODIFIERS//////////////////
             GuiController.Instance.Modifiers.addFloat("Gravedad", -0.2f, 0.2f, 0.02f);
             GuiController.Instance.Modifiers.addFloat("Velocidad", 50f, 500f, 200f);
-            GuiController.Instance.Modifiers.addFloat("Masa", 1, 20f, 1);
+            GuiController.Instance.Modifiers.addFloat("Masa", 1f, 50f, 5f);
             GuiController.Instance.Modifiers.addFloat("Cantidad Maxima Proyectiles", 2, 30, 10);
             ShootTechnique[] opciones = { new ShootTechnique() };
-            ProjectileWeapon[] armas = { WeaponFactory.getTanque(), WeaponFactory.getCannon(), WeaponFactory.getGun() };
+            ProjectileWeapon[] armas = { WeaponFactory.getCannon(), WeaponFactory.getTanque(), WeaponFactory.getGun() };
             GuiController.Instance.Modifiers.addInterval("Tecnicas de Disparo", opciones, 0);
             GuiController.Instance.Modifiers.addInterval("Armas", armas, 0);
             GuiController.Instance.Modifiers.addBoolean("boundingSphere", "Mostrar Bounding Sphere", false);

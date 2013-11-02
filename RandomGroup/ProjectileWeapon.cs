@@ -41,8 +41,8 @@ namespace AlumnoEjemplos.RandomGroup
 
         public override List<Projectile> doAction()
         {
-            if (amountOfbullets > 0)
-            {
+            //if (amountOfbullets > 0)
+            //{
                 List<Projectile> tmpList = technique.getShoot(bulletDrawing);
                 camera = GuiController.Instance.CurrentCamera;
                 initPos = camera.getLookAt();
@@ -52,9 +52,9 @@ namespace AlumnoEjemplos.RandomGroup
                 amountOfbullets -= 1;
                 ShootSound.play();
                 return tmpList;
-            }
-            NoAmmo.play();
-            return new List<Projectile>();
+            //}
+            //NoAmmo.play();
+            //return new List<Projectile>();
         }
     }
 }
