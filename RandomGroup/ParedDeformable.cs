@@ -387,8 +387,8 @@ namespace AlumnoEjemplos.RandomGroup
                 
                 deformacion = Math.Sign(Vector3.Dot(Vertices[i].Normal, Direccion)) * (FastMath.Pow2(1 / distanciaCentroVertex) * DefoMod);
                 
-                if (deformacion > 1) deformacion = 1;
-                if (deformacion < -1) deformacion = -1;
+                //if (deformacion > 1) deformacion = 1;
+                //if (deformacion < -1) deformacion = -1;
 
 
                 if (orientation == "XY")
@@ -396,6 +396,7 @@ namespace AlumnoEjemplos.RandomGroup
                     Vertices[i].Position.Z += deformacion;
                     Vertices[i].Position.Y += deformacion;
                     Vertices[i].Position.X += deformacion;
+
                 }
                 else if (orientation == "XZ")
                 {

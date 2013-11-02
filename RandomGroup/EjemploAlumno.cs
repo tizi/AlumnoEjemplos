@@ -22,6 +22,7 @@ namespace AlumnoEjemplos.RandomGroup
         List<ParedSolida> solidWallsList = new List<ParedSolida>();
         List<ParedDeformable> deformableWallsList = new List<ParedDeformable>();
         ProjectileWeapon weapon;
+        int cantMaximaProyectiles;
 
 
         public override string getCategory()
@@ -33,7 +34,7 @@ namespace AlumnoEjemplos.RandomGroup
         {
             return "Random";
         }
-        
+
         public override string getDescription()
         {
             return "Para que el cañon quede alineado con la camara, mantener el click izquierdo apretado; Click Derecho para disparar.";
@@ -55,15 +56,16 @@ namespace AlumnoEjemplos.RandomGroup
             GuiController.Instance.FpsCamera.MovementSpeed = 50;
             GuiController.Instance.FpsCamera.JumpSpeed = 50;
             GuiController.Instance.FpsCamera.setCamera(new Vector3(-150f, 20f, 40f), new Vector3(1f, 1f, 1f));
-             
+
             ///////////////MODIFIERS//////////////////
-            GuiController.Instance.Modifiers.addFloat("gravity", -0.2f, 0.2f, 0.02f);
-            GuiController.Instance.Modifiers.addFloat("speed", 50f, 500f, 200f);
+            GuiController.Instance.Modifiers.addFloat("Gravedad", -0.2f, 0.2f, 0.02f);
+            GuiController.Instance.Modifiers.addFloat("Velocidad", 50f, 500f, 200f);
+            GuiController.Instance.Modifiers.addFloat("Masa", 1, 20f, 1);
+            GuiController.Instance.Modifiers.addFloat("Cantidad Maxima Proyectiles", 2, 30, 10);
             ShootTechnique[] opciones = { new ShootTechnique() };
             ProjectileWeapon[] armas = { WeaponFactory.getTanque(), WeaponFactory.getCannon(), WeaponFactory.getGun() };
-            GuiController.Instance.Modifiers.addInterval("tecnicas", opciones, 0);
-            GuiController.Instance.Modifiers.addInterval("armas", armas, 0);
-            GuiController.Instance.Modifiers.addFloat("mass", 1, 20f, 1);
+            GuiController.Instance.Modifiers.addInterval("Tecnicas de Disparo", opciones, 0);
+            GuiController.Instance.Modifiers.addInterval("Armas", armas, 0);
             GuiController.Instance.Modifiers.addBoolean("boundingSphere", "Mostrar Bounding Sphere", false);
             GuiController.Instance.Modifiers.addBoolean("boundingBox", "Mostrar Bounding Box", false);
 
@@ -71,7 +73,7 @@ namespace AlumnoEjemplos.RandomGroup
             createSkyBox(alumnoMediaFolder);
 
             //Creo texto para mostrar datos de camara
-            textoCamara = new TgcText2d {Text = "Inicial", Color = Color.White};
+            textoCamara = new TgcText2d { Text = "Inicial", Color = Color.White };
 
             //suelo
             TgcTexture.createTexture(d3dDevice, alumnoMediaFolder + "Random\\Textures\\Terrain\\tileable_grass.jpg");
@@ -92,7 +94,7 @@ namespace AlumnoEjemplos.RandomGroup
 
             textoCamara.Text = GuiController.Instance.CurrentCamera.getPosition().ToString();
             textoCamara.render();
-            
+
             foreach (ParedSolida pared in solidWallsList)
             {
                 pared.render(elapsedTime);
@@ -103,7 +105,8 @@ namespace AlumnoEjemplos.RandomGroup
             }
 
             //Obtener valores de Modifiers
-            weapon = (ProjectileWeapon)GuiController.Instance.Modifiers["armas"];
+            weapon = (ProjectileWeapon)GuiController.Instance.Modifiers["Armas"];
+            cantMaximaProyectiles = (int)(float)GuiController.Instance.Modifiers["Cantidad Maxima Proyectiles"];
 
             ///////////////INPUT//////////////////
             //Capturar Input teclado 
@@ -115,6 +118,13 @@ namespace AlumnoEjemplos.RandomGroup
             if (GuiController.Instance.D3dInput.buttonPressed(TgcD3dInput.MouseButtons.BUTTON_RIGHT))
             {
                 projectilesList.AddRange(weapon.doAction());
+                if (projectilesList.Count > cantMaximaProyectiles)
+                {
+                    for (int i = 0; i < projectilesList.Count - cantMaximaProyectiles; i++)
+                    {
+                        projectilesList.RemoveAt(0);
+                    }
+                }
 
             }
             /*for (int i = 0; i <= (projectilesList.Count - 1); i++)
@@ -127,7 +137,7 @@ namespace AlumnoEjemplos.RandomGroup
             skyBox.render();
         }
 
-       
+
         /// Método que se llama cuando termina la ejecución del ejemplo.
         /// Hacer dispose() de todos los objetos creados.        
         public override void close()
@@ -168,7 +178,7 @@ namespace AlumnoEjemplos.RandomGroup
                     {
                         proyectil.collisionWithSolidWall(pared);
                     }
-                }                
+                }
 
                 //Deteccion contra las paredes SI deformables
                 foreach (ParedDeformable pared in deformableWallsList)
@@ -180,16 +190,17 @@ namespace AlumnoEjemplos.RandomGroup
                 }
 
                 //Dibujado y borrado en caso de que se acaba su lifeTime
-                if (proyectil.update(elapsedTime)) projectilesList.Remove(proyectil); 
-                    else proyectil.render();
+                if (proyectil.update(elapsedTime)) projectilesList.Remove(proyectil);
+                else proyectil.render();
             }
         }
 
         private void createSkyBox(string alumnoMediaFolder)
         {
             //Crear SkyBox 
-            skyBox = new TgcSkyBox {
-                Center = new Vector3(0, 0, 0), 
+            skyBox = new TgcSkyBox
+            {
+                Center = new Vector3(0, 0, 0),
                 Size = new Vector3(10000, 10000, 10000)
             };
 
@@ -204,6 +215,5 @@ namespace AlumnoEjemplos.RandomGroup
             //Actualizacion de los valores
             skyBox.updateValues();
         }
-
     }
 }

@@ -53,7 +53,7 @@ namespace AlumnoEjemplos.RandomGroup
         }
         public bool update(float time)
         {
-            direction.Y -= (float)instance.Modifiers["gravity"];
+            direction.Y -= (float)instance.Modifiers["Gravedad"];
             boundingBall.moveCenter(direction * time);
             drawing.setPosition(boundingBall.Center);
             return (DateTime.Now.TimeOfDay.TotalMilliseconds - creationTime > lifeTime);
@@ -63,8 +63,8 @@ namespace AlumnoEjemplos.RandomGroup
         {
             this.drawing = drawing;
             this.direction = direction;
-            mass = (float)GuiController.Instance.Modifiers["mass"];
-            speed = (float)GuiController.Instance.Modifiers["speed"];
+            mass = (float)GuiController.Instance.Modifiers["Masa"];
+            speed = (float)GuiController.Instance.Modifiers["Velocidad"];
             creationTime = DateTime.Now.TimeOfDay.TotalMilliseconds;
             boundingBall = new TgcBoundingSphere(position, drawing.getRadiusSize());
 
@@ -119,7 +119,7 @@ namespace AlumnoEjemplos.RandomGroup
                     break;
             }
             paredSolidaSound.play();
-            setSpeed(getSpeed() * 0.7f);            
+            setSpeed(getSpeed() * 0.8f);            
         }
 
         public void collisionWithDeformableWall(ParedDeformable pared)

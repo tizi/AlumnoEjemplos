@@ -30,7 +30,7 @@ namespace AlumnoEjemplos.RandomGroup
                 initPos = camera.getLookAt();
                 initDir = initPos - camera.getPosition();
                 initPos.Add(initDir * distance);
-                initDir.Scale((float)GuiController.Instance.Modifiers["speed"]);
+                initDir.Scale((float)GuiController.Instance.Modifiers["Velocidad"]);
 
                 getRealShoot(tmpList, bulletDrawing);
             }
