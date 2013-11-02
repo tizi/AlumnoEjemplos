@@ -370,8 +370,8 @@ namespace AlumnoEjemplos.RandomGroup
             float Radio = proyectil.boundingBall.Radius;
             Vector3 Position = proyectil.getPosition(); // new Vector3(30, 30, 0);
             Vector3 Direccion = proyectil.direction; // new Vector3(5, 2, 1);
-            int i;
-            float DefoMod = 15f;
+            int i = 0;
+            float DefoMod = proyectil.getSpeed() * proyectil.mass * 0.1f;  //100 * 15f;
             Boolean deformo = false;
             float deformacion = 0;
 
@@ -389,10 +389,26 @@ namespace AlumnoEjemplos.RandomGroup
                 
                 if (deformacion > 1) deformacion = 1;
                 if (deformacion < -1) deformacion = -1;
-               
-                Vertices[i].Position.Z += deformacion;
-                Vertices[i].Position.Y += deformacion;
-                Vertices[i].Position.X += deformacion;
+
+
+                if (orientation == "XY")
+                {
+                    Vertices[i].Position.Z += deformacion;
+                    Vertices[i].Position.Y += deformacion;
+                    Vertices[i].Position.X += deformacion;
+                }
+                else if (orientation == "XZ")
+                {
+                    Vertices[i].Position.Z += deformacion;
+                    Vertices[i].Position.Y += deformacion;
+                    Vertices[i].Position.X += deformacion;
+                }
+                else if (orientation == "YZ")
+                {
+                    Vertices[i].Position.Z += deformacion;
+                    Vertices[i].Position.Y += deformacion;
+                    Vertices[i].Position.X += deformacion;
+                }
 
                 deformo = true;
             }
