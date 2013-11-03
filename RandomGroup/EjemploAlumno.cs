@@ -127,11 +127,7 @@ namespace AlumnoEjemplos.RandomGroup
                 }
 
             }
-            /*for (int i = 0; i <= (projectilesList.Count - 1); i++)
-            {
-                Projectile collisionable = projectilesList[i];
-                if (collisionable.update(elapsedTime)) projectilesList.Remove(collisionable); else collisionable.render();
-            }*/
+            
             deteccionDeColisiones(elapsedTime);
             weapon.render();
             skyBox.render();
@@ -161,7 +157,9 @@ namespace AlumnoEjemplos.RandomGroup
             for (int i = 0; i <= (projectilesList.Count - 1); i++)
             {
                 Projectile proyectil = projectilesList[i];
-
+                Vector3 posActual = proyectil.getPosition();
+                Vector3 posAnterior = proyectil.posicionCuadroAnt;
+                
                 //Deteccion entre pelotas
                 for (int j = i + 1; j < projectilesList.Count; j++)
                 {
@@ -183,10 +181,24 @@ namespace AlumnoEjemplos.RandomGroup
                 //Deteccion contra las paredes SI deformables
                 foreach (ParedDeformable pared in deformableWallsList)
                 {
-                    if (TgcCollisionUtils.testSphereAABB(proyectil.boundingBall, pared.BoundingBox))
+                    Vector3 ptoColision;
+
+                    // Como se q va a colisionar, me fijo q no haya salto de cuadros
+                    // Hago un segmento entre la posicion actual y la del cuadro anterior, y me fijo si hubo colision con la pared
+                    //if (!(proyectil.posicionCuadroAnt.Equals(proyectil.getPosition())))
+                    if (!(posAnterior.X==posActual.X && posAnterior.Y==posActual.Y && posAnterior.Z==posActual.Z))
                     {
-                        proyectil.collisionWithDeformableWall(pared);
+                        //GuiController.Instance.Logger.log("Entro al distinto");
+                        if (TgcCollisionUtils.intersectSegmentAABB(posAnterior,posActual,pared.BoundingBox, out ptoColision))
+                        {
+                            GuiController.Instance.Logger.log("Hubo colision " + posAnterior.ToString() + " - " + posActual.ToString());
+                    
+                            // Muevo la pelota hasta el pto real de colision
+                            //proyectil.setPosition(ptoColision - (proyectil.boundingBall.Radius*proyectil.direction*-1));
+                            proyectil.collisionWithDeformableWall(pared);
+                        }                            
                     }
+                    proyectil.posicionCuadroAnt = posActual;
                 }
 
                 //Dibujado y borrado en caso de que se acaba su lifeTime
