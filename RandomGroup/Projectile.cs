@@ -17,7 +17,7 @@ namespace AlumnoEjemplos.RandomGroup
         private Drawable drawing;
         public Vector3 direction;
         public Vector3 posicionCuadroAnt;
-        GuiController instance =GuiController.Instance;
+        GuiController instance = GuiController.Instance;
 
         public TgcStaticSound paredSolidaSound = new TgcStaticSound();
         TgcStaticSound paredDeformableSound = new TgcStaticSound();
@@ -62,7 +62,7 @@ namespace AlumnoEjemplos.RandomGroup
 
         public Projectile(Vector3 position, Drawable drawing, Vector3 direction)
         {
-            this.posicionCuadroAnt = position;
+            posicionCuadroAnt = position;
             this.drawing = drawing;
             this.direction = direction;
             mass = (float)GuiController.Instance.Modifiers["Masa"];
@@ -126,9 +126,7 @@ namespace AlumnoEjemplos.RandomGroup
 
         public void collisionWithDeformableWall(ParedDeformable pared)
         {
-            //GuiController.Instance.Logger.log("Direccion inicial pelota: " + direction.ToString() + "Estoy en Projectile");
-            //GuiController.Instance.Logger.log("Entre!!! Inicio: " + BB.inicio.ToString() + " Fin: " + BB.fin.ToString());
-            pared.deformarPared(this, pared.BoundingBox);
+            pared.deformarPared(this);
             paredDeformableSound.play();
             direction *= -1;
             setSpeed(getSpeed() * 0.4f);

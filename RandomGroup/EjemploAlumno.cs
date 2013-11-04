@@ -55,7 +55,7 @@ namespace AlumnoEjemplos.RandomGroup
             GuiController.Instance.FpsCamera.Enable = true;
             GuiController.Instance.FpsCamera.MovementSpeed = 50;
             GuiController.Instance.FpsCamera.JumpSpeed = 50;
-            GuiController.Instance.FpsCamera.setCamera(new Vector3(-150f, 20f, 40f), new Vector3(1f, 1f, 1f));
+            GuiController.Instance.FpsCamera.setCamera(new Vector3(-150f, 40f, 175f), new Vector3(120f, 60f, 50f));
 
             ///////////////MODIFIERS//////////////////
             GuiController.Instance.Modifiers.addFloat("Gravedad", -0.2f, 0.2f, 0.02f);
@@ -78,11 +78,10 @@ namespace AlumnoEjemplos.RandomGroup
             //suelo
             TgcTexture.createTexture(d3dDevice, alumnoMediaFolder + "Random\\Textures\\Terrain\\tileable_grass.jpg");
             solidWallsList.Add(new ParedSolida(new Vector3(-2500, 0, -2500), new Vector3(5000, 0, 5000), "XZ", alumnoMediaFolder + "Random\\Textures\\Terrain\\tileable_grass.jpg"));
-            //pared deformable
-            deformableWallsList.Add(new ParedDeformable(new Vector3(0, 0, 0), 60, 60, "XY", 0.5F, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
-            deformableWallsList.Add(new ParedDeformable(new Vector3(0, 0, 0), 60, 60, "YZ", 0.5F, alumnoMediaFolder + "Random\\Textures\\Walls\\bricks.jpg"));
-            deformableWallsList.Add(new ParedDeformable(new Vector3(0, 0, 60), 60, 60, "YZ", 0.5F, alumnoMediaFolder + "Random\\Textures\\Walls\\bricks.jpg"));
-            deformableWallsList.Add(new ParedDeformable(new Vector3(-60, 0, 0), 60, 60, "XY", 0.5F, alumnoMediaFolder + "Random\\Textures\\Walls\\bricks.jpg"));
+            //Paredes deformables
+            deformableWallsList.Add(new ParedDeformable(new Vector3(0, 0, 0), new Vector3(1, 0, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
+            deformableWallsList.Add(new ParedDeformable(new Vector3(100, 0, 0), new Vector3(1, 0, 2), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
+            deformableWallsList.Add(new ParedDeformable(new Vector3(145, 0, 90), new Vector3(-30, 0, 30), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
         }
 
 
@@ -181,22 +180,21 @@ namespace AlumnoEjemplos.RandomGroup
                 //Deteccion contra las paredes SI deformables
                 foreach (ParedDeformable pared in deformableWallsList)
                 {
-                    Vector3 ptoColision;
-
                     // Como se q va a colisionar, me fijo q no haya salto de cuadros
                     // Hago un segmento entre la posicion actual y la del cuadro anterior, y me fijo si hubo colision con la pared
                     //if (!(proyectil.posicionCuadroAnt.Equals(proyectil.getPosition())))
-                    if (!(posAnterior.X==posActual.X && posAnterior.Y==posActual.Y && posAnterior.Z==posActual.Z))
+                    if (!(posAnterior.Equals(posActual)))
                     {
                         //GuiController.Instance.Logger.log("Entro al distinto");
-                        if (TgcCollisionUtils.intersectSegmentAABB(posAnterior,posActual,pared.BoundingBox, out ptoColision))
+                        Vector3 ptoColision;
+                        if (RandomCollisionUtils.intersectSegmentOBB(posAnterior, posActual, pared.obb, out ptoColision))
                         {
                             GuiController.Instance.Logger.log("Hubo colision " + posAnterior.ToString() + " - " + posActual.ToString());
                     
                             // Muevo la pelota hasta el pto real de colision
                             //proyectil.setPosition(ptoColision - (proyectil.boundingBall.Radius*proyectil.direction*-1));
                             proyectil.collisionWithDeformableWall(pared);
-                        }                            
+                        }
                     }
                     proyectil.posicionCuadroAnt = posActual;
                 }
@@ -206,6 +204,8 @@ namespace AlumnoEjemplos.RandomGroup
                 else proyectil.render();
             }
         }
+
+
 
         private void createSkyBox(string alumnoMediaFolder)
         {
