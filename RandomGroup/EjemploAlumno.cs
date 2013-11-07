@@ -16,6 +16,7 @@ namespace AlumnoEjemplos.RandomGroup
 {
     public class EjemploAlumno : TgcExample
     {
+        FpsCamera camera;
         TgcSkyBox skyBox;
         TgcText2d textoCamara;
         List<Projectile> projectilesList = new List<Projectile>();
@@ -37,7 +38,7 @@ namespace AlumnoEjemplos.RandomGroup
 
         public override string getDescription()
         {
-            return "Para que el cañon quede alineado con la camara, mantener el click izquierdo apretado; Click Derecho para disparar.";
+            return "Para pausar el juego presionar P; Click Izquierdo para disparar.";
         }
 
 
@@ -52,10 +53,15 @@ namespace AlumnoEjemplos.RandomGroup
             string alumnoMediaFolder = GuiController.Instance.AlumnoEjemplosMediaDir;
 
             ///////////////CONFIGURAR CAMARA PRIMERA PERSONA//////////////////
-            GuiController.Instance.FpsCamera.Enable = true;
-            GuiController.Instance.FpsCamera.MovementSpeed = 50;
-            GuiController.Instance.FpsCamera.JumpSpeed = 50;
-            GuiController.Instance.FpsCamera.setCamera(new Vector3(-150f, 40f, 175f), new Vector3(120f, 60f, 50f));
+            //GuiController.Instance.FpsCamera.Enable = true;
+            //GuiController.Instance.FpsCamera.MovementSpeed = 50;
+            //GuiController.Instance.FpsCamera.JumpSpeed = 50;
+            //GuiController.Instance.FpsCamera.setCamera(new Vector3(-150f, 40f, 175f), new Vector3(120f, 60f, 50f));
+            camera = new FpsCamera();
+            camera.MovementSpeed = 100;
+            camera.JumpSpeed = 50;
+            camera.setCamera(new Vector3(-150f, 40f, 175f), new Vector3(120f, 60f, 50f));
+            GuiController.Instance.CurrentCamera = camera;
 
             ///////////////MODIFIERS//////////////////
             GuiController.Instance.Modifiers.addFloat("Gravedad", -0.2f, 0.2f, 0.02f);
@@ -109,12 +115,9 @@ namespace AlumnoEjemplos.RandomGroup
 
             ///////////////INPUT//////////////////
             //Capturar Input teclado 
-            if (GuiController.Instance.D3dInput.keyPressed(Key.F))
-            {
-            }
 
             //Capturar Input Mouse
-            if (GuiController.Instance.D3dInput.buttonPressed(TgcD3dInput.MouseButtons.BUTTON_RIGHT))
+            if (GuiController.Instance.D3dInput.buttonPressed(TgcD3dInput.MouseButtons.BUTTON_LEFT))
             {
                 projectilesList.AddRange(weapon.doAction());
                 if (projectilesList.Count > cantMaximaProyectiles)
@@ -147,6 +150,10 @@ namespace AlumnoEjemplos.RandomGroup
             foreach (ParedDeformable pared in deformableWallsList)
             {
                 pared.dispose();
+            }
+            if (camera.isLocked)
+            {
+                camera.lockUnlock();
             }
         }
 

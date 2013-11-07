@@ -12,7 +12,7 @@ namespace AlumnoEjemplos.RandomGroup
         public String name = "";
         public Drawable weaponDrawing;
         protected TgcSprite crosshair = new TgcSprite();
-        TgcFpsCamera camera = (TgcFpsCamera)GuiController.Instance.CurrentCamera;
+        FpsCamera camera = (FpsCamera)GuiController.Instance.CurrentCamera;
 
         private static readonly Vector3 axisY = new Vector3(0, 1, 0);
         public Vector3 bulletsInitPosition;

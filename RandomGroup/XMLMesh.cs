@@ -8,11 +8,10 @@ namespace AlumnoEjemplos.RandomGroup
     public class XMLMesh : MeshPropio
     {
         TgcMesh mesh;
-        //TgcScene mesh2;
 
         public Vector3 escala = new Vector3(1,1,1);
         protected float angleY = 0;
-        private static readonly Vector3 vectAxisY = new Vector3(0,1,0); //NUNCA LO VOY A MODIFICAR
+        private static readonly Vector3 vectAxisY = new Vector3(0,1,0);
 
         float angleXZ = 0;
         Vector3 vectAxisXZ;
@@ -25,7 +24,6 @@ namespace AlumnoEjemplos.RandomGroup
         {
             TgcSceneLoader cargador = new TgcSceneLoader();
             mesh = cargador.loadSceneFromFile(meshPath).Meshes[0];
-            //mesh2 = cargador.loadSceneFromFile(meshPath).Meshes.Count;
             mesh.AutoTransformEnable=false;
             mesh.AutoUpdateBoundingBox = true;
         }
