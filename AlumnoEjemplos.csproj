@@ -98,6 +98,7 @@
     <Compile Include="RandomGroup\MeshPropio.cs" />
     <Compile Include="RandomGroup\ParedDeformable.cs" />
     <Compile Include="RandomGroup\PruebaPared.cs" />
+    <Compile Include="RandomGroup\RandomCollisionUtils.cs" />
     <Compile Include="RandomGroup\ShootTechnique.cs" />
     <Compile Include="RandomGroup\Weapon.cs" />
     <Compile Include="RandomGroup\WeaponFactory.cs" />
