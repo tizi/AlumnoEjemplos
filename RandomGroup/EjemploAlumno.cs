@@ -68,7 +68,7 @@ namespace AlumnoEjemplos.RandomGroup
             GuiController.Instance.Modifiers.addFloat("Velocidad", 50f, 500f, 200f);
             GuiController.Instance.Modifiers.addFloat("Masa", 1f, 50f, 5f);
             GuiController.Instance.Modifiers.addFloat("Cantidad Maxima Proyectiles", 2, 30, 10);
-            ShootTechnique[] opciones = { new ShootTechnique() };
+            ShootTechnique[] opciones = { new ShootTechnique(), new ShrapnelShoot()};
             ProjectileWeapon[] armas = { WeaponFactory.getCannon(), WeaponFactory.getTanque(), WeaponFactory.getGun() };
             GuiController.Instance.Modifiers.addInterval("Tecnicas de Disparo", opciones, 0);
             GuiController.Instance.Modifiers.addInterval("Armas", armas, 0);
@@ -111,6 +111,7 @@ namespace AlumnoEjemplos.RandomGroup
 
             //Obtener valores de Modifiers
             weapon = (ProjectileWeapon)GuiController.Instance.Modifiers["Armas"];
+            weapon.technique = (ShootTechnique)GuiController.Instance.Modifiers["Tecnicas de Disparo"];
             cantMaximaProyectiles = (int)(float)GuiController.Instance.Modifiers["Cantidad Maxima Proyectiles"];
 
             ///////////////INPUT//////////////////
