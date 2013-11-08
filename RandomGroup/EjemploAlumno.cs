@@ -75,6 +75,15 @@ namespace AlumnoEjemplos.RandomGroup
             GuiController.Instance.Modifiers.addBoolean("boundingSphere", "Mostrar Bounding Sphere", false);
             GuiController.Instance.Modifiers.addBoolean("boundingBox", "Mostrar Bounding Box", false);
 
+            // modifiers shader
+            //Modifiers de la luz
+            GuiController.Instance.Modifiers.addBoolean("lightEnable", "lightEnable", true);
+            GuiController.Instance.Modifiers.addVertex3f("lightPos", new Vector3(-200, -100, -200), new Vector3(200, 200, 300), new Vector3(60, 35, 250));
+            GuiController.Instance.Modifiers.addColor("lightColor", Color.White);
+            GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 150, 20);
+            GuiController.Instance.Modifiers.addFloat("lightAttenuation", 0.1f, 2, 0.3f);
+            GuiController.Instance.Modifiers.addFloat("specularEx", 0, 20, 9f);
+
             //Crear SkyBox
             createSkyBox(alumnoMediaFolder);
 
