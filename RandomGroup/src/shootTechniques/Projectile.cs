@@ -19,10 +19,6 @@ namespace AlumnoEjemplos.RandomGroup
         public Vector3 posicionCuadroAnt;
         GuiController instance = GuiController.Instance;
 
-        public TgcStaticSound paredSolidaSound = new TgcStaticSound();
-        TgcStaticSound paredDeformableSound = new TgcStaticSound();
-        TgcStaticSound proyectilSound = new TgcStaticSound();
-
 
         public Projectile setSpeed(float speedValue){
             direction.Multiply(speedValue/speed);
@@ -69,10 +65,6 @@ namespace AlumnoEjemplos.RandomGroup
             speed = (float)GuiController.Instance.Modifiers["Velocidad"];
             creationTime = DateTime.Now.TimeOfDay.TotalMilliseconds;
             boundingBall = new TgcBoundingSphere(position, drawing.getRadiusSize());
-
-            paredSolidaSound.loadSound(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\MetalHitsSolid.wav");
-            paredDeformableSound.loadSound(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\DeformableHit.wav");
-            proyectilSound.loadSound(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\MetalHitsSolid.wav");
         }
 
         public Projectile setDrawing(Drawable drawing) {
@@ -92,7 +84,6 @@ namespace AlumnoEjemplos.RandomGroup
             direction *= -1.0f;
             projectile.setSpeed((getSpeed() * mass + projectile.getSpeed() * projectile.mass) / mass * mass);
             projectile.direction *= -1.0f;
-            proyectilSound.play();
         }
 
         public void collisionWithSolidWall(ParedSolida pared)
@@ -120,14 +111,12 @@ namespace AlumnoEjemplos.RandomGroup
                     if (pared.wall.Position.X - boundingBall.Center.X > 0) tmpPos.X -= radius; else tmpPos.X += radius;
                     break;
             }
-            paredSolidaSound.play();
             setSpeed(getSpeed() * 0.8f);            
         }
 
         public void collisionWithDeformableWall(ParedDeformable pared)
         {
             pared.deformarPared(this);
-            paredDeformableSound.play();
             direction *= -1;
             setSpeed(getSpeed() * 0.4f);
             lifeTime = 0;

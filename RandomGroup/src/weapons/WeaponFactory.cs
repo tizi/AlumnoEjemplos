@@ -17,9 +17,9 @@ namespace AlumnoEjemplos.RandomGroup
         public static ProjectileWeapon getGun()
         {
             TgcSprite tmpSprite = new TgcSprite();
-            tmpSprite.Texture = TgcTexture.createTexture(path + "Random\\crosshair.png");
+            tmpSprite.Texture = TgcTexture.createTexture(path + "Random\\Textures\\crosshair.png");
             tmpSprite.Position = new Vector2(FastMath.Max(screenSize.Width / 2 - tmpSprite.Texture.Width / 2, 0), FastMath.Max(screenSize.Height / 2 - tmpSprite.Texture.Height / 2, 0));
-            ProjectileWeapon weapon = new ProjectileWeapon(new XMLMesh(path + "Random\\Meshes\\Pistol.xml"), tmpSprite, path + "Random\\CannonShoot.wav");
+            ProjectileWeapon weapon = new ProjectileWeapon(new XMLMesh(path + "Random\\Meshes\\Weapons\\Pistol.xml"), tmpSprite, path + "Random\\Sounds\\CannonShoot.wav");
             //weapon.bulletDrawing = MeshFactory.getMesh(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Meshes\\MetalSphere.xml").scale(new Vector3(0.02f, 0.02f, 0.02f));
             weapon.initPosition = new Vector3(-0.4f, -0.4f, 1.1f);
             weapon.initRotation = new Vector2(2.8f, 3.14f / 2);
@@ -32,11 +32,11 @@ namespace AlumnoEjemplos.RandomGroup
         public static ProjectileWeapon getCannon()
         {
             TgcSprite tmpSprite = new TgcSprite();
-            tmpSprite.Texture = TgcTexture.createTexture(path + "Random\\crosshair.png");
+            tmpSprite.Texture = TgcTexture.createTexture(path + "Random\\Textures\\crosshair.png");
             tmpSprite.Position = new Vector2(FastMath.Max(screenSize.Width / 2 - tmpSprite.Texture.Width / 2, 0), FastMath.Max(screenSize.Height / 2 - tmpSprite.Texture.Height / 2, 0));
-            XMLMesh mesh = new XMLMesh(path + "Random\\Meshes\\Cannon.xml");
+            XMLMesh mesh = new XMLMesh(path + "Random\\Meshes\\Weapons\\Cannon.xml");
             //XMLMesh mesh = new XMLMesh(path + "Random\\cannon_ext\\cannon-TgcScene.xml");
-            ProjectileWeapon weapon = new ProjectileWeapon(mesh, tmpSprite, path + "Random\\CannonShoot.wav");
+            ProjectileWeapon weapon = new ProjectileWeapon(mesh, tmpSprite, path + "Random\\Sounds\\CannonShoot.wav");
             //mesh.scale(new Vector3(0.02f, 0.02f, 0.02f));
             mesh.scale(new Vector3(0.01f, 0.01f, 0.01f));
             //weapon.initPosition = new Vector3(-0.75f, -0.8f, 1.2f);
@@ -50,10 +50,10 @@ namespace AlumnoEjemplos.RandomGroup
         public static ProjectileWeapon getTanque()
         {
             TgcSprite tmpSprite = new TgcSprite();
-            tmpSprite.Texture = TgcTexture.createTexture(path + "Random\\crosshair.png");
+            tmpSprite.Texture = TgcTexture.createTexture(path + "Random\\Textures\\crosshair.png");
             tmpSprite.Position = new Vector2(FastMath.Max(screenSize.Width / 2 - tmpSprite.Texture.Width / 2, 0), FastMath.Max(screenSize.Height / 2 - tmpSprite.Texture.Height / 2, 0));
-            XMLMesh mesh = new XMLMesh(path + "Random\\Meshes\\tanque-TgcScene.xml");
-            ProjectileWeapon weapon = new ProjectileWeapon(mesh, tmpSprite, path + "Random\\CannonShoot.wav");
+            XMLMesh mesh = new XMLMesh(path + "Random\\Meshes\\Weapons\\tanque-TgcScene.xml");
+            ProjectileWeapon weapon = new ProjectileWeapon(mesh, tmpSprite, path + "Random\\Sounds\\CannonShoot.wav");
             //weapon.bulletDrawing = MeshFactory.getMesh(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Meshes\\MetalSphere.xml").scale(new Vector3(0.02f, 0.02f, 0.02f));
             mesh.scale(new Vector3(0.005f, 0.005f, 0.005f));
             weapon.initPosition = new Vector3(-0.4f, -0.4f, 1.1f);

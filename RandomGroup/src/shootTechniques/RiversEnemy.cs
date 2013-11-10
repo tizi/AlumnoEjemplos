@@ -10,8 +10,8 @@ namespace AlumnoEjemplos.RandomGroup
         private Random rand = new Random();
         public RiversEnemy() 
         { 
-            timeBetweenShoots = 100; 
-            bulletDrawing = MeshFactory.getMesh(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Meshes\\Pez.xml").scale(new Vector3(0.08f, 0.08f, 0.08f));
+            timeBetweenShoots = 100;
+            bulletDrawing = MeshFactory.getMesh(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Meshes\\Weapons\\Pez.xml").scale(new Vector3(0.08f, 0.08f, 0.08f));
         }
         public override void getRealShoot(List<Projectile> tmpList)
         {

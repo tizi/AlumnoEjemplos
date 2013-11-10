@@ -13,7 +13,7 @@ namespace AlumnoEjemplos.RandomGroup
         public ShrapnelShoot()
         {
             timeBetweenShoots = 1500;
-            bulletDrawing = MeshFactory.getMesh(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Meshes\\SmallSphere.xml").scale(new Vector3(0.01f, 0.01f, 0.01f));
+            bulletDrawing = MeshFactory.getMesh(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Meshes\\Weapons\\SmallSphere.xml").scale(new Vector3(0.01f, 0.01f, 0.01f));
         }
 
         public override void getRealShoot(List<Projectile> tmpList)

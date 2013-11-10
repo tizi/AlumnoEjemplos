@@ -11,6 +11,8 @@ using TgcViewer.Utils.TgcSceneLoader;
 using TgcViewer.Utils._2D;
 using TgcViewer.Utils.TgcGeometry;
 using Device = Microsoft.DirectX.Direct3D.Device;
+using TgcViewer.Utils.Sound;
+using System;
 
 namespace AlumnoEjemplos.RandomGroup
 {
@@ -26,6 +28,11 @@ namespace AlumnoEjemplos.RandomGroup
         ProjectileWeapon weapon;
         GrillaRegular grilla;
         //int cantMaximaProyectiles;
+
+        TgcStaticSound paredSolidaSound = new TgcStaticSound();
+        TgcStaticSound paredDeformableSound = new TgcStaticSound();
+        TgcStaticSound proyectilSound = new TgcStaticSound();
+
 
 
         public override string getCategory()
@@ -51,6 +58,10 @@ namespace AlumnoEjemplos.RandomGroup
 
             //Carpeta de archivos Media del alumno
             string alumnoMediaFolder = GuiController.Instance.AlumnoEjemplosMediaDir;
+
+            paredSolidaSound.loadSound(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Sounds\\MetalHitsSolid.wav");
+            paredDeformableSound.loadSound(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Sounds\\DeformableHit.wav");
+            proyectilSound.loadSound(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Sounds\\MetalHitsSolid.wav");
 
             ///////////////CONFIGURAR CAMARA PRIMERA PERSONA//////////////////
             camera = new FpsCamera();
@@ -94,6 +105,7 @@ namespace AlumnoEjemplos.RandomGroup
             deformableWallsList.Add(new ParedDeformable(new Vector3(0, 0, 0), new Vector3(1, 0, 0), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
             deformableWallsList.Add(new ParedDeformable(new Vector3(100, 0, 0), new Vector3(1, 0, 2), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
             deformableWallsList.Add(new ParedDeformable(new Vector3(145, 0, 90), new Vector3(-30, 0, 30), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
+            createVegetation(alumnoMediaFolder);
 
             createGrid();
         }
@@ -183,6 +195,7 @@ namespace AlumnoEjemplos.RandomGroup
                     if (TgcCollisionUtils.testSphereSphere(proyectil.boundingBall, projectilesList[j].boundingBall))
                     {
                         proyectil.collisionWithProjectile(projectilesList[j]);
+                        proyectilSound.play();
                     }
                 }
 
@@ -192,6 +205,7 @@ namespace AlumnoEjemplos.RandomGroup
                     if (TgcCollisionUtils.testSphereAABB(proyectil.boundingBall, pared.getBoundingBox()))
                     {
                         proyectil.collisionWithSolidWall(pared);
+                        paredSolidaSound.play();
                     }
                 }
 
@@ -212,6 +226,7 @@ namespace AlumnoEjemplos.RandomGroup
                             // Muevo la pelota hasta el pto real de colision
                             //proyectil.setPosition(ptoColision - (proyectil.boundingBall.Radius*proyectil.direction*-1));
                             proyectil.collisionWithDeformableWall(pared);
+                            paredDeformableSound.play();
                         }
                     }
                     proyectil.posicionCuadroAnt = posActual;
@@ -249,10 +264,11 @@ namespace AlumnoEjemplos.RandomGroup
         private void createGround(string alumnoMediaFolder)
         {
             TgcTexture texturaSuelo = TgcTexture.createTexture(alumnoMediaFolder + "Random\\Textures\\Terrain\\tileable_grass.jpg");
-            int i, j, dimension = 250;
-            for (i = -1000; i < 1000; i += dimension)
+            int i, j, largo = 2500, ancho = 2500, dimension = 250;
+
+            for (i = -largo  /2; i < largo / 2; i += dimension)
             {
-                for (j = -1000; j < 1000; j += dimension)
+                for (j = -ancho / 2; j < ancho / 2; j += dimension)
                 {
                     solidWallsList.Add(new ParedSolida(new Vector3(i, 0, j), new Vector3(dimension, 0, dimension), "XZ", texturaSuelo));
                 }
@@ -279,6 +295,69 @@ namespace AlumnoEjemplos.RandomGroup
             TgcBoundingBox sceneBB = TgcBoundingBox.computeFromBoundingBoxes(allBoundingBoxes);
             grilla.create(estaticos, sceneBB);
             grilla.createDebugMeshes();
+        }
+
+        private void createVegetation(string alumnoMediaFolder)
+        {
+            MeshPropio[] vegetation = {MeshFactory.getMesh(alumnoMediaFolder + "Random\\Meshes\\Vegetation\\flores.xml"),
+                                       MeshFactory.getMesh(alumnoMediaFolder + "Random\\Meshes\\Vegetation\\pasto.xml"), 
+                                       MeshFactory.getMesh(alumnoMediaFolder + "Random\\Meshes\\Vegetation\\helecho.xml"), 
+                                       MeshFactory.getMesh(alumnoMediaFolder + "Random\\Meshes\\Vegetation\\palmera1.xml"), 
+                                       MeshFactory.getMesh(alumnoMediaFolder + "Random\\Meshes\\Vegetation\\planta1.xml"), 
+                                       MeshFactory.getMesh(alumnoMediaFolder + "Random\\Meshes\\Vegetation\\planta2.xml"), 
+                                       MeshFactory.getMesh(alumnoMediaFolder + "Random\\Meshes\\Vegetation\\planta3.xml"), };
+            int largo = 2500, ancho = 2500;
+            Random randomizer = new Random();
+            for (int i = 0; i < 100; i++)
+            { 
+                int numero = (int)(randomizer.NextDouble() * 7);
+                MeshPropio tmpDibujable = (MeshPropio)vegetation[numero].clone();
+                tmpDibujable.scale(new Vector3(1, 1, 1));
+                tmpDibujable.setRotationY((float)randomizer.NextDouble() * 360);
+                tmpDibujable.setPosition(new Vector3(-largo / 2 + (float)randomizer.NextDouble() * 500, 0, -ancho / 2 + 500 + (float)randomizer.NextDouble() * 1500));
+                tmpDibujable.boundingBox = (new TgcBoundingBox(tmpDibujable.position - new Vector3(1, 1, 1), tmpDibujable.position + new Vector3(1, 1, 1)));
+                decoration.Add(tmpDibujable);
+            }
+            for (int i = 0; i < 150; i++)
+            { 
+                int numero = (int)(randomizer.NextDouble() * 7);
+                MeshPropio tmpDibujable = (MeshPropio)vegetation[numero].clone();
+                tmpDibujable.scale(new Vector3(1, 1, 1));
+                tmpDibujable.setRotationY((float)randomizer.NextDouble() * 360);
+                tmpDibujable.setPosition(new Vector3(-largo / 2 + (float)randomizer.NextDouble() * 2500, 0, -ancho / 2 + (float)randomizer.NextDouble() * 500));
+                tmpDibujable.boundingBox = (new TgcBoundingBox(tmpDibujable.position - new Vector3(1, 1, 1), tmpDibujable.position + new Vector3(1, 1, 1)));
+                decoration.Add(tmpDibujable);
+            }
+            for (int i = 0; i < 100; i++)
+            { 
+                int numero = (int)(randomizer.NextDouble() * 7);
+                MeshPropio tmpDibujable = (MeshPropio)vegetation[numero].clone();
+                tmpDibujable.scale(new Vector3(1, 1, 1));
+                tmpDibujable.setRotationY((float)randomizer.NextDouble() * 360);
+                tmpDibujable.setPosition(new Vector3(largo / 2 - (float)randomizer.NextDouble() * 500, 0, -ancho / 2 + 500 + (float)randomizer.NextDouble() * 1500));
+                tmpDibujable.boundingBox = (new TgcBoundingBox(tmpDibujable.position - new Vector3(1, 1, 1), tmpDibujable.position + new Vector3(1, 1, 1)));
+                decoration.Add(tmpDibujable);
+            }
+            for (int i = 0; i < 150; i++)
+            { 
+                int numero = (int)(randomizer.NextDouble() * 7);
+                MeshPropio tmpDibujable = (MeshPropio)vegetation[numero].clone();
+                tmpDibujable.scale(new Vector3(1, 1, 1));
+                tmpDibujable.setRotationY((float)randomizer.NextDouble() * 360);
+                tmpDibujable.setPosition(new Vector3(-largo / 2 + (float)randomizer.NextDouble() * 2500, 0, ancho / 2 - (float)randomizer.NextDouble() * 500));
+                tmpDibujable.boundingBox = (new TgcBoundingBox(tmpDibujable.position - new Vector3(1, 1, 1), tmpDibujable.position + new Vector3(1, 1, 1)));
+                decoration.Add(tmpDibujable);
+            }
+            for (int i = 0; i < 150; i++)
+            {
+                int numero = (int)(randomizer.NextDouble() * 2);
+                MeshPropio tmpDibujable = (MeshPropio)vegetation[numero].clone();
+                tmpDibujable.scale(new Vector3(1, 1, 1));
+                tmpDibujable.setRotationY((float)randomizer.NextDouble() * 360);
+                tmpDibujable.setPosition(new Vector3(-largo / 2 + 500 + (float)randomizer.NextDouble() * 1500, 0, ancho / 2 - 500 - (float)randomizer.NextDouble() * 1500));
+                tmpDibujable.boundingBox = (new TgcBoundingBox(tmpDibujable.position - new Vector3(1, 1, 1), tmpDibujable.position + new Vector3(1, 1, 1)));
+                decoration.Add(tmpDibujable);
+            }
         }
     }
 }

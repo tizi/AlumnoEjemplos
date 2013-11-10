@@ -1,0 +1,33 @@
+<tgcScene>
+  <name>helechoBajo</name>
+  <texturesExport enabled="True" dir="Textures" />
+  <lightmapExport enabled="False" dir="LightMaps" />
+  <sceneBoundingBox min="[-22.741,0.0375,-22.678]" max="[22.668,30.0375,22.7311]" />
+  <materials count="1">
+    <m name="Standardmaterial" type="Standardmaterial">
+      <ambient>[0,0,0,0]</ambient>
+      <diffuse>[0,0,0,0]</diffuse>
+      <specular>[0,0,0,0]</specular>
+      <opacity>1</opacity>
+      <alphaBlendEnable>True</alphaBlendEnable>
+      <bitmap uvTiling="[1,1]" uvOffset="[1,1]">Arbusto.png</bitmap>
+    </m>
+  </materials>
+  <meshes count="1">
+    <mesh name="Arbusto" layer="0" type="Original" matId="0" color="[1,1,1]" visibility="0" lightmap="">
+      <boundingBox min="[-22.741,0.0375,-22.678]" max="[22.668,30.0375,22.7311]" />
+      <coordinatesIdx count="12">0 1 2 3 4 5 5 6 3 2 7 0 </coordinatesIdx>
+      <textCoordsIdx count="12">0 1 2 2 1 0 0 3 2 2 3 0 </textCoordsIdx>
+      <colorsIdx count="12">0 0 0 0 0 0 0 0 0 0 0 0 </colorsIdx>
+      <matIds count="1">0 </matIds>
+      <textCoordsLightMapIdx count="0">
+      </textCoordsLightMapIdx>
+      <vertices count="24">0.1786 30.0375 -22.678 0.1786 0.0375 -22.678 0.1786 0.0375 22.7311 -22.741 0.0375 -0.1885 22.668 0.0375 -0.1885 22.668 30.0375 -0.1885 -22.741 30.0375 -0.1885 0.1786 30.0375 22.7311 </vertices>
+      <normals count="24">1 0 0 1 0 0 1 0 0 0 0 -1 0 0 -1 0 0 -1 0 0 -1 1 0 0 </normals>
+      <texCoords count="8">1 0 1 1 0 1 0 0 </texCoords>
+      <colors count="3">255 255 255 </colors>
+      <texCoordsLightMap count="0">
+      </texCoordsLightMap>
+    </mesh>
+  </meshes>
+</tgcScene>

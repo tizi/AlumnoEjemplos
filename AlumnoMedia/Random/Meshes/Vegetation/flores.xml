@@ -1,0 +1,33 @@
+<tgcScene>
+  <name>flores</name>
+  <texturesExport enabled="True" dir="Textures" />
+  <lightmapExport enabled="False" dir="LightMaps" />
+  <sceneBoundingBox min="[-18.2056,0.0375,1.7669]" max="[18.5258,19.1381,1.7669]" />
+  <materials count="1">
+    <m name="Standardmaterial" type="Standardmaterial">
+      <ambient>[0,0,0,0]</ambient>
+      <diffuse>[0,0,0,0]</diffuse>
+      <specular>[0,0,0,0]</specular>
+      <opacity>1</opacity>
+      <alphaBlendEnable>True</alphaBlendEnable>
+      <bitmap uvTiling="[1,1]" uvOffset="[1,1]">flores.png</bitmap>
+    </m>
+  </materials>
+  <meshes count="1">
+    <mesh name="Flores" layer="0" type="Original" matId="0" color="[1,1,1]" visibility="0" lightmap="">
+      <boundingBox min="[-18.2056,0.0375,1.7669]" max="[18.5258,19.1381,1.7669]" />
+      <coordinatesIdx count="6">0 1 2 2 3 0 </coordinatesIdx>
+      <textCoordsIdx count="6">0 1 2 2 3 0 </textCoordsIdx>
+      <colorsIdx count="6">0 0 0 0 0 0 </colorsIdx>
+      <matIds count="1">0 </matIds>
+      <textCoordsLightMapIdx count="0">
+      </textCoordsLightMapIdx>
+      <vertices count="12">18.5258 19.1381 1.7669 18.5258 0.0375 1.7669 -18.2056 0.0375 1.7669 -18.2056 19.1381 1.7669 </vertices>
+      <normals count="12">0 0 -1 0 0 -1 0 0 -1 0 0 -1 </normals>
+      <texCoords count="8">1 0 1 1 0 1 0 0 </texCoords>
+      <colors count="3">255 255 255 </colors>
+      <texCoordsLightMap count="0">
+      </texCoordsLightMap>
+    </mesh>
+  </meshes>
+</tgcScene>

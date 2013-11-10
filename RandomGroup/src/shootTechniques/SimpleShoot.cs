@@ -12,7 +12,7 @@ namespace AlumnoEjemplos.RandomGroup
 
         public SimpleShoot()
         {
-            bulletDrawing = MeshFactory.getMesh(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Meshes\\MetalSphere.xml").scale(new Vector3(0.02f, 0.02f, 0.02f));
+            bulletDrawing = MeshFactory.getMesh(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Meshes\\Weapons\\MetalSphere.xml").scale(new Vector3(0.02f, 0.02f, 0.02f));
         }
 
         public override void getRealShoot(List<Projectile> tmpList)
