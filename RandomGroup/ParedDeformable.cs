@@ -232,6 +232,7 @@ namespace AlumnoEjemplos.RandomGroup
             float radio = proyectil.boundingBall.Radius;
             Vector3 posicionImpacto = proyectil.getPosition();
             Vector3 direccion = proyectil.direction;
+            Vector3 vectoraux;
             direccion.Normalize();
 
             float DefoMod = proyectil.getSpeed() * proyectil.mass / 10;
@@ -262,7 +263,18 @@ namespace AlumnoEjemplos.RandomGroup
                 Vector3 vectorDeformacion = direccion * deformacion;
 
                 //Se desplaza cada vertice
-                verticesPared[i].Position += vectorDeformacion;
+                if (distanciaCentroVertex >= 1)
+                {
+                    vectoraux = verticesPared[i].Position;
+                    vectoraux.X += (vectorDeformacion.X / distanciaCentroVertex);
+                    vectoraux.Y += (vectorDeformacion.Y / distanciaCentroVertex);
+                    vectoraux.Z += (vectorDeformacion.Z / distanciaCentroVertex);
+                    verticesPared[i].Position = vectoraux;
+                }
+                else
+                {
+                    verticesPared[i].Position += vectorDeformacion;
+                }
             }
 
             vertexBuffer.SetData(verticesPared, 0, LockFlags.None);
