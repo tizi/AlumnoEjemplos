@@ -17,8 +17,9 @@ namespace AlumnoEjemplos.RandomGroup
         public Vector3 dir;
         public Vector3 initPos;
         TgcCamera camera;
+        public Drawable bulletDrawing = MeshFactory.getMesh(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Meshes\\MetalSphere.xml").scale(new Vector3(0.02f, 0.02f, 0.02f));
 
-        public List<Projectile> getShoot(Drawable bulletDrawing)
+        public List<Projectile> getShoot()
         {
             List<Projectile> tmpList = new List<Projectile>();
             if (DateTime.Now.TimeOfDay.TotalMilliseconds - lastShootTime > timeBetweenShoots)
@@ -32,12 +33,12 @@ namespace AlumnoEjemplos.RandomGroup
                 initPos.Add(initDir * distance);
                 initDir.Scale((float)GuiController.Instance.Modifiers["Velocidad"]);
 
-                getRealShoot(tmpList, bulletDrawing);
+                getRealShoot(tmpList);
             }
             return tmpList;
         }
 
-        public virtual void getRealShoot(List<Projectile> tmpList, Drawable bulletDrawing)
+        public virtual void getRealShoot(List<Projectile> tmpList)
         {
             Projectile tmpColisionador = new Projectile(initPos, bulletDrawing.clone(), initDir);
             tmpList.Add(tmpColisionador);

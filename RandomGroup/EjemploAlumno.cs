@@ -23,7 +23,7 @@ namespace AlumnoEjemplos.RandomGroup
         List<ParedSolida> solidWallsList = new List<ParedSolida>();
         List<ParedDeformable> deformableWallsList = new List<ParedDeformable>();
         ProjectileWeapon weapon;
-        int cantMaximaProyectiles;
+        //int cantMaximaProyectiles;
 
 
         public override string getCategory()
@@ -44,8 +44,6 @@ namespace AlumnoEjemplos.RandomGroup
 
         public override void init()
         {
-            //GuiController.Instance: acceso principal a todas las herramientas del Framework
-
             //Device de DirectX para crear primitivas
             Device d3dDevice = GuiController.Instance.D3dDevice;
 
@@ -53,10 +51,6 @@ namespace AlumnoEjemplos.RandomGroup
             string alumnoMediaFolder = GuiController.Instance.AlumnoEjemplosMediaDir;
 
             ///////////////CONFIGURAR CAMARA PRIMERA PERSONA//////////////////
-            //GuiController.Instance.FpsCamera.Enable = true;
-            //GuiController.Instance.FpsCamera.MovementSpeed = 50;
-            //GuiController.Instance.FpsCamera.JumpSpeed = 50;
-            //GuiController.Instance.FpsCamera.setCamera(new Vector3(-150f, 40f, 175f), new Vector3(120f, 60f, 50f));
             camera = new FpsCamera();
             camera.MovementSpeed = 100;
             camera.JumpSpeed = 50;
@@ -67,7 +61,7 @@ namespace AlumnoEjemplos.RandomGroup
             GuiController.Instance.Modifiers.addFloat("Gravedad", -0.2f, 0.2f, 0.02f);
             GuiController.Instance.Modifiers.addFloat("Velocidad", 50f, 500f, 200f);
             GuiController.Instance.Modifiers.addFloat("Masa", 1f, 50f, 5f);
-            GuiController.Instance.Modifiers.addFloat("Cantidad Maxima Proyectiles", 2, 30, 10);
+            //GuiController.Instance.Modifiers.addFloat("Cantidad Maxima Proyectiles", 2, 30, 10);
             ShootTechnique[] opciones = { new ShootTechnique(), new ShrapnelShoot()};
             ProjectileWeapon[] armas = { WeaponFactory.getCannon(), WeaponFactory.getTanque(), WeaponFactory.getGun() };
             GuiController.Instance.Modifiers.addInterval("Tecnicas de Disparo", opciones, 0);
@@ -121,7 +115,7 @@ namespace AlumnoEjemplos.RandomGroup
             //Obtener valores de Modifiers
             weapon = (ProjectileWeapon)GuiController.Instance.Modifiers["Armas"];
             weapon.technique = (ShootTechnique)GuiController.Instance.Modifiers["Tecnicas de Disparo"];
-            cantMaximaProyectiles = (int)(float)GuiController.Instance.Modifiers["Cantidad Maxima Proyectiles"];
+            //cantMaximaProyectiles = (int)(float)GuiController.Instance.Modifiers["Cantidad Maxima Proyectiles"];
 
             ///////////////INPUT//////////////////
             //Capturar Input teclado 
@@ -130,13 +124,13 @@ namespace AlumnoEjemplos.RandomGroup
             if (GuiController.Instance.D3dInput.buttonPressed(TgcD3dInput.MouseButtons.BUTTON_LEFT))
             {
                 projectilesList.AddRange(weapon.doAction());
-                if (projectilesList.Count > cantMaximaProyectiles)
+                /*if (projectilesList.Count > cantMaximaProyectiles)
                 {
                     for (int i = 0; i < projectilesList.Count - cantMaximaProyectiles; i++)
                     {
                         projectilesList.RemoveAt(0);
                     }
-                }
+                }*/
 
             }
             

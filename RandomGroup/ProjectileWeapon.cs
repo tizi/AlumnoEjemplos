@@ -9,9 +9,8 @@ namespace AlumnoEjemplos.RandomGroup
 {
     public class ProjectileWeapon : Weapon
     {
-        public int amountOfbullets = 1000;//Comenzamos con 1000 balas
         public ShootTechnique technique = new ShootTechnique();//Por default dispara una sola bala por vez
-        public Drawable bulletDrawing = MeshFactory.getMesh(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Meshes\\MetalSphere.xml").scale(new Vector3(0.05f, 0.05f, 0.05f));
+        
         protected TgcStaticSound NoAmmo = new TgcStaticSound();
         protected TgcStaticSound ShootSound = new TgcStaticSound();
 
@@ -41,20 +40,14 @@ namespace AlumnoEjemplos.RandomGroup
 
         public override List<Projectile> doAction()
         {
-            //if (amountOfbullets > 0)
-            //{
-                List<Projectile> tmpList = technique.getShoot(bulletDrawing);
-                camera = GuiController.Instance.CurrentCamera;
-                initPos = camera.getLookAt();
-                initDir = initPos - camera.getPosition();
-                initPos.Add(initDir * distance);
-                Projectile tmpColisionador = new Projectile(initPos, bulletDrawing.clone(), initDir);
-                amountOfbullets -= 1;
-                ShootSound.play();
-                return tmpList;
-            //}
-            //NoAmmo.play();
-            //return new List<Projectile>();
+            List<Projectile> tmpList = technique.getShoot();
+            camera = GuiController.Instance.CurrentCamera;
+            initPos = camera.getLookAt();
+            initDir = initPos - camera.getPosition();
+            initPos.Add(initDir * distance);
+            Projectile tmpColisionador = new Projectile(initPos, technique.bulletDrawing.clone(), initDir);
+            ShootSound.play();
+            return tmpList;
         }
     }
 }

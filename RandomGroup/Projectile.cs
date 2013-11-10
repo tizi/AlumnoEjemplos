@@ -10,7 +10,7 @@ namespace AlumnoEjemplos.RandomGroup
     {
         public TgcBoundingSphere boundingBall;
         private float speed;
-        public double lifeTime = 10000000;
+        public double lifeTime = 10000;
         public float mass;
 
         private double creationTime;
