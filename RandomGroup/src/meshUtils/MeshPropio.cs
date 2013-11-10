@@ -5,7 +5,7 @@ using TgcViewer.Utils.TgcGeometry;
 
 namespace AlumnoEjemplos.RandomGroup
 {
-    public abstract class MeshPropio : Drawable
+    public abstract class MeshPropio : Drawable, ElementoEstatico
     {
         private bool enabled;
         public TgcBoundingBox boundingBox;

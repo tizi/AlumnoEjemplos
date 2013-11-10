@@ -6,7 +6,7 @@ using TgcViewer.Utils.TgcSceneLoader;
 
 namespace AlumnoEjemplos.RandomGroup
 {
-    public class ParedSolida
+    public class ParedSolida : ElementoEstatico
     {
         private bool enabled;
         public bool getEnabled()
@@ -20,7 +20,7 @@ namespace AlumnoEjemplos.RandomGroup
 
         public TgcPlaneWall wall;
 
-        public ParedSolida(Vector3 Origen, Vector3 Dimension, string Orientation, string TexturePath)
+        public ParedSolida(Vector3 Origen, Vector3 Dimension, string Orientation, TgcTexture currentTexture)
         {
             Device d3dDevice = GuiController.Instance.D3dDevice;
 
@@ -28,7 +28,6 @@ namespace AlumnoEjemplos.RandomGroup
             wall = new TgcPlaneWall();
 
             //textura
-            TgcTexture currentTexture = TgcTexture.createTexture(d3dDevice, TexturePath);
             wall.setTexture(currentTexture);
 
             //parametros basicos

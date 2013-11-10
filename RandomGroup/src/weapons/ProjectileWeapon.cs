@@ -9,7 +9,7 @@ namespace AlumnoEjemplos.RandomGroup
 {
     public class ProjectileWeapon : Weapon
     {
-        public ShootTechnique technique = new ShootTechnique();//Por default dispara una sola bala por vez
+        public ShootTechnique technique = new SimpleShoot();//Por default dispara una sola bala por vez
         
         protected TgcStaticSound NoAmmo = new TgcStaticSound();
         protected TgcStaticSound ShootSound = new TgcStaticSound();

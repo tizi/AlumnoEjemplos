@@ -9,11 +9,11 @@ namespace AlumnoEjemplos.RandomGroup
     {
         private Random rand = new Random();
         public int bulletsAmount = 7;
-        public Drawable bulletDrawing = MeshFactory.getMesh(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Meshes\\SmallSphere.xml").scale(new Vector3(0.01f, 0.01f, 0.01f));
 
         public ShrapnelShoot()
         {
             timeBetweenShoots = 1500;
+            bulletDrawing = MeshFactory.getMesh(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Meshes\\SmallSphere.xml").scale(new Vector3(0.01f, 0.01f, 0.01f));
         }
 
         public override void getRealShoot(List<Projectile> tmpList)

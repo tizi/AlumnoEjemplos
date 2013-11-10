@@ -9,8 +9,9 @@ using TgcViewer.Utils.Shaders;
 
 namespace AlumnoEjemplos.RandomGroup
 {
-    public class ParedDeformable
+    public class ParedDeformable : ElementoEstatico
     {
+        public bool enabled;
         private Device device { get; set; }
         private Texture texture { get; set; }        
         public Vector3 origen { get; set; }
@@ -23,9 +24,27 @@ namespace AlumnoEjemplos.RandomGroup
         public VertexBuffer vertexBuffer { get; set; }
         public CustomVertex.PositionNormalTextured[] verticesPared { get; set; }
         public VertexDeclaration vertexDeclaration { get; set; }
+        public TgcBoundingBox boundingBox;
+        private Vector3 posUltimoVertice ;
+        private Vector3 posEsquina1;
+        private Vector3 posEsquina2;
 
         TgcBox lightMesh;
         Effect currentShader;
+
+
+        public TgcBoundingBox getBoundingBox()
+        {
+            return boundingBox;
+        }
+        public bool getEnabled()
+        {
+            return enabled;
+        }
+        public void setEnabled(bool value)
+        {
+            enabled = value;
+        }
 
         public static readonly VertexElement[] PositionNormalTextured_VertexElements =
         {
@@ -141,10 +160,11 @@ namespace AlumnoEjemplos.RandomGroup
             vertexBuffer.SetData(verticesPared, 0, LockFlags.None);
 
             //Busco cuatro puntos para generar automaticamente el OBB
-            Vector3 posUltimoVertice = verticesPared[numVertices - 1].Position;
-            Vector3 posEsquina1 = verticesPared[verticesLado].Position;
-            Vector3 posEsquina2 = verticesPared[verticesLado * (verticesLado - 1)].Position;
+            posUltimoVertice = verticesPared[numVertices - 1].Position;
+            posEsquina1 = verticesPared[verticesLado].Position;
+            posEsquina2 = verticesPared[verticesLado * (verticesLado - 1)].Position;
             obb = TgcObb.computeFromPoints(new[] { origen, posUltimoVertice, posEsquina1, posEsquina2 });
+            boundingBox = TgcBoundingBox.computeFromPoints(new[] { origen, posUltimoVertice, posEsquina1, posEsquina2 });
 
             //Mesh para la luz
             lightMesh = TgcBox.fromSize(new Vector3(10, 10, 10), Color.Red);
@@ -233,6 +253,8 @@ namespace AlumnoEjemplos.RandomGroup
             Vector3 posicionImpacto = proyectil.getPosition();
             Vector3 direccion = proyectil.direction;
             Vector3 vectoraux;
+            //Vector3 maximoDeformado = posUltimoVertice; //cualquier vertice dentro de la pared
+            //Vector3 minimoDeformado = posUltimoVertice; //cualquier vertice dentro de la pared
             direccion.Normalize();
 
             float DefoMod = proyectil.getSpeed() * proyectil.mass / 10;
@@ -274,11 +296,38 @@ namespace AlumnoEjemplos.RandomGroup
                 else
                 {
                     verticesPared[i].Position += vectorDeformacion;
+                    /*if (verticesPared[i].Position.X > maximoDeformado.X)
+                    {
+                        maximoDeformado.X = verticesPared[i].Position.X;
+                    }
+                    if (verticesPared[i].Position.Y > maximoDeformado.Y)
+                    {
+                        maximoDeformado.Y = verticesPared[i].Position.Y;
+                    }
+                    if (verticesPared[i].Position.Z > maximoDeformado.Z)
+                    {
+                        maximoDeformado.Z = verticesPared[i].Position.Z;
+                    }
+                    if (verticesPared[i].Position.X < minimoDeformado.X)
+                    {
+                        minimoDeformado.X = verticesPared[i].Position.X;
+                    }
+                    if (verticesPared[i].Position.Y < minimoDeformado.Y)
+                    {
+                        minimoDeformado.Y = verticesPared[i].Position.Y;
+                    }
+                    if (verticesPared[i].Position.Z < minimoDeformado.Z)
+                    {
+                        minimoDeformado.Z = verticesPared[i].Position.Z;
+                    }*/
+
                 }
             }
 
             vertexBuffer.SetData(verticesPared, 0, LockFlags.None);
             //FIN MAGIA DEFORMACION
+            //Recalculo la obb
+            //obb = TgcObb.computeFromPoints(new[] { origen, posUltimoVertice, posEsquina1, posEsquina2, maximoDeformado, minimoDeformado });
         }
 
         public void dispose()

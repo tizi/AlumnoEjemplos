@@ -7,17 +7,18 @@ using TgcViewer.Utils.Input;
 
 namespace AlumnoEjemplos.RandomGroup
 {
-    public class ShootTechnique
+    public abstract class ShootTechnique
     {
         public double lastShootTime = 0;
         public float distance = 8;
-        public int timeBetweenShoots = 500;
+        public int timeBetweenShoots = 1000;
         public Vector3 initDir;
         public Vector3 pos;
         public Vector3 dir;
         public Vector3 initPos;
-        TgcCamera camera;
-        public Drawable bulletDrawing = MeshFactory.getMesh(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Meshes\\MetalSphere.xml").scale(new Vector3(0.02f, 0.02f, 0.02f));
+        public TgcCamera camera;
+        public Drawable bulletDrawing;
+
 
         public List<Projectile> getShoot()
         {
@@ -38,15 +39,8 @@ namespace AlumnoEjemplos.RandomGroup
             return tmpList;
         }
 
-        public virtual void getRealShoot(List<Projectile> tmpList)
-        {
-            Projectile tmpColisionador = new Projectile(initPos, bulletDrawing.clone(), initDir);
-            tmpList.Add(tmpColisionador);
-        }
+        public abstract void getRealShoot(List<Projectile> tmpList);
 
-        public override string ToString()
-        {
-            return "Simple Shoot";
-        }
+        public abstract override string ToString();
     }
 }
