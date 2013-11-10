@@ -279,7 +279,7 @@ namespace AlumnoEjemplos.RandomGroup
                 float deformacion = (1 / distanciaCentroVertex) * DefoMod;
 
                 //HACK PARA QUE NO SE HAGAN PINCHES
-                if (deformacion > 10) deformacion = 10;
+                if (deformacion > 5) deformacion = 5;
                 //FIN HACK
 
                 Vector3 vectorDeformacion = direccion * deformacion;

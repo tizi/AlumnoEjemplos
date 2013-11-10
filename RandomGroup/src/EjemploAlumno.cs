@@ -74,7 +74,6 @@ namespace AlumnoEjemplos.RandomGroup
             GuiController.Instance.Modifiers.addFloat("Gravedad", -0.2f, 0.2f, 0.02f);
             GuiController.Instance.Modifiers.addFloat("Velocidad", 50f, 500f, 200f);
             GuiController.Instance.Modifiers.addFloat("Masa", 1f, 50f, 5f);
-            //GuiController.Instance.Modifiers.addFloat("Cantidad Maxima Proyectiles", 2, 30, 10);
             ShootTechnique[] opciones = { new SimpleShoot(), new ShrapnelShoot(), new RiversEnemy() };
             ProjectileWeapon[] armas = { WeaponFactory.getCannon(), WeaponFactory.getTanque(), WeaponFactory.getGun() };
             GuiController.Instance.Modifiers.addInterval("Tecnicas de Disparo", opciones, 0);
@@ -101,7 +100,7 @@ namespace AlumnoEjemplos.RandomGroup
             //suelo
             createGround(alumnoMediaFolder);
             //Paredes deformables
-            //createBoxesHouse(alumnoMediaFolder);
+            createBoxesHouse(alumnoMediaFolder);
             deformableWallsList.Add(new ParedDeformable(new Vector3(0, 0, 0), new Vector3(1, 0, 0), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
             deformableWallsList.Add(new ParedDeformable(new Vector3(100, 0, 0), new Vector3(1, 0, 2), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
             deformableWallsList.Add(new ParedDeformable(new Vector3(145, 0, 90), new Vector3(-30, 0, 30), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
@@ -132,7 +131,6 @@ namespace AlumnoEjemplos.RandomGroup
             //Obtener valores de Modifiers
             weapon = (ProjectileWeapon)GuiController.Instance.Modifiers["Armas"];
             weapon.technique = (ShootTechnique)GuiController.Instance.Modifiers["Tecnicas de Disparo"];
-            //cantMaximaProyectiles = (int)(float)GuiController.Instance.Modifiers["Cantidad Maxima Proyectiles"];
             bool showGrid = (bool)GuiController.Instance.Modifiers["showGrid"];
 
             ///////////////INPUT//////////////////
@@ -142,14 +140,6 @@ namespace AlumnoEjemplos.RandomGroup
             if (GuiController.Instance.D3dInput.buttonDown(TgcViewer.Utils.Input.TgcD3dInput.MouseButtons.BUTTON_LEFT))
             {
                 projectilesList.AddRange(weapon.doAction());
-                /*if (projectilesList.Count > cantMaximaProyectiles)
-                {
-                    for (int i = 0; i < projectilesList.Count - cantMaximaProyectiles; i++)
-                    {
-                        projectilesList.RemoveAt(0);
-                    }
-                }*/
-
             }
 
             grilla.render(GuiController.Instance.Frustum, showGrid, elapsedTime);
@@ -238,8 +228,6 @@ namespace AlumnoEjemplos.RandomGroup
             }
         }
 
-
-
         private void createSkyBox(string alumnoMediaFolder)
         {
             //Crear SkyBox 
@@ -261,6 +249,23 @@ namespace AlumnoEjemplos.RandomGroup
             skyBox.updateValues();
         }
 
+        private void createGrid()
+        {
+            grilla = new GrillaRegular();
+            List<ElementoEstatico> estaticos = new List<ElementoEstatico>();
+            estaticos.AddRange(solidWallsList);
+            estaticos.AddRange(deformableWallsList);
+            estaticos.AddRange(decoration);
+            List<TgcBoundingBox> allBoundingBoxes = new List<TgcBoundingBox>();
+            for (int i = 0; i < estaticos.Count - 1; i++)
+            {
+                allBoundingBoxes.Add(estaticos[i].getBoundingBox());
+            }
+            TgcBoundingBox sceneBB = TgcBoundingBox.computeFromBoundingBoxes(allBoundingBoxes);
+            grilla.create(estaticos, sceneBB);
+            grilla.createDebugMeshes();
+        }
+
         private void createGround(string alumnoMediaFolder)
         {
             TgcTexture texturaSuelo = TgcTexture.createTexture(alumnoMediaFolder + "Random\\Textures\\Terrain\\tileable_grass.jpg");
@@ -277,24 +282,18 @@ namespace AlumnoEjemplos.RandomGroup
 
         private void createBoxesHouse(string alumnoMediaFolder)
         {
-            throw new System.NotImplementedException();
-        }
+            TgcTexture texturaHabitacion = TgcTexture.createTexture(alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg");
+            ParedSolida paredAtras = new ParedSolida(new Vector3(-500, 0, 0), new Vector3(0, 100, 250), "YZ", texturaHabitacion);
+            solidWallsList.Add(paredAtras);
+            ParedSolida paredIzquierda = new ParedSolida(new Vector3(-500, 0, 0), new Vector3(250, 100, 0), "XY", texturaHabitacion);
+            solidWallsList.Add(paredIzquierda);
+            ParedSolida paredDerecha = new ParedSolida(new Vector3(-500, 0, 250), new Vector3(250, 100, 0), "XY", texturaHabitacion);
+            solidWallsList.Add(paredDerecha);
+            ParedSolida paredDelanteIzquierda = new ParedSolida(new Vector3(-250, 0, 0), new Vector3(0, 100, 100), "YZ", texturaHabitacion);
+            solidWallsList.Add(paredDelanteIzquierda);
+            ParedSolida paredDelanteDerecha = new ParedSolida(new Vector3(-250, 0, 250), new Vector3(0, 100, -100), "YZ", texturaHabitacion);
+            solidWallsList.Add(paredDelanteDerecha);
 
-        private void createGrid()
-        {
-            grilla = new GrillaRegular();
-            List<ElementoEstatico> estaticos = new List<ElementoEstatico>();
-            estaticos.AddRange(solidWallsList);
-            estaticos.AddRange(deformableWallsList);
-            estaticos.AddRange(decoration);
-                        List<TgcBoundingBox> allBoundingBoxes = new List<TgcBoundingBox>();
-            for(int i = 0; i < estaticos.Count - 1; i++)
-            {
-                allBoundingBoxes.Add(estaticos[i].getBoundingBox());
-            }
-            TgcBoundingBox sceneBB = TgcBoundingBox.computeFromBoundingBoxes(allBoundingBoxes);
-            grilla.create(estaticos, sceneBB);
-            grilla.createDebugMeshes();
         }
 
         private void createVegetation(string alumnoMediaFolder)
