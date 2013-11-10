@@ -64,7 +64,7 @@ namespace AlumnoEjemplos.RandomGroup
 
         
         //CONSTRUCTOR
-        public ParedDeformable(Vector3 origen, Vector3 direccionHorizontal, int cantCuadradosLado, string texturePath)
+        public ParedDeformable(Vector3 origen, Vector3 direccionHorizontal, Vector3 direccionVertical, int cantCuadradosLado, string texturePath)
         {
             device = GuiController.Instance.D3dDevice;
             vertexDeclaration = new VertexDeclaration(device, PositionNormalTextured_VertexElements);
@@ -83,7 +83,7 @@ namespace AlumnoEjemplos.RandomGroup
 
             //Estas paredes crecen en Y, se les tiene que dar una dirección horizontal con Y = 0
             direccionHorizontal.Normalize();
-            Vector3 direccionVertical = new Vector3(0, 1, 0);
+            direccionVertical.Normalize();
             
             //Normal
             normal = Vector3.Cross(direccionVertical, direccionHorizontal);                        

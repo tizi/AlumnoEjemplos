@@ -74,7 +74,7 @@ namespace AlumnoEjemplos.RandomGroup
 
             // modifiers shader
             //Modifiers de la luz
-            GuiController.Instance.Modifiers.addBoolean("lightEnable", "lightEnable", true);
+            GuiController.Instance.Modifiers.addBoolean("lightEnable", "lightEnable", false);
             GuiController.Instance.Modifiers.addVertex3f("lightPos", new Vector3(-200, -100, -200), new Vector3(200, 200, 300), new Vector3(60, 35, 250));
             GuiController.Instance.Modifiers.addColor("lightColor", Color.White);
             GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 150, 20);
@@ -90,9 +90,10 @@ namespace AlumnoEjemplos.RandomGroup
             //suelo
             createGround(alumnoMediaFolder);
             //Paredes deformables
-            deformableWallsList.Add(new ParedDeformable(new Vector3(0, 0, 0), new Vector3(1, 0, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
-            deformableWallsList.Add(new ParedDeformable(new Vector3(100, 0, 0), new Vector3(1, 0, 2), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
-            deformableWallsList.Add(new ParedDeformable(new Vector3(145, 0, 90), new Vector3(-30, 0, 30), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
+            //createBoxesHouse(alumnoMediaFolder);
+            deformableWallsList.Add(new ParedDeformable(new Vector3(0, 0, 0), new Vector3(1, 0, 0), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
+            deformableWallsList.Add(new ParedDeformable(new Vector3(100, 0, 0), new Vector3(1, 0, 2), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
+            deformableWallsList.Add(new ParedDeformable(new Vector3(145, 0, 90), new Vector3(-30, 0, 30), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
 
             createGrid();
         }
@@ -258,6 +259,10 @@ namespace AlumnoEjemplos.RandomGroup
             }
         }
 
+        private void createBoxesHouse(string alumnoMediaFolder)
+        {
+            throw new System.NotImplementedException();
+        }
 
         private void createGrid()
         {

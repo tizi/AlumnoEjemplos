@@ -11,7 +11,6 @@ namespace AlumnoEjemplos.RandomGroup
     {
         public ShootTechnique technique = new SimpleShoot();//Por default dispara una sola bala por vez
         
-        protected TgcStaticSound NoAmmo = new TgcStaticSound();
         protected TgcStaticSound ShootSound = new TgcStaticSound();
 
 
@@ -28,7 +27,6 @@ namespace AlumnoEjemplos.RandomGroup
         {
             this.weaponDrawing = weaponDrawing;
             crosshair = sprite;
-            NoAmmo.loadSound(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\CannonShoot.wav");
             ShootSound.loadSound(path);
         }
 
