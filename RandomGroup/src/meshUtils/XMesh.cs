@@ -1,9 +1,9 @@
 ﻿using System;
-using TgcViewer;
-using Microsoft.DirectX.Direct3D;
 using Microsoft.DirectX;
+using Microsoft.DirectX.Direct3D;
+using TgcViewer;
 
-namespace AlumnoEjemplos.RandomGroup
+namespace AlumnoEjemplos.RandomGroup.src.meshUtils
 {
     public class XMesh : MeshPropio
     {
@@ -11,6 +11,11 @@ namespace AlumnoEjemplos.RandomGroup
         private Material[] meshMateriales;
         private Texture[] meshTexturas;
         private Mesh mesh;
+
+        public override void dispose()
+        {
+            mesh.Dispose();
+        }        
 
         private XMesh(ExtendedMaterial[] arrayMats, Material[] meshMateriales, Texture[] meshTexturas, Mesh mesh)
         {

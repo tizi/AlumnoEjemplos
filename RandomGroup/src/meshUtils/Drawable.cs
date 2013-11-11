@@ -2,10 +2,12 @@
 using Microsoft.DirectX.Direct3D;
 using TgcViewer;
 
-namespace AlumnoEjemplos.RandomGroup
+namespace AlumnoEjemplos.RandomGroup.src.meshUtils
 {
     public abstract class Drawable
     {
+        public abstract void dispose();
+
         public Vector3 position;
         public Matrix tran = Matrix.Identity;
 

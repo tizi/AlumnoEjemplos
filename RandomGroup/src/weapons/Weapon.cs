@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using AlumnoEjemplos.RandomGroup.src.meshUtils;
+using AlumnoEjemplos.RandomGroup.src.shootTechniques;
 using Microsoft.DirectX;
 using TgcViewer;
 using TgcViewer.Utils._2D;
-using TgcViewer.Utils.Input;
 
-namespace AlumnoEjemplos.RandomGroup
+namespace AlumnoEjemplos.RandomGroup.src.weapons
 {
     public abstract class Weapon
     {

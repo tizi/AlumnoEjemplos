@@ -1,5 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using AlumnoEjemplos.RandomGroup.src.meshUtils;
+using AlumnoEjemplos.RandomGroup.src.shootTechniques;
+using AlumnoEjemplos.RandomGroup.src.walls;
+using AlumnoEjemplos.RandomGroup.src.weapons;
 using Microsoft.DirectX.DirectInput;
 using TgcViewer.Example;
 using TgcViewer;
@@ -14,7 +18,7 @@ using Device = Microsoft.DirectX.Direct3D.Device;
 using TgcViewer.Utils.Sound;
 using System;
 
-namespace AlumnoEjemplos.RandomGroup
+namespace AlumnoEjemplos.RandomGroup.src
 {
     public class EjemploAlumno : TgcExample
     {
@@ -166,6 +170,17 @@ namespace AlumnoEjemplos.RandomGroup
             {
                 pared.dispose();
             }
+
+            foreach (Projectile p in projectilesList)
+            {
+                p.dispose();
+            }
+
+            foreach (MeshPropio decoracion in decoration)
+            {
+                decoracion.dispose();
+            }
+
             if (camera.isLocked)
             {
                 camera.lockUnlock();
@@ -324,7 +339,8 @@ namespace AlumnoEjemplos.RandomGroup
                                        MeshFactory.getMesh(alumnoMediaFolder + "Random\\Meshes\\Vegetation\\planta1.xml"), 
                                        MeshFactory.getMesh(alumnoMediaFolder + "Random\\Meshes\\Vegetation\\planta2.xml"), 
                                        MeshFactory.getMesh(alumnoMediaFolder + "Random\\Meshes\\Vegetation\\planta3.xml"), };
-            int largo = 2500, ancho = 2500;
+            const int largo = 2500;
+            const int ancho = 2500;
             Random randomizer = new Random();
             for (int i = 0; i < 100; i++)
             { 

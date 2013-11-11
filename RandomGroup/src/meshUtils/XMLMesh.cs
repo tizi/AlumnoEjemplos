@@ -1,13 +1,17 @@
-﻿using TgcViewer;
+﻿using Microsoft.DirectX;
+using TgcViewer;
 using TgcViewer.Utils.TgcSceneLoader;
-using Microsoft.DirectX;
-using TgcViewer.Utils.TgcGeometry;
 
-namespace AlumnoEjemplos.RandomGroup
+namespace AlumnoEjemplos.RandomGroup.src.meshUtils
 {
     public class XMLMesh : MeshPropio
     {
         TgcMesh mesh;
+
+        public new void dispose()
+        {
+            mesh.dispose();
+        }
 
         public Vector3 escala = new Vector3(1,1,1);
         protected float angleY = 0;

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using TgcViewer;
+using AlumnoEjemplos.RandomGroup.src.meshUtils;
 using Microsoft.DirectX;
+using TgcViewer;
 
-namespace AlumnoEjemplos.RandomGroup
+namespace AlumnoEjemplos.RandomGroup.src.shootTechniques
 {
     public class ShrapnelShoot : ShootTechnique
     {
@@ -18,16 +19,16 @@ namespace AlumnoEjemplos.RandomGroup
 
         public override void getRealShoot(List<Projectile> tmpList)
         {
-            Vector3 tmpPos = new Vector3();
-            Projectile tmpProjectile;
             for (int i = 0; i < bulletsAmount; i++)
             {
                 initDir.Add(new Vector3((-1 + (float)rand.NextDouble() * 2) / 5, (-0.2f + (float)rand.NextDouble() * 2) / 5, (-1 + (float)rand.NextDouble() * 2) / 5));//Una direccion al azar para cada bala
                 initDir.Normalize();
                 initDir.Scale((float)GuiController.Instance.Modifiers["Velocidad"]);
-                tmpPos = new Vector3((-3 + (float)rand.NextDouble() * 6), (-2 + (float)rand.NextDouble() * 6), (-3 + (float)rand.NextDouble() * 6));
-                tmpProjectile = new Projectile(initPos + tmpPos, bulletDrawing.clone(), initDir);
-                tmpProjectile.mass = (float)rand.NextDouble() * 50;
+                Vector3 tmpPos = new Vector3((-3 + (float)rand.NextDouble() * 6), (-2 + (float)rand.NextDouble() * 6), (-3 + (float)rand.NextDouble() * 6));
+                Projectile tmpProjectile = new Projectile(initPos + tmpPos, bulletDrawing.clone(), initDir)
+                {
+                    mass = (float) rand.NextDouble()*50
+                };
                 tmpList.Add(tmpProjectile);
             }
         }

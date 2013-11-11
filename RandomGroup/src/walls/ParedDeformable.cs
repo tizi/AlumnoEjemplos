@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Drawing;
+using AlumnoEjemplos.RandomGroup.src.shootTechniques;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using TgcViewer;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
-using TgcViewer.Utils.Shaders;
 
-namespace AlumnoEjemplos.RandomGroup
+namespace AlumnoEjemplos.RandomGroup.src.walls
 {
     public class ParedDeformable : ElementoEstatico
     {
@@ -30,8 +30,8 @@ namespace AlumnoEjemplos.RandomGroup
         private Vector3 posEsquina2;
 
         TgcBox lightMesh;
-        Effect currentShader;
-        string shadersPath;
+        Effect currentShader = GuiController.Instance.Shaders.TgcMeshPointLightShader;
+        //string shadersPath;
         //float time;
 
 
@@ -195,8 +195,7 @@ namespace AlumnoEjemplos.RandomGroup
             lightMesh.Position = lightPos;
 
             if (lightEnable)
-            {
-                currentShader = GuiController.Instance.Shaders.TgcMeshPointLightShader;
+            {                
                 //currentShader = TgcShaders.loadEffect(shadersPath + "PointLightShader.fx");
                 currentShader.SetValue("matWorld", device.Transform.World);
                 currentShader.SetValue("matWorldView", device.Transform.World * device.Transform.View);
@@ -246,9 +245,8 @@ namespace AlumnoEjemplos.RandomGroup
         {
             float radio = proyectil.boundingBall.Radius;
             Vector3 direccion = proyectil.direction;
-            Vector3 vectoraux;
-            //Vector3 maximoDeformado = posUltimoVertice; //cualquier vertice dentro de la pared
-            //Vector3 minimoDeformado = posUltimoVertice; //cualquier vertice dentro de la pared
+            var maximoDeformado = new Vector3(1, 1, 1) * float.MinValue;
+            var minimoDeformado = new Vector3(1, 1, 1) * float.MaxValue;
             direccion.Normalize();
 
             float DefoMod = proyectil.getSpeed() * proyectil.mass / 10;
@@ -282,20 +280,22 @@ namespace AlumnoEjemplos.RandomGroup
                 //FIN HACK
 
                 Vector3 vectorDeformacion = direccion * deformacion;
+                
 
                 //Se desplaza cada vertice
                 if (distanciaCentroVertex >= 1)
                 {
-                    vectoraux = verticesPared[i].Position;
+                    Vector3 vectoraux = verticesPared[i].Position;
                     vectoraux.X += (vectorDeformacion.X / distanciaCentroVertex);
                     vectoraux.Y += (vectorDeformacion.Y / distanciaCentroVertex);
                     vectoraux.Z += (vectorDeformacion.Z / distanciaCentroVertex);
                     verticesPared[i].Position = vectoraux;
                 }
                 else
-                {
+                {/*
                     verticesPared[i].Position += vectorDeformacion;
-                    /*if (verticesPared[i].Position.X > maximoDeformado.X)
+                    
+                    if (verticesPared[i].Position.X > maximoDeformado.X)
                     {
                         maximoDeformado.X = verticesPared[i].Position.X;
                     }
@@ -321,6 +321,9 @@ namespace AlumnoEjemplos.RandomGroup
                     }*/
 
                 }
+                vectorDeformacion.Normalize();
+                verticesPared[i].Normal = vectorDeformacion;
+
             }
 
             vertexBuffer.SetData(verticesPared, 0, LockFlags.None);
@@ -331,6 +334,12 @@ namespace AlumnoEjemplos.RandomGroup
 
         public void dispose()
         {
+            vertexBuffer.Dispose();
+            indexBuffer.Dispose();
+            currentShader.Dispose();
+            vertexDeclaration.Dispose();
+            texture.Dispose();
+            
         }
 
 

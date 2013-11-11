@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using TgcViewer;
+﻿using System.Collections.Generic;
+using AlumnoEjemplos.RandomGroup.src.meshUtils;
 using Microsoft.DirectX;
+using TgcViewer;
 
-namespace AlumnoEjemplos.RandomGroup
+namespace AlumnoEjemplos.RandomGroup.src.shootTechniques
 {
     public class SimpleShoot : ShootTechnique
     {
-        private Random rand = new Random();
         public int bulletsAmount = 7;
 
         public SimpleShoot()

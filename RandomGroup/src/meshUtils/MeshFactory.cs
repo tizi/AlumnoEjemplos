@@ -1,8 +1,8 @@
-﻿using TgcViewer;
+﻿using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
-using Microsoft.DirectX;
+using TgcViewer;
 
-namespace AlumnoEjemplos.RandomGroup
+namespace AlumnoEjemplos.RandomGroup.src.meshUtils
 {
     public class MeshFactory
     {
@@ -17,8 +17,6 @@ namespace AlumnoEjemplos.RandomGroup
         }
         public static MeshPropio getMesh(string meshPath, string texturePath)
         {
-            Device device = GuiController.Instance.D3dDevice;
-
             MeshPropio newMesh = null;
             if (meshPath.EndsWith(".x")) newMesh = new XMesh(meshPath, texturePath);
             if (meshPath.EndsWith(".xml")) newMesh = new XMLMesh(meshPath);

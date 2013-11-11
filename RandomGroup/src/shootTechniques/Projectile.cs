@@ -1,10 +1,11 @@
 ﻿using System;
-using TgcViewer;
+using AlumnoEjemplos.RandomGroup.src.meshUtils;
+using AlumnoEjemplos.RandomGroup.src.walls;
 using Microsoft.DirectX;
+using TgcViewer;
 using TgcViewer.Utils.TgcGeometry;
-using TgcViewer.Utils.Sound;
 
-namespace AlumnoEjemplos.RandomGroup
+namespace AlumnoEjemplos.RandomGroup.src.shootTechniques
 {
     public class Projectile
     {
@@ -118,6 +119,11 @@ namespace AlumnoEjemplos.RandomGroup
         {
             pared.deformarPared(this, ptoColision);
             lifeTime = 0;
+        }
+
+        public void dispose()
+        {
+            
         }
     }
 }

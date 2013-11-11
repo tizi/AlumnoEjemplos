@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
-using Microsoft.DirectX;
 using TgcViewer.Utils.TgcGeometry;
 
-namespace AlumnoEjemplos.RandomGroup
+namespace AlumnoEjemplos.RandomGroup.src.meshUtils
 {
     public abstract class MeshPropio : Drawable, ElementoEstatico
     {
@@ -23,9 +22,13 @@ namespace AlumnoEjemplos.RandomGroup
             enabled = setting;
         }
 
+        public override void dispose()
+        {
+            boundingBox.dispose();            
+        }
+
         public string MeshPath { get; set; }
 
-        //public MeshPropio malla;
         public string RutaDeLaTextura { get; set; }
 
         public short[] bufferDeIndices;
