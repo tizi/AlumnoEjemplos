@@ -260,7 +260,7 @@ namespace AlumnoEjemplos.RandomGroup
             float DefoMod = proyectil.getSpeed() * proyectil.mass / 10;
 
             //MAGIA DE DEFORMACION            
-            //HACK PARA QUE EL RADIO DE DEFORMACION NO SEA MUY GRANDE
+            //HACK PARA QUE EL RADIO DE DEFORMACION NO SEA MUY GRANDE NI MUY CHICO
             float radioDeformacion;
             if(DefoMod + radio > radio * 10){
                 radioDeformacion = radio * 10;
@@ -268,6 +268,11 @@ namespace AlumnoEjemplos.RandomGroup
             else{
                 radioDeformacion = DefoMod + radio;
             }
+            if (radioDeformacion < radio * 2) 
+            {
+                radioDeformacion = radio * 2;
+            }
+            //FIN DE HACK
             for (int i = 0; i < numVertices; i++)
             {
                 float distanciaCentroVertex = Vector3.Length(verticesPared[i].Position - ptoColision);

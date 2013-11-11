@@ -192,17 +192,17 @@ namespace AlumnoEjemplos.RandomGroup
                 }
 
                 //Deteccion contra las paredes no deformables
-                foreach (ParedSolida pared in solidWallsList)
+                for (int pared = 0; pared < solidWallsList.Count; pared++)
                 {
-                    if (TgcCollisionUtils.testSphereAABB(proyectil.boundingBall, pared.getBoundingBox()))
+                    if (TgcCollisionUtils.testSphereAABB(proyectil.boundingBall, solidWallsList[pared].getBoundingBox()))
                     {
-                        proyectil.collisionWithSolidWall(pared);
+                        proyectil.collisionWithSolidWall(solidWallsList[pared]);
                         paredSolidaSound.play();
                     }
                 }
 
                 //Deteccion contra las paredes SI deformables
-                foreach (ParedDeformable pared in deformableWallsList)
+                for (int pared = 0; pared < deformableWallsList.Count; pared++)
                 {
                     // Como se q va a colisionar, me fijo q no haya salto de cuadros
                     // Hago un segmento entre la posicion actual y la del cuadro anterior, y me fijo si hubo colision con la pared
@@ -211,13 +211,13 @@ namespace AlumnoEjemplos.RandomGroup
                     {
                         //GuiController.Instance.Logger.log("Entro al distinto");
                         Vector3 ptoColision;
-                        if (RandomCollisionUtils.intersectSegmentOBB(posAnterior, posActual, pared.obb, out ptoColision))
+                        if (RandomCollisionUtils.intersectSegmentOBB(posAnterior, posActual, deformableWallsList[pared].obb, out ptoColision))
                         {
                             GuiController.Instance.Logger.log("Hubo colision " + posAnterior.ToString() + " - " + posActual.ToString());
-                    
+
                             // Muevo la pelota hasta el pto real de colision
                             //proyectil.setPosition(ptoColision - (proyectil.boundingBall.Radius*proyectil.direction*-1));
-                            proyectil.collisionWithDeformableWall(pared, ptoColision);
+                            proyectil.collisionWithDeformableWall(deformableWallsList[pared], ptoColision);
                             paredDeformableSound.play();
                         }
                     }
@@ -312,31 +312,7 @@ namespace AlumnoEjemplos.RandomGroup
             deformableWallsList.Add(cartel);
 
             crearCaja(new Vector3(-275, 0, 5), 20, alumnoMediaFolder + "Random\\Textures\\Walls\\madera.jpg");
-            /*ParedDeformable caja1paredAtras = new ParedDeformable(new Vector3(-275, 0, 5), new Vector3(0, 0, 1), new Vector3(0, 1, 0), 20, alumnoMediaFolder + "Random\\Textures\\Walls\\madera.jpg");
-            deformableWallsList.Add(caja1paredAtras);
-            ParedDeformable caja1paredDelante = new ParedDeformable(new Vector3(-255, 0, 5), new Vector3(0, 0, 1), new Vector3(0, 1, 0), 20, alumnoMediaFolder + "Random\\Textures\\Walls\\madera.jpg");
-            deformableWallsList.Add(caja1paredDelante);
-            ParedDeformable caja1paredIzquierda = new ParedDeformable(new Vector3(-255, 0, 5), new Vector3(-1, 0, 0), new Vector3(0, 1, 0), 20, alumnoMediaFolder + "Random\\Textures\\Walls\\madera.jpg");
-            deformableWallsList.Add(caja1paredIzquierda);
-            ParedDeformable caja1paredDerecha = new ParedDeformable(new Vector3(-255, 0, 25), new Vector3(-1, 0, 0), new Vector3(0, 1, 0), 20, alumnoMediaFolder + "Random\\Textures\\Walls\\madera.jpg");
-            deformableWallsList.Add(caja1paredDerecha);
-            ParedDeformable caja1paredArriba = new ParedDeformable(new Vector3(-255, 20, 5), new Vector3(-1, 0, 0), new Vector3(0, 0, 1), 20, alumnoMediaFolder + "Random\\Textures\\Walls\\madera.jpg");
-            deformableWallsList.Add(caja1paredArriba);
-            */
-            ParedDeformable caja2paredAtras = new ParedDeformable(new Vector3(-420, 20, 100), new Vector3(0, 0, 1), new Vector3(0, 1, 0), 50, alumnoMediaFolder + "Random\\Textures\\Walls\\tileable_metal.jpg");
-            deformableWallsList.Add(caja2paredAtras);
-            ParedDeformable caja2paredDelante = new ParedDeformable(new Vector3(-370, 20, 100), new Vector3(0, 0, 1), new Vector3(0, 1, 0), 50, alumnoMediaFolder + "Random\\Textures\\Walls\\tileable_metal.jpg");
-            deformableWallsList.Add(caja2paredDelante);
-            ParedDeformable caja2paredIzquierda = new ParedDeformable(new Vector3(-370, 20, 100), new Vector3(-1, 0, 0), new Vector3(0, 1, 0), 50, alumnoMediaFolder + "Random\\Textures\\Walls\\tileable_metal.jpg");
-            deformableWallsList.Add(caja2paredIzquierda);
-            ParedDeformable caja2paredDerecha = new ParedDeformable(new Vector3(-370, 20, 150), new Vector3(-1, 0, 0), new Vector3(0, 1, 0), 50, alumnoMediaFolder + "Random\\Textures\\Walls\\tileable_metal.jpg");
-            deformableWallsList.Add(caja2paredDerecha);
-            ParedDeformable caja2paredArriba = new ParedDeformable(new Vector3(-370, 70, 100), new Vector3(-1, 0, 0), new Vector3(0, 0, 1), 50, alumnoMediaFolder + "Random\\Textures\\Walls\\tileable_metal.jpg");
-            deformableWallsList.Add(caja2paredArriba);
-            ParedDeformable caja2paredAbajo = new ParedDeformable(new Vector3(-370, 20, 100), new Vector3(-1, 0, 0), new Vector3(0, 0, 1), 50, alumnoMediaFolder + "Random\\Textures\\Walls\\tileable_metal.jpg");
-            deformableWallsList.Add(caja2paredAbajo);
-
-
+            crearCaja(new Vector3(-420, 20, 100), 50, alumnoMediaFolder + "Random\\Textures\\Walls\\tileable_metal.jpg");
         }
 
         private void createVegetation(string alumnoMediaFolder)
