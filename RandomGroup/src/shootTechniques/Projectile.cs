@@ -114,11 +114,9 @@ namespace AlumnoEjemplos.RandomGroup
             setSpeed(getSpeed() * 0.8f);            
         }
 
-        public void collisionWithDeformableWall(ParedDeformable pared)
+        public void collisionWithDeformableWall(ParedDeformable pared, Vector3 ptoColision)
         {
-            pared.deformarPared(this);
-            direction *= -1;
-            setSpeed(getSpeed() * 0.4f);
+            pared.deformarPared(this, ptoColision);
             lifeTime = 0;
         }
     }

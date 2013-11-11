@@ -68,7 +68,8 @@ namespace AlumnoEjemplos.RandomGroup
         {
             device = GuiController.Instance.D3dDevice;
             vertexDeclaration = new VertexDeclaration(device, PositionNormalTextured_VertexElements);
-           
+
+
             //Crear la textura
             texture = TextureLoader.FromFile(device, texturePath);
 
@@ -247,10 +248,9 @@ namespace AlumnoEjemplos.RandomGroup
 
 
 
-        public void deformarPared(Projectile proyectil)
+        public void deformarPared(Projectile proyectil, Vector3 ptoColision)
         {
             float radio = proyectil.boundingBall.Radius;
-            Vector3 posicionImpacto = proyectil.getPosition();
             Vector3 direccion = proyectil.direction;
             Vector3 vectoraux;
             //Vector3 maximoDeformado = posUltimoVertice; //cualquier vertice dentro de la pared
@@ -269,8 +269,8 @@ namespace AlumnoEjemplos.RandomGroup
                 radioDeformacion = DefoMod + radio;
             }
             for (int i = 0; i < numVertices; i++)
-            {                
-                float distanciaCentroVertex = Vector3.Length(verticesPared[i].Position - posicionImpacto);
+            {
+                float distanciaCentroVertex = Vector3.Length(verticesPared[i].Position - ptoColision);
 
                 //Controlar el radio de la deformacion
                 if (distanciaCentroVertex > radioDeformacion) continue;
