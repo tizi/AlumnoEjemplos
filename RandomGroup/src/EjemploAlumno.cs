@@ -1,10 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
 using AlumnoEjemplos.RandomGroup.src.meshUtils;
 using AlumnoEjemplos.RandomGroup.src.shootTechniques;
 using AlumnoEjemplos.RandomGroup.src.walls;
 using AlumnoEjemplos.RandomGroup.src.weapons;
-using Microsoft.DirectX.DirectInput;
 using TgcViewer.Example;
 using TgcViewer;
 using System.Drawing;
@@ -14,7 +12,6 @@ using TgcViewer.Utils.Terrain;
 using TgcViewer.Utils.TgcSceneLoader;
 using TgcViewer.Utils._2D;
 using TgcViewer.Utils.TgcGeometry;
-using Device = Microsoft.DirectX.Direct3D.Device;
 using TgcViewer.Utils.Sound;
 using System;
 
@@ -58,9 +55,6 @@ namespace AlumnoEjemplos.RandomGroup.src
 
         public override void init()
         {
-            //Device de DirectX para crear primitivas
-            Device d3dDevice = GuiController.Instance.D3dDevice;
-
             //Carpeta de archivos Media del alumno
             string alumnoMediaFolder = GuiController.Instance.AlumnoEjemplosMediaDir;
 
@@ -69,9 +63,7 @@ namespace AlumnoEjemplos.RandomGroup.src
             proyectilSound.loadSound(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Sounds\\MetalHitsSolid.wav");
 
             ///////////////CONFIGURAR CAMARA PRIMERA PERSONA//////////////////
-            camera = new FpsCamera();
-            camera.MovementSpeed = 100;
-            camera.JumpSpeed = 50;
+            camera = new FpsCamera {MovementSpeed = 100, JumpSpeed = 50};
             camera.setCamera(new Vector3(-150f, 40f, 175f), new Vector3(120f, 60f, 50f));
             GuiController.Instance.CurrentCamera = camera;
 
@@ -143,7 +135,7 @@ namespace AlumnoEjemplos.RandomGroup.src
             //Capturar Input teclado 
 
             //Capturar Input Mouse
-            if (GuiController.Instance.D3dInput.buttonDown(TgcViewer.Utils.Input.TgcD3dInput.MouseButtons.BUTTON_LEFT))
+            if (GuiController.Instance.D3dInput.buttonDown(TgcD3dInput.MouseButtons.BUTTON_LEFT))
             {
                 projectilesList.AddRange(weapon.doAction());
             }
@@ -228,7 +220,7 @@ namespace AlumnoEjemplos.RandomGroup.src
                         Vector3 ptoColision;
                         if (RandomCollisionUtils.intersectSegmentOBB(posAnterior, posActual, deformableWallsList[pared].obb, out ptoColision))
                         {
-                            GuiController.Instance.Logger.log("Hubo colision " + posAnterior.ToString() + " - " + posActual.ToString());
+                            GuiController.Instance.Logger.log("Hubo colision " + posAnterior + " - " + posActual);
 
                             // Muevo la pelota hasta el pto real de colision
                             //proyectil.setPosition(ptoColision - (proyectil.boundingBall.Radius*proyectil.direction*-1));
@@ -286,10 +278,14 @@ namespace AlumnoEjemplos.RandomGroup.src
         private void createGround(string alumnoMediaFolder)
         {
             TgcTexture texturaSuelo = TgcTexture.createTexture(alumnoMediaFolder + "Random\\Textures\\Terrain\\tileable_grass.jpg");
-            int i, j, largo = 2500, ancho = 2500, dimension = 250;
+            int i;
+            const int largo = 2500;
+            const int ancho = 2500;
+            const int dimension = 250;
 
             for (i = -largo  /2; i < largo / 2; i += dimension)
             {
+                int j;
                 for (j = -ancho / 2; j < ancho / 2; j += dimension)
                 {
                     if(!(i == -500 && j == 0))
@@ -338,7 +334,8 @@ namespace AlumnoEjemplos.RandomGroup.src
                                        MeshFactory.getMesh(alumnoMediaFolder + "Random\\Meshes\\Vegetation\\palmera1.xml"), 
                                        MeshFactory.getMesh(alumnoMediaFolder + "Random\\Meshes\\Vegetation\\planta1.xml"), 
                                        MeshFactory.getMesh(alumnoMediaFolder + "Random\\Meshes\\Vegetation\\planta2.xml"), 
-                                       MeshFactory.getMesh(alumnoMediaFolder + "Random\\Meshes\\Vegetation\\planta3.xml"), };
+                                       MeshFactory.getMesh(alumnoMediaFolder + "Random\\Meshes\\Vegetation\\planta3.xml")
+            };
             const int largo = 2500;
             const int ancho = 2500;
             Random randomizer = new Random();
@@ -398,7 +395,6 @@ namespace AlumnoEjemplos.RandomGroup.src
                         if (TgcCollisionUtils.testAABBAABB(ground[pedazo].getBoundingBox(), tmpDibujable.getBoundingBox()))
                         {
                             continuar = true;
-                            continue;
                         }
                     }
                 }

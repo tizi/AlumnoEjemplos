@@ -45,7 +45,7 @@ namespace AlumnoEjemplos.RandomGroup.src.weapons
             initPos = camera.getLookAt();
             initDir = initPos - camera.getPosition();
             initPos.Add(initDir * distance);
-            Projectile tmpColisionador = new Projectile(initPos, technique.bulletDrawing.clone(), initDir);
+            //Projectile tmpColisionador = new Projectile(initPos, technique.bulletDrawing.clone(), initDir);
             ShootSound.play();
             return tmpList;
         }

@@ -243,27 +243,20 @@ namespace AlumnoEjemplos.RandomGroup.src.walls
 
         public void deformarPared(Projectile proyectil, Vector3 ptoColision)
         {
-            float radio = proyectil.boundingBall.Radius;
+            float radio = Math.Abs(proyectil.boundingBall.Radius);
             Vector3 direccion = proyectil.direction;
             var maximoDeformado = new Vector3(1, 1, 1) * float.MinValue;
             var minimoDeformado = new Vector3(1, 1, 1) * float.MaxValue;
             direccion.Normalize();
 
-            float DefoMod = proyectil.getSpeed() * proyectil.mass / 10;
+            //500 es un numero magico que mas o menos acomoda las cosas
+            float DefoMod = proyectil.getSpeed() * (proyectil.mass/radio) / 500;
 
             //MAGIA DE DEFORMACION            
-            //HACK PARA QUE EL RADIO DE DEFORMACION NO SEA MUY GRANDE NI MUY CHICO
-            float radioDeformacion;
-            if(DefoMod + radio > radio * 10){
-                radioDeformacion = radio * 10;
-            }
-            else{
-                radioDeformacion = DefoMod + radio;
-            }
-            if (radioDeformacion < radio * 2) 
-            {
-                radioDeformacion = radio * 2;
-            }
+           
+            //Redundante, para probar variaciones del radio de deformacion
+            float radioDeformacion = radio;
+            
             //FIN DE HACK
             for (int i = 0; i < numVertices; i++)
             {
@@ -272,55 +265,43 @@ namespace AlumnoEjemplos.RandomGroup.src.walls
                 //Controlar el radio de la deformacion
                 if (distanciaCentroVertex > radioDeformacion) continue;
 
-                //Cantidad de deformación
-                float deformacion = (1 / distanciaCentroVertex) * DefoMod;
-
-                //HACK PARA QUE NO SE HAGAN PINCHES
-                if (deformacion > 5) deformacion = 5;
-                //FIN HACK
+                //Cantidad de deformación, es la raiz cuadrada de una 
+                //funcion cuadratica decreciente: x^2+r^2 con r constante
+                // -distanciaAlCentro^2+radio^2
+                float deformacion = DefoMod*FastMath.Sqrt(
+                    -FastMath.Pow2(distanciaCentroVertex)+FastMath.Pow2(radioDeformacion));
 
                 Vector3 vectorDeformacion = direccion * deformacion;
-                
 
-                //Se desplaza cada vertice
-                if (distanciaCentroVertex >= 1)
-                {
-                    Vector3 vectoraux = verticesPared[i].Position;
-                    vectoraux.X += (vectorDeformacion.X / distanciaCentroVertex);
-                    vectoraux.Y += (vectorDeformacion.Y / distanciaCentroVertex);
-                    vectoraux.Z += (vectorDeformacion.Z / distanciaCentroVertex);
-                    verticesPared[i].Position = vectoraux;
-                }
-                else
-                {/*
-                    verticesPared[i].Position += vectorDeformacion;
+                //Se desplaza
+                verticesPared[i].Position += vectorDeformacion;
                     
-                    if (verticesPared[i].Position.X > maximoDeformado.X)
-                    {
-                        maximoDeformado.X = verticesPared[i].Position.X;
-                    }
-                    if (verticesPared[i].Position.Y > maximoDeformado.Y)
-                    {
-                        maximoDeformado.Y = verticesPared[i].Position.Y;
-                    }
-                    if (verticesPared[i].Position.Z > maximoDeformado.Z)
-                    {
-                        maximoDeformado.Z = verticesPared[i].Position.Z;
-                    }
-                    if (verticesPared[i].Position.X < minimoDeformado.X)
-                    {
-                        minimoDeformado.X = verticesPared[i].Position.X;
-                    }
-                    if (verticesPared[i].Position.Y < minimoDeformado.Y)
-                    {
-                        minimoDeformado.Y = verticesPared[i].Position.Y;
-                    }
-                    if (verticesPared[i].Position.Z < minimoDeformado.Z)
-                    {
-                        minimoDeformado.Z = verticesPared[i].Position.Z;
-                    }*/
-
+                if (verticesPared[i].Position.X > maximoDeformado.X)
+                {
+                    maximoDeformado.X = verticesPared[i].Position.X;
                 }
+                if (verticesPared[i].Position.Y > maximoDeformado.Y)
+                {
+                    maximoDeformado.Y = verticesPared[i].Position.Y;
+                }
+                if (verticesPared[i].Position.Z > maximoDeformado.Z)
+                {
+                    maximoDeformado.Z = verticesPared[i].Position.Z;
+                }
+                if (verticesPared[i].Position.X < minimoDeformado.X)
+                {
+                    minimoDeformado.X = verticesPared[i].Position.X;
+                }
+                if (verticesPared[i].Position.Y < minimoDeformado.Y)
+                {
+                    minimoDeformado.Y = verticesPared[i].Position.Y;
+                }
+                if (verticesPared[i].Position.Z < minimoDeformado.Z)
+                {
+                    minimoDeformado.Z = verticesPared[i].Position.Z;
+                }
+                
+                //uso el vectorDefo para la normal
                 vectorDeformacion.Normalize();
                 verticesPared[i].Normal = vectorDeformacion;
 
@@ -329,7 +310,9 @@ namespace AlumnoEjemplos.RandomGroup.src.walls
             vertexBuffer.SetData(verticesPared, 0, LockFlags.None);
             //FIN MAGIA DEFORMACION
             //Recalculo la obb
-            //obb = TgcObb.computeFromPoints(new[] { origen, posUltimoVertice, posEsquina1, posEsquina2, maximoDeformado, minimoDeformado });
+            //if (maximoDeformado != new Vector3(1, 1, 1) * float.MinValue &&
+            //    minimoDeformado != new Vector3(1, 1, 1) * float.MaxValue)
+            //    obb = TgcObb.computeFromPoints(new[] { origen, posUltimoVertice, posEsquina1, posEsquina2, maximoDeformado, minimoDeformado });
         }
 
         public void dispose()

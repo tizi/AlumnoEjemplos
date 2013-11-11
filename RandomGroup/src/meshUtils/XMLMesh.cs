@@ -61,7 +61,7 @@ namespace AlumnoEjemplos.RandomGroup.src.meshUtils
         public override float getRadiusSize()
         {
             //GuiController.Instance.Logger.log((((mesh.BoundingBox.PMax.Length() - mesh.BoundingBox.PMin.Length())*escala.Length()) / 2).ToString());
-            return ((mesh.BoundingBox.PMax.Length() - mesh.BoundingBox.PMin.Length())) / 2;
+            return mesh.BoundingBox.calculateBoxRadius();
         }
 
         public override void setPosition(Vector3 position)
