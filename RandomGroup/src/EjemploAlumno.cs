@@ -82,7 +82,7 @@ namespace AlumnoEjemplos.RandomGroup.src
             // modifiers shader
             //Modifiers de la luz
             GuiController.Instance.Modifiers.addBoolean("lightEnable", "lightEnable", false);
-            GuiController.Instance.Modifiers.addVertex3f("lightPos", new Vector3(-200, -100, -200), new Vector3(200, 200, 300), new Vector3(60, 35, 250));
+            GuiController.Instance.Modifiers.addVertex3f("lightPos", new Vector3(-400, 0, -400), new Vector3(400, 200, 400), new Vector3(60, 35, 250));
             GuiController.Instance.Modifiers.addColor("lightColor", Color.White);
             GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 150, 20);
             GuiController.Instance.Modifiers.addFloat("lightAttenuation", 0.1f, 2, 0.3f);
@@ -404,8 +404,8 @@ namespace AlumnoEjemplos.RandomGroup.src
 
         private void createHouse101(string alumnoMediaFolder)
         {
-            TgcTexture texturaHabitacion = TgcTexture.createTexture(alumnoMediaFolder + "Random\\Textures\\Walls\\metal.jpg");
-            TgcTexture texturaTablas = TgcTexture.createTexture(alumnoMediaFolder + "Random\\Textures\\Walls\\madera.jpg");
+            TgcTexture texturaHabitacion = TgcTexture.createTexture(alumnoMediaFolder + "Random\\Textures\\Walls\\red_bricks.jpg");
+            TgcTexture texturaTablas = TgcTexture.createTexture(alumnoMediaFolder + "Random\\Textures\\Walls\\wood.jpg");
 
             ParedSolida paredAtras = new ParedSolida(new Vector3(300, 0, -400), new Vector3(0, 150, 150), "YZ", texturaHabitacion);
             solidWallsList.Add(paredAtras);
@@ -433,23 +433,23 @@ namespace AlumnoEjemplos.RandomGroup.src
             ParedSolida paredDerecha2 = new ParedSolida(new Vector3(200, 0, -250), new Vector3(-100, 50, 0), "XY", texturaHabitacion);
             solidWallsList.Add(paredDerecha2);
 
-            crearCaja(new Vector3(270, 51, -270), 10, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg");
+            crearCaja(new Vector3(270, 51, -270), 10, alumnoMediaFolder + "Random\\Textures\\Walls\\metal.jpg");
 
 
         }
 
 
-        private void crearCaja(Vector3 origen, int tamaño, string textura)
+        private void crearCaja(Vector3 origen, int tamanio, string textura)
         {
 
-            ParedDeformable atras = new ParedDeformable(origen, new Vector3(1, 0, 0), new Vector3(0, 1, 0), tamaño, textura);
-            ParedDeformable delante = new ParedDeformable((origen + new Vector3(0, 0, tamaño)), new Vector3(1, 0, 0), new Vector3(0, 1, 0), tamaño, textura);
+            ParedDeformable atras = new ParedDeformable(origen, new Vector3(1, 0, 0), new Vector3(0, 1, 0), tamanio, textura);
+            ParedDeformable delante = new ParedDeformable((origen + new Vector3(0, 0, tamanio)), new Vector3(1, 0, 0), new Vector3(0, 1, 0), tamanio, textura);
 
-            ParedDeformable izquierda = new ParedDeformable(origen, new Vector3(0, 0, 1), new Vector3(0, 1, 0), tamaño, textura);
-            ParedDeformable derecha = new ParedDeformable((origen + new Vector3(tamaño, 0, 0)), new Vector3(0, 0, 1), new Vector3(0, 1, 0), tamaño, textura);
+            ParedDeformable izquierda = new ParedDeformable(origen, new Vector3(0, 0, 1), new Vector3(0, 1, 0), tamanio, textura);
+            ParedDeformable derecha = new ParedDeformable((origen + new Vector3(tamanio, 0, 0)), new Vector3(0, 0, 1), new Vector3(0, 1, 0), tamanio, textura);
 
-            ParedDeformable abajo = new ParedDeformable(origen, new Vector3(1, 0, 0), new Vector3(0, 0, 1), tamaño, textura);
-            ParedDeformable arriba = new ParedDeformable((origen + new Vector3(0, tamaño, 0)), new Vector3(1, 0, 0), new Vector3(0, 0, 1), tamaño, textura);
+            ParedDeformable abajo = new ParedDeformable(origen, new Vector3(1, 0, 0), new Vector3(0, 0, 1), tamanio, textura);
+            ParedDeformable arriba = new ParedDeformable((origen + new Vector3(0, tamanio, 0)), new Vector3(1, 0, 0), new Vector3(0, 0, 1), tamanio, textura);
 
             deformableWallsList.Add(atras);
             deformableWallsList.Add(delante);
