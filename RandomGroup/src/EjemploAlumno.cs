@@ -202,10 +202,11 @@ namespace AlumnoEjemplos.RandomGroup.src
                 for (int pared = 0; pared < solidWallsList.Count; pared++)
                 {
                     if (TgcCollisionUtils.testSphereAABB(proyectil.boundingBall, solidWallsList[pared].getBoundingBox()))
-                    {
-                        proyectil.collisionWithSolidWall(solidWallsList[pared]);
-                        paredSolidaSound.play();
-                    }
+                            {
+                                proyectil.collisionWithSolidWall(solidWallsList[pared]);
+                                paredSolidaSound.play();
+                            }
+                    
                 }
 
                 //Deteccion contra las paredes SI deformables
@@ -420,7 +421,8 @@ namespace AlumnoEjemplos.RandomGroup.src
             solidWallsList.Add(tabla1);
             ParedSolida tabla2 = new ParedSolida(new Vector3(300, 50, -250), new Vector3(-50, 0, -50), "XZ", texturaTablas);
             solidWallsList.Add(tabla2);
-
+            ParedSolida tabla3 = new ParedSolida(new Vector3(300, 100, -375), new Vector3(-50, 0, 100), "XZ", texturaTablas);
+            solidWallsList.Add(tabla3);
 
 
             ParedSolida paredMedio = new ParedSolida(new Vector3(200, 0, -400), new Vector3(0, 50, 150), "YZ", texturaHabitacion);
@@ -434,6 +436,8 @@ namespace AlumnoEjemplos.RandomGroup.src
             solidWallsList.Add(paredDerecha2);
 
             crearCaja(new Vector3(270, 51, -270), 10, alumnoMediaFolder + "Random\\Textures\\Walls\\metal.jpg");
+            crearCaja(new Vector3(270, 51, -370), 10, alumnoMediaFolder + "Random\\Textures\\Walls\\metal.jpg");
+            crearCaja(new Vector3(270, 51, -390), 10, alumnoMediaFolder + "Random\\Textures\\Walls\\metal.jpg");
 
 
         }

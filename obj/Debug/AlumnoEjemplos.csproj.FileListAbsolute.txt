@@ -22,3 +22,11 @@ E:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\AlumnoEjemplos.pdb
 E:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\TgcViewer.exe
 E:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\Ionic.Zip.dll
 E:\Materias\TGC\TP\TgcViewer\AlumnoEjemplos\TgcViewer.pdb
+C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\obj\Debug\AlumnoEjemplos.dll
+C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\obj\Debug\AlumnoEjemplos.pdb
+C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\AlumnoEjemplos.dll
+C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\AlumnoEjemplos.pdb
+C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\TgcViewer.exe
+C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\Ionic.Zip.dll
+C:\Users\SEBASTIAN\Documents\UTN\TgcViewer\AlumnoEjemplos\TgcViewer.pdb
