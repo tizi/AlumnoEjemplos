@@ -29,7 +29,6 @@ namespace AlumnoEjemplos.RandomGroup.src.walls
         private Vector3 posEsquina1;
         private Vector3 posEsquina2;
 
-        TgcBox lightMesh;
         Effect currentShader = GuiController.Instance.Shaders.TgcMeshPointLightShader;
         //string shadersPath;
         //float time;
@@ -169,10 +168,6 @@ namespace AlumnoEjemplos.RandomGroup.src.walls
             obb = TgcObb.computeFromPoints(new[] { origen, posUltimoVertice, posEsquina1, posEsquina2 });
             boundingBox = TgcBoundingBox.computeFromPoints(new[] { origen, posUltimoVertice, posEsquina1, posEsquina2 });
 
-            //Mesh para la luz
-            lightMesh = TgcBox.fromSize(new Vector3(10, 10, 10), Color.Red);
-            //shadersPath = GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Shaders\\";
-            //time = 0;
         }
 
         public void render(float elapsedTime)
@@ -191,8 +186,7 @@ namespace AlumnoEjemplos.RandomGroup.src.walls
             //time += elapsedTime;
 
             //Actualzar posición de la luz
-            Vector3 lightPos = (Vector3)GuiController.Instance.Modifiers["lightPos"];
-            lightMesh.Position = lightPos;
+            Vector3 lightPos = (Vector3)GuiController.Instance.CurrentCamera.getPosition();
 
             if (lightEnable)
             {                
@@ -232,16 +226,13 @@ namespace AlumnoEjemplos.RandomGroup.src.walls
                 device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, numVertices, 0, triangleCount);
             }
 
-            //Renderizar mesh de luz
-            lightMesh.render();
-
             //Renderizar OBB
             if ((bool)GuiController.Instance.Modifiers["boundingBox"]) obb.render();
         }
 
 
 
-        public void deformarPared(Projectile proyectil, Vector3 ptoColision)
+        /*public void deformarPared(Projectile proyectil, Vector3 ptoColision)
         {
             float radio = Math.Abs(proyectil.boundingBall.Radius);
             Vector3 direccion = proyectil.direction;
@@ -313,6 +304,101 @@ namespace AlumnoEjemplos.RandomGroup.src.walls
             //if (maximoDeformado != new Vector3(1, 1, 1) * float.MinValue &&
             //    minimoDeformado != new Vector3(1, 1, 1) * float.MaxValue)
             //    obb = TgcObb.computeFromPoints(new[] { origen, posUltimoVertice, posEsquina1, posEsquina2, maximoDeformado, minimoDeformado });
+        }
+        */
+        public void deformarPared(Projectile proyectil, Vector3 ptoColision)
+        {
+            float radio = proyectil.boundingBall.Radius;
+            Vector3 direccion = proyectil.direction;
+            Vector3 vectoraux;
+            //Vector3 maximoDeformado = posUltimoVertice; //cualquier vertice dentro de la pared
+            //Vector3 minimoDeformado = posUltimoVertice; //cualquier vertice dentro de la pared
+            direccion.Normalize();
+
+            float DefoMod = proyectil.getSpeed() * proyectil.mass / 10;
+
+            //MAGIA DE DEFORMACION            
+            //HACK PARA QUE EL RADIO DE DEFORMACION NO SEA MUY GRANDE NI MUY CHICO
+            float radioDeformacion;
+            if (DefoMod + radio > radio * 10)
+            {
+                radioDeformacion = radio * 10;
+            }
+            else
+            {
+                radioDeformacion = DefoMod + radio;
+            }
+            if (radioDeformacion < radio * 2)
+            {
+                radioDeformacion = radio * 2;
+            }
+            //FIN DE HACK
+            for (int i = 0; i < numVertices; i++)
+            {
+                float distanciaCentroVertex = Vector3.Length(verticesPared[i].Position - ptoColision);
+
+                //Controlar el radio de la deformacion
+                if (distanciaCentroVertex > radioDeformacion) continue;
+
+                //Cantidad de deformación
+                float deformacion = (1 / distanciaCentroVertex) * DefoMod;
+
+                //HACK PARA QUE NO SE HAGAN PINCHES
+                if (deformacion > 5) deformacion = 5;
+                //FIN HACK
+
+                Vector3 vectorDeformacion = direccion * deformacion;
+                Vector3 posicionInial = verticesPared[i].Position;
+                //Se desplaza cada vertice
+                if (distanciaCentroVertex >= 1)
+                {
+                    vectoraux = posicionInial;
+                    vectoraux.X += (vectorDeformacion.X / distanciaCentroVertex);
+                    vectoraux.Y += (vectorDeformacion.Y / distanciaCentroVertex);
+                    vectoraux.Z += (vectorDeformacion.Z / distanciaCentroVertex);
+                    verticesPared[i].Position = vectoraux;
+                }
+                else
+                {
+                    verticesPared[i].Position += vectorDeformacion;
+                    /*if (verticesPared[i].Position.X > maximoDeformado.X)
+                    {
+                        maximoDeformado.X = verticesPared[i].Position.X;
+                    }
+                    if (verticesPared[i].Position.Y > maximoDeformado.Y)
+                    {
+                        maximoDeformado.Y = verticesPared[i].Position.Y;
+                    }
+                    if (verticesPared[i].Position.Z > maximoDeformado.Z)
+                    {
+                        maximoDeformado.Z = verticesPared[i].Position.Z;
+                    }
+                    if (verticesPared[i].Position.X < minimoDeformado.X)
+                    {
+                        minimoDeformado.X = verticesPared[i].Position.X;
+                    }
+                    if (verticesPared[i].Position.Y < minimoDeformado.Y)
+                    {
+                        minimoDeformado.Y = verticesPared[i].Position.Y;
+                    }
+                    if (verticesPared[i].Position.Z < minimoDeformado.Z)
+                    {
+                        minimoDeformado.Z = verticesPared[i].Position.Z;
+                    }*/
+
+                }
+                Vector3 vectorDesplazamiento = verticesPared[i].Position - posicionInial;
+                vectorDesplazamiento.Normalize();
+                Vector3 nuevaNormal = vectorDesplazamiento + verticesPared[i].Normal;
+                nuevaNormal.Normalize();
+                verticesPared[i].Normal = nuevaNormal;
+
+            }
+
+            vertexBuffer.SetData(verticesPared, 0, LockFlags.None);
+            //FIN MAGIA DEFORMACION
+            //Recalculo la obb
+            //obb = TgcObb.computeFromPoints(new[] { origen, posUltimoVertice, posEsquina1, posEsquina2, maximoDeformado, minimoDeformado });
         }
 
         public void dispose()

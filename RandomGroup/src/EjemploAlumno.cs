@@ -81,8 +81,7 @@ namespace AlumnoEjemplos.RandomGroup.src
 
             // modifiers shader
             //Modifiers de la luz
-            GuiController.Instance.Modifiers.addBoolean("lightEnable", "lightEnable", false);
-            GuiController.Instance.Modifiers.addVertex3f("lightPos", new Vector3(-400, 0, -400), new Vector3(400, 200, 400), new Vector3(60, 35, 250));
+            GuiController.Instance.Modifiers.addBoolean("lightEnable", "lightEnable", true);
             GuiController.Instance.Modifiers.addColor("lightColor", Color.White);
             GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 150, 20);
             GuiController.Instance.Modifiers.addFloat("lightAttenuation", 0.1f, 2, 0.3f);
@@ -116,15 +115,6 @@ namespace AlumnoEjemplos.RandomGroup.src
 
             textoCamara.Text = GuiController.Instance.CurrentCamera.getPosition().ToString();
             textoCamara.render();
-
-            foreach (ParedSolida pared in solidWallsList)
-            {
-                pared.render(elapsedTime);
-            }
-            foreach (ParedDeformable pared in deformableWallsList)
-            {
-                pared.render(elapsedTime);
-            }
 
             //Obtener valores de Modifiers
             weapon = (ProjectileWeapon)GuiController.Instance.Modifiers["Armas"];
