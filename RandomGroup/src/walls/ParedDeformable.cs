@@ -31,6 +31,8 @@ namespace AlumnoEjemplos.RandomGroup
 
         TgcBox lightMesh;
         Effect currentShader;
+        string shadersPath;
+        //float time;
 
 
         public TgcBoundingBox getBoundingBox()
@@ -169,6 +171,8 @@ namespace AlumnoEjemplos.RandomGroup
 
             //Mesh para la luz
             lightMesh = TgcBox.fromSize(new Vector3(10, 10, 10), Color.Red);
+            //shadersPath = GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Shaders\\";
+            //time = 0;
         }
 
         public void render(float elapsedTime)
@@ -180,27 +184,24 @@ namespace AlumnoEjemplos.RandomGroup
             device.SetTexture(0, texture);
 
             // Comienza prueba shader
-            TgcTexture.Manager texturesManager = GuiController.Instance.TexturesManager;
+            //TgcTexture.Manager texturesManager = GuiController.Instance.TexturesManager;
 
             //Habilitar luz
             bool lightEnable = (bool)GuiController.Instance.Modifiers["lightEnable"];
+            //time += elapsedTime;
 
-            if (lightEnable)
-            {
-                //Con luz: Cambiar el shader actual por el shader default que trae el framework para iluminacion dinamica con PointLight
-                currentShader = GuiController.Instance.Shaders.TgcMeshPointLightShader;
-            }
-            else
-            {
-                //Sin luz: Restaurar shader default
-                currentShader = GuiController.Instance.Shaders.TgcMeshShader;
-            }
             //Actualzar posición de la luz
             Vector3 lightPos = (Vector3)GuiController.Instance.Modifiers["lightPos"];
             lightMesh.Position = lightPos;
 
             if (lightEnable)
             {
+                currentShader = GuiController.Instance.Shaders.TgcMeshPointLightShader;
+                //currentShader = TgcShaders.loadEffect(shadersPath + "PointLightShader.fx");
+                currentShader.SetValue("matWorld", device.Transform.World);
+                currentShader.SetValue("matWorldView", device.Transform.World * device.Transform.View);
+                currentShader.SetValue("matWorldViewProj", device.Transform.World * device.Transform.View * device.Transform.Projection);
+
                 //Cargar variables shader de la luz
                 currentShader.SetValue("lightColor", ColorValue.FromColor((Color)GuiController.Instance.Modifiers["lightColor"]));
                 currentShader.SetValue("lightPosition", TgcParserUtils.vector3ToFloat4Array(lightPos));
@@ -209,21 +210,18 @@ namespace AlumnoEjemplos.RandomGroup
                 currentShader.SetValue("lightAttenuation", (float)GuiController.Instance.Modifiers["lightAttenuation"]);
                 currentShader.Technique = "DIFFUSE_MAP";
 
-                /* //Cargar variables de shader de Material. El Material en realidad deberia ser propio de cada mesh. Pero en este ejemplo se simplifica con uno comun para todos
+                 //Cargar variables de shader de Material. El Material en realidad deberia ser propio de cada mesh. Pero en este ejemplo se simplifica con uno comun para todos
                  currentShader.SetValue("materialEmissiveColor", ColorValue.FromColor(Color.Black));
                  currentShader.SetValue("materialAmbientColor", ColorValue.FromColor(Color.White));
                  currentShader.SetValue("materialDiffuseColor", ColorValue.FromColor(Color.White));
                  currentShader.SetValue("materialSpecularColor", ColorValue.FromColor(Color.White));
-                 currentShader.SetValue("materialSpecularExp", (float)GuiController.Instance.Modifiers["specularEx"]);*/
+                 currentShader.SetValue("materialSpecularExp", (float)GuiController.Instance.Modifiers["specularEx"]);
 
                 int numPasses = currentShader.Begin(0);
-                texturesManager.clear(0);
+                //texturesManager.clear(0);
                 for (int n = 0; n < numPasses; n++)
                 {
                     currentShader.SetValue("texDiffuseMap", texture);
-                    //Setear textura en shader
-                    //texturesManager.shaderSet(currentShader, "texDiffuseMap", texture);
-
                     currentShader.BeginPass(n);
                     device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, numVertices, 0, triangleCount);
                     currentShader.EndPass();
@@ -237,10 +235,6 @@ namespace AlumnoEjemplos.RandomGroup
 
             //Renderizar mesh de luz
             lightMesh.render();
-
-            // Fin shader
-
-            //device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, numVertices, 0, triangleCount);
 
             //Renderizar OBB
             if ((bool)GuiController.Instance.Modifiers["boundingBox"]) obb.render();
