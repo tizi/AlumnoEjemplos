@@ -290,7 +290,6 @@ namespace AlumnoEjemplos.RandomGroup
         {
             TgcTexture texturaHabitacion = TgcTexture.createTexture(alumnoMediaFolder + "Random\\Textures\\Walls\\metal.jpg");
             TgcTexture texturaSuelo = TgcTexture.createTexture(alumnoMediaFolder + "Random\\Textures\\Walls\\baldosas.jpg");
-            TgcTexture texturaCartel = TgcTexture.createTexture(alumnoMediaFolder + "Random\\Textures\\cartelBoxesHouse.png");
 
             ParedSolida paredAtras = new ParedSolida(new Vector3(-500, 0, 0), new Vector3(0, 150, 250), "YZ", texturaHabitacion);
             solidWallsList.Add(paredAtras);
@@ -302,16 +301,18 @@ namespace AlumnoEjemplos.RandomGroup
             solidWallsList.Add(paredDelanteIzquierda);
             ParedSolida paredDelanteDerecha = new ParedSolida(new Vector3(-250, 0, 250), new Vector3(0, 150, -100), "YZ", texturaHabitacion);
             solidWallsList.Add(paredDelanteDerecha);
-            ParedSolida paredDelanteArriba = new ParedSolida(new Vector3(-250, 75, 100), new Vector3(0, 75, 50), "YZ", texturaHabitacion);
+            ParedSolida paredDelanteArriba = new ParedSolida(new Vector3(-250, 100, 100), new Vector3(0, 50, 50), "YZ", texturaHabitacion);
             solidWallsList.Add(paredDelanteArriba);
             ParedSolida suelo = new ParedSolida(new Vector3(-500, 0, 0), new Vector3(250, 0, 250), "XZ", texturaSuelo);
             solidWallsList.Add(suelo);
             ParedSolida techo = new ParedSolida(new Vector3(-500, 150, 0), new Vector3(250, 0, 250), "XZ", texturaHabitacion);
             solidWallsList.Add(techo);
-            ParedSolida cartel = new ParedSolida(new Vector3(-250, 50, 150), new Vector3(0, 25, -50), "YZ", texturaCartel);
-            solidWallsList.Add(cartel);
 
-            ParedDeformable caja1paredAtras = new ParedDeformable(new Vector3(-275, 0, 5), new Vector3(0, 0, 1), new Vector3(0, 1, 0), 20, alumnoMediaFolder + "Random\\Textures\\Walls\\madera.jpg");
+            ParedDeformable cartel = new ParedDeformable(new Vector3(-250, 50, 100), new Vector3(0, 0, 1), new Vector3(0, 1, 0), 50, alumnoMediaFolder + "Random\\Textures\\cartelBoxesHouse.png");
+            deformableWallsList.Add(cartel);
+
+            crearCaja(new Vector3(-275, 0, 5), 20, alumnoMediaFolder + "Random\\Textures\\Walls\\madera.jpg");
+            /*ParedDeformable caja1paredAtras = new ParedDeformable(new Vector3(-275, 0, 5), new Vector3(0, 0, 1), new Vector3(0, 1, 0), 20, alumnoMediaFolder + "Random\\Textures\\Walls\\madera.jpg");
             deformableWallsList.Add(caja1paredAtras);
             ParedDeformable caja1paredDelante = new ParedDeformable(new Vector3(-255, 0, 5), new Vector3(0, 0, 1), new Vector3(0, 1, 0), 20, alumnoMediaFolder + "Random\\Textures\\Walls\\madera.jpg");
             deformableWallsList.Add(caja1paredDelante);
@@ -321,7 +322,7 @@ namespace AlumnoEjemplos.RandomGroup
             deformableWallsList.Add(caja1paredDerecha);
             ParedDeformable caja1paredArriba = new ParedDeformable(new Vector3(-255, 20, 5), new Vector3(-1, 0, 0), new Vector3(0, 0, 1), 20, alumnoMediaFolder + "Random\\Textures\\Walls\\madera.jpg");
             deformableWallsList.Add(caja1paredArriba);
-
+            */
             ParedDeformable caja2paredAtras = new ParedDeformable(new Vector3(-420, 20, 100), new Vector3(0, 0, 1), new Vector3(0, 1, 0), 50, alumnoMediaFolder + "Random\\Textures\\Walls\\tileable_metal.jpg");
             deformableWallsList.Add(caja2paredAtras);
             ParedDeformable caja2paredDelante = new ParedDeformable(new Vector3(-370, 20, 100), new Vector3(0, 0, 1), new Vector3(0, 1, 0), 50, alumnoMediaFolder + "Random\\Textures\\Walls\\tileable_metal.jpg");
