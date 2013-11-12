@@ -93,26 +93,6 @@ namespace AlumnoEjemplos.RandomGroup.src
         {
             skyBox.dispose();
 
-            foreach (ParedSolida pared in solidWallsList)
-            {
-                pared.dispose();
-            }
-
-            foreach (ParedDeformable pared in deformableWallsList)
-            {
-                pared.dispose();
-            }
-
-            foreach (Projectile p in projectilesList)
-            {
-                p.dispose();
-            }
-
-            foreach (MeshPropio decoracion in decoration)
-            {
-                decoracion.dispose();
-            }
-
             if (camera.isLocked)
             {
                 camera.lockUnlock();
