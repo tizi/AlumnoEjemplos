@@ -88,28 +88,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RandomGroup\src\meshUtils\ElementoEstatico.cs" />
-    <Compile Include="RandomGroup\src\camera\FpsCamera.cs" />
-    <Compile Include="RandomGroup\src\grid\GrillaRegular.cs" />
-    <Compile Include="RandomGroup\src\grid\GrillaRegularNode.cs" />
-    <Compile Include="RandomGroup\src\shootTechniques\RiversEnemy.cs" />
-    <Compile Include="RandomGroup\src\shootTechniques\SimpleShoot.cs" />
-    <Compile Include="RandomGroup\src\walls\ParedSolida.cs" />
-    <Compile Include="RandomGroup\src\weapons\ProjectileWeapon.cs" />
-    <Compile Include="RandomGroup\src\shootTechniques\Projectile.cs" />
-    <Compile Include="RandomGroup\src\meshUtils\Drawable.cs" />
-    <Compile Include="RandomGroup\src\EjemploAlumno.cs" />
-    <Compile Include="RandomGroup\src\weapons\MathUtil.cs" />
-    <Compile Include="RandomGroup\src\meshUtils\MeshFactory.cs" />
-    <Compile Include="RandomGroup\src\meshUtils\MeshPropio.cs" />
-    <Compile Include="RandomGroup\src\walls\ParedDeformable.cs" />
-    <Compile Include="RandomGroup\src\RandomCollisionUtils.cs" />
-    <Compile Include="RandomGroup\src\shootTechniques\ShrapnelShoot.cs" />
-    <Compile Include="RandomGroup\src\shootTechniques\ShootTechnique.cs" />
-    <Compile Include="RandomGroup\src\weapons\Weapon.cs" />
-    <Compile Include="RandomGroup\src\weapons\WeaponFactory.cs" />
-    <Compile Include="RandomGroup\src\meshUtils\XMesh.cs" />
-    <Compile Include="RandomGroup\src\meshUtils\XMLMesh.cs" />
+    <Compile Include="SRC\RANDOM\src\meshUtils\ElementoEstatico.cs" />
+    <Compile Include="SRC\RANDOM\src\camera\FpsCamera.cs" />
+    <Compile Include="SRC\RANDOM\src\grid\GrillaRegular.cs" />
+    <Compile Include="SRC\RANDOM\src\grid\GrillaRegularNode.cs" />
+    <Compile Include="SRC\RANDOM\src\shootTechniques\RiversEnemy.cs" />
+    <Compile Include="SRC\RANDOM\src\shootTechniques\SimpleShoot.cs" />
+    <Compile Include="SRC\RANDOM\src\walls\ParedSolida.cs" />
+    <Compile Include="SRC\RANDOM\src\weapons\ProjectileWeapon.cs" />
+    <Compile Include="SRC\RANDOM\src\shootTechniques\Projectile.cs" />
+    <Compile Include="SRC\RANDOM\src\meshUtils\Drawable.cs" />
+    <Compile Include="SRC\RANDOM\src\EjemploAlumno.cs" />
+    <Compile Include="SRC\RANDOM\src\weapons\MathUtil.cs" />
+    <Compile Include="SRC\RANDOM\src\meshUtils\MeshFactory.cs" />
+    <Compile Include="SRC\RANDOM\src\meshUtils\MeshPropio.cs" />
+    <Compile Include="SRC\RANDOM\src\walls\ParedDeformable.cs" />
+    <Compile Include="SRC\RANDOM\src\RandomCollisionUtils.cs" />
+    <Compile Include="SRC\RANDOM\src\shootTechniques\ShrapnelShoot.cs" />
+    <Compile Include="SRC\RANDOM\src\shootTechniques\ShootTechnique.cs" />
+    <Compile Include="SRC\RANDOM\src\weapons\Weapon.cs" />
+    <Compile Include="SRC\RANDOM\src\weapons\WeaponFactory.cs" />
+    <Compile Include="SRC\RANDOM\src\meshUtils\XMesh.cs" />
+    <Compile Include="SRC\RANDOM\src\meshUtils\XMLMesh.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TgcViewer\TgcViewer.csproj">
