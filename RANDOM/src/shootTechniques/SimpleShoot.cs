@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using AlumnoEjemplos.SRC.RANDOM.src.meshUtils;
+using AlumnoEjemplos.RANDOM.src.meshUtils;
 using Microsoft.DirectX;
 using TgcViewer;
 
-namespace AlumnoEjemplos.SRC.RANDOM.src.shootTechniques
+namespace AlumnoEjemplos.RANDOM.src.shootTechniques
 {
     public class SimpleShoot : ShootTechnique
     {

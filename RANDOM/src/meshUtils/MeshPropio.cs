@@ -2,7 +2,7 @@
 using Microsoft.DirectX.Direct3D;
 using TgcViewer.Utils.TgcGeometry;
 
-namespace AlumnoEjemplos.SRC.RANDOM.src.meshUtils
+namespace AlumnoEjemplos.RANDOM.src.meshUtils
 {
     public abstract class MeshPropio : Drawable, ElementoEstatico
     {

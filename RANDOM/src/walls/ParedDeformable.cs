@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Drawing;
-using AlumnoEjemplos.SRC.RANDOM.src.shootTechniques;
+using AlumnoEjemplos.RANDOM.src.shootTechniques;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using TgcViewer;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
-using AlumnoEjemplos.SRC.RANDOM.src.meshUtils;
+using AlumnoEjemplos.RANDOM.src.meshUtils;
 
-namespace AlumnoEjemplos.SRC.RANDOM.src.walls
+namespace AlumnoEjemplos.RANDOM.src.walls
 {
     public class ParedDeformable : ElementoEstatico
     {

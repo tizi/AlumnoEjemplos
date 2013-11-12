@@ -8,7 +8,7 @@ using TgcViewer.Utils.TgcSceneLoader;
 using System.Windows.Forms;
 using System.Drawing;
 
-namespace AlumnoEjemplos.SRC.RANDOM.src.camera
+namespace AlumnoEjemplos.RANDOM.src.camera
 {
     /// <summary>
     /// Cámara en primera persona, con movimientos: W, A, S, D, Space, LeftControl

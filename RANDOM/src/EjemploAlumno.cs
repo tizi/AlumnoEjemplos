@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using AlumnoEjemplos.SRC.RANDOM.src.meshUtils;
-using AlumnoEjemplos.SRC.RANDOM.src.shootTechniques;
-using AlumnoEjemplos.SRC.RANDOM.src.walls;
-using AlumnoEjemplos.SRC.RANDOM.src.weapons;
-using AlumnoEjemplos.SRC.RANDOM.src.camera;
-using AlumnoEjemplos.SRC.RANDOM.src.grid;
+using AlumnoEjemplos.RANDOM.src.meshUtils;
+using AlumnoEjemplos.RANDOM.src.shootTechniques;
+using AlumnoEjemplos.RANDOM.src.walls;
+using AlumnoEjemplos.RANDOM.src.weapons;
+using AlumnoEjemplos.RANDOM.src.camera;
+using AlumnoEjemplos.RANDOM.src.grid;
 using TgcViewer.Example;
 using TgcViewer;
 using System.Drawing;
@@ -18,7 +18,7 @@ using TgcViewer.Utils.Sound;
 using System;
 
 
-namespace AlumnoEjemplos.SRC.RANDOM.src
+namespace AlumnoEjemplos.RANDOM.src
 {
     public class EjemploAlumno : TgcExample
     {

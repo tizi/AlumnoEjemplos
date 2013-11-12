@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using TgcViewer.Utils.TgcGeometry;
-using AlumnoEjemplos.SRC.RANDOM.src.meshUtils;
+using AlumnoEjemplos.RANDOM.src.meshUtils;
 
-namespace AlumnoEjemplos.SRC.RANDOM.src.grid
+namespace AlumnoEjemplos.RANDOM.src.grid
 {
     /// <summary>
     /// Celda de una grilla regular

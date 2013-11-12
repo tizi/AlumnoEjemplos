@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using TgcViewer.Utils.TgcGeometry;
 using Microsoft.DirectX;
 using System.Drawing;
-using AlumnoEjemplos.SRC.RANDOM.src.meshUtils;
+using AlumnoEjemplos.RANDOM.src.meshUtils;
 
-namespace AlumnoEjemplos.SRC.RANDOM.src.grid
+namespace AlumnoEjemplos.RANDOM.src.grid
 {
     /// <summary>
     /// Herramienta para crear y usar la Grilla Regular

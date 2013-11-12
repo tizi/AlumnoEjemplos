@@ -1,6 +1,6 @@
 ﻿using TgcViewer.Utils.TgcGeometry;
 
-namespace AlumnoEjemplos.SRC.RANDOM.src.meshUtils
+namespace AlumnoEjemplos.RANDOM.src.meshUtils
 {
     public interface ElementoEstatico
     {

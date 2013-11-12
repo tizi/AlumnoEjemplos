@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.DirectX;
 
-namespace AlumnoEjemplos.SRC.RANDOM.src.weapons
+namespace AlumnoEjemplos.RANDOM.src.weapons
 {
     static class MathUtil
     {

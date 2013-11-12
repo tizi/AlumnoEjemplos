@@ -1,11 +1,11 @@
 ﻿using System;
-using AlumnoEjemplos.SRC.RANDOM.src.meshUtils;
-using AlumnoEjemplos.SRC.RANDOM.src.walls;
+using AlumnoEjemplos.RANDOM.src.meshUtils;
+using AlumnoEjemplos.RANDOM.src.walls;
 using Microsoft.DirectX;
 using TgcViewer;
 using TgcViewer.Utils.TgcGeometry;
 
-namespace AlumnoEjemplos.SRC.RANDOM.src.shootTechniques
+namespace AlumnoEjemplos.RANDOM.src.shootTechniques
 {
     public class Projectile
     {

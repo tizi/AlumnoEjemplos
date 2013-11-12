@@ -2,7 +2,7 @@
 using TgcViewer;
 using TgcViewer.Utils.TgcSceneLoader;
 
-namespace AlumnoEjemplos.SRC.RANDOM.src.meshUtils
+namespace AlumnoEjemplos.RANDOM.src.meshUtils
 {
     public class XMLMesh : MeshPropio
     {

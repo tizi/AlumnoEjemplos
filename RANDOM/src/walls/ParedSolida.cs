@@ -3,9 +3,9 @@ using Microsoft.DirectX.Direct3D;
 using TgcViewer;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
-using AlumnoEjemplos.SRC.RANDOM.src.meshUtils;
+using AlumnoEjemplos.RANDOM.src.meshUtils;
 
-namespace AlumnoEjemplos.SRC.RANDOM.src.walls
+namespace AlumnoEjemplos.RANDOM.src.walls
 {
     public class ParedSolida : ElementoEstatico
     {

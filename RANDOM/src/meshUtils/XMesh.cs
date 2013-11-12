@@ -3,7 +3,7 @@ using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using TgcViewer;
 
-namespace AlumnoEjemplos.SRC.RANDOM.src.meshUtils
+namespace AlumnoEjemplos.RANDOM.src.meshUtils
 {
     public class XMesh : MeshPropio
     {

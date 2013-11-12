@@ -1,7 +1,7 @@
 ﻿using Microsoft.DirectX;
 using TgcViewer.Utils.TgcGeometry;
 
-namespace AlumnoEjemplos.SRC.RANDOM.src
+namespace AlumnoEjemplos.RANDOM.src
 {
     class RandomCollisionUtils
     {

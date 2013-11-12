@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using AlumnoEjemplos.SRC.RANDOM.src.meshUtils;
+using AlumnoEjemplos.RANDOM.src.meshUtils;
 using Microsoft.DirectX;
 using TgcViewer;
 using TgcViewer.Utils.Input;
 
-namespace AlumnoEjemplos.SRC.RANDOM.src.shootTechniques
+namespace AlumnoEjemplos.RANDOM.src.shootTechniques
 {
     public abstract class ShootTechnique
     {

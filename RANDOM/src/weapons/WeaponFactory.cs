@@ -1,12 +1,12 @@
 ﻿using System.Drawing;
-using AlumnoEjemplos.SRC.RANDOM.src.meshUtils;
+using AlumnoEjemplos.RANDOM.src.meshUtils;
 using Microsoft.DirectX;
 using TgcViewer;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 using TgcViewer.Utils._2D;
 
-namespace AlumnoEjemplos.SRC.RANDOM.src.weapons
+namespace AlumnoEjemplos.RANDOM.src.weapons
 {
     class WeaponFactory
     {
