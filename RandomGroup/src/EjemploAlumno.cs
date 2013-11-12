@@ -237,7 +237,7 @@ namespace AlumnoEjemplos.RandomGroup.src
             //Modifiers de la luz
             GuiController.Instance.Modifiers.addBoolean("lightEnable", "lightEnable", true);
             GuiController.Instance.Modifiers.addColor("lightColor", Color.White);
-            GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 150, 20);
+            GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 150, 35);
             GuiController.Instance.Modifiers.addFloat("lightAttenuation", 0.1f, 2, 0.3f);
             GuiController.Instance.Modifiers.addFloat("specularEx", 0, 20, 9f);
         }
@@ -284,9 +284,9 @@ namespace AlumnoEjemplos.RandomGroup.src
 
         private void createFirstTest(string alumnoMediaFolder)
         {
-            deformableWallsList.Add(new ParedDeformable(new Vector3(0, 0, 0), new Vector3(1, 0, 0), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
-            deformableWallsList.Add(new ParedDeformable(new Vector3(100, 0, 0), new Vector3(1, 0, 2), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
-            deformableWallsList.Add(new ParedDeformable(new Vector3(145, 0, 90), new Vector3(-30, 0, 30), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
+            deformableWallsList.Add(new ParedDeformable(new Vector3(300, 0, -30), new Vector3(1, 0, 0), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
+            deformableWallsList.Add(new ParedDeformable(new Vector3(400, 0, -30), new Vector3(1, 0, 2), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
+            deformableWallsList.Add(new ParedDeformable(new Vector3(445, 0, 60), new Vector3(-30, 0, 30), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
         }
 
         private void createBoxesHouse(string alumnoMediaFolder)
@@ -316,6 +316,13 @@ namespace AlumnoEjemplos.RandomGroup.src
 
             crearCajaDeformable(new Vector3(-275, 0.1f, 5), 20, alumnoMediaFolder + "Random\\Textures\\Walls\\madera.jpg");
             crearCajaDeformable(new Vector3(-420, 20, 100), 50, alumnoMediaFolder + "Random\\Textures\\Walls\\tileable_metal.jpg");
+            crearCajaDeformable(new Vector3(-465, 115, 215), 30, alumnoMediaFolder + "Random\\Textures\\Walls\\gold.bmp");
+            crearCajaDeformable(new Vector3(-435, 85, 10), 35, alumnoMediaFolder + "Random\\Textures\\Walls\\wood.jpg");
+            crearCajaDeformable(new Vector3(-270, 70, 50), 40, alumnoMediaFolder + "Random\\Textures\\Walls\\red_bricks.jpg");
+            crearCajaDeformable(new Vector3(-490, 0.1f, 180), 60, alumnoMediaFolder + "Random\\Textures\\Walls\\madera.jpg");
+            crearCajaDeformable(new Vector3(-260, 0.1f, 175), 20, alumnoMediaFolder + "Random\\Textures\\Walls\\gold.bmp");
+            //La tele
+            crearCajaDeformable(new Vector3(-350, 30, 230), 15, alumnoMediaFolder + "Random\\Textures\\Characters\\tele_frente.jpg", alumnoMediaFolder + "Random\\Textures\\Characters\\tele_lateral.jpg", alumnoMediaFolder + "Random\\Textures\\Characters\\tele_lateral.jpg", alumnoMediaFolder + "Random\\Textures\\Characters\\tele_lateral.jpg", alumnoMediaFolder + "Random\\Textures\\Characters\\tele_lateral.jpg", alumnoMediaFolder + "Random\\Textures\\Characters\\tele_superior.jpg");
         }
 
         private void createVegetation(string alumnoMediaFolder)
