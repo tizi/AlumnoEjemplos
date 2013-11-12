@@ -388,9 +388,9 @@ namespace AlumnoEjemplos.RandomGroup.src
 
             ParedSolida paredAtras = new ParedSolida(new Vector3(300, 0, -400), new Vector3(0, 150, 150), "YZ", texturaHabitacion);
             solidWallsList.Add(paredAtras);
-            ParedSolida paredIzquierda1 = new ParedSolida(new Vector3(200, 0, -400), new Vector3(100, 100, 0), "XY", texturaHabitacion);
+            ParedSolida paredIzquierda1 = new ParedSolida(new Vector3(100, 0, -400), new Vector3(200, 50, 0), "XY", texturaHabitacion);
             solidWallsList.Add(paredIzquierda1);
-            ParedSolida paredDerecha1 = new ParedSolida(new Vector3(200, 0, -250), new Vector3(100, 100, 0), "XY", texturaHabitacion);
+            ParedSolida paredDerecha1 = new ParedSolida(new Vector3(100, 0, -250), new Vector3(200, 50, 0), "XY", texturaHabitacion);
             solidWallsList.Add(paredDerecha1);
 
             ParedSolida tabla1 = new ParedSolida(new Vector3(250, 50, -400), new Vector3(50, 0, 50), "XZ", texturaTablas);
@@ -403,9 +403,9 @@ namespace AlumnoEjemplos.RandomGroup.src
             ParedSolida paredMedio = new ParedSolida(new Vector3(200, 0, -400), new Vector3(0, 50, 150), "YZ", texturaHabitacion);
             solidWallsList.Add(paredMedio);
 
-            ParedSolida paredIzquierda2 = new ParedSolida(new Vector3(200, 0, -400), new Vector3(-100, 50, 0), "XY", texturaHabitacion);
+            ParedSolida paredIzquierda2 = new ParedSolida(new Vector3(200, 50, -400), new Vector3(100, 50, 0), "XY", texturaHabitacion);
             solidWallsList.Add(paredIzquierda2);
-            ParedSolida paredDerecha2 = new ParedSolida(new Vector3(200, 0, -250), new Vector3(-100, 50, 0), "XY", texturaHabitacion);
+            ParedSolida paredDerecha2 = new ParedSolida(new Vector3(200, 50, -250), new Vector3(100, 50, 0), "XY", texturaHabitacion);
             solidWallsList.Add(paredDerecha2);
 
             crearCajaDeformable(new Vector3(270, 51, -270), 10, alumnoMediaFolder + "Random\\Textures\\Walls\\metal.jpg");
