@@ -232,12 +232,12 @@ namespace AlumnoEjemplos.RandomGroup.src.walls
 
 
 
-        /*public void deformarPared(Projectile proyectil, Vector3 ptoColision)
-        {
+        public void deformarParedRedondamente(Projectile proyectil, Vector3 ptoColision)
+        {            
             float radio = Math.Abs(proyectil.boundingBall.Radius);
             Vector3 direccion = proyectil.direction;
-            var maximoDeformado = new Vector3(1, 1, 1) * float.MinValue;
-            var minimoDeformado = new Vector3(1, 1, 1) * float.MaxValue;
+
+            if (radio < 1) radio = 1;
             direccion.Normalize();
 
             //500 es un numero magico que mas o menos acomoda las cosas
@@ -246,9 +246,8 @@ namespace AlumnoEjemplos.RandomGroup.src.walls
             //MAGIA DE DEFORMACION            
            
             //Redundante, para probar variaciones del radio de deformacion
-            float radioDeformacion = radio;
+            float radioDeformacion = radio*2;
             
-            //FIN DE HACK
             for (int i = 0; i < numVertices; i++)
             {
                 float distanciaCentroVertex = Vector3.Length(verticesPared[i].Position - ptoColision);
@@ -260,37 +259,12 @@ namespace AlumnoEjemplos.RandomGroup.src.walls
                 //funcion cuadratica decreciente: x^2+r^2 con r constante
                 // -distanciaAlCentro^2+radio^2
                 float deformacion = DefoMod*FastMath.Sqrt(
-                    -FastMath.Pow2(distanciaCentroVertex)+FastMath.Pow2(radioDeformacion));
+                    -FastMath.Pow2(distanciaCentroVertex)+1.5f*FastMath.Pow2(radioDeformacion));
 
                 Vector3 vectorDeformacion = direccion * deformacion;
 
                 //Se desplaza
                 verticesPared[i].Position += vectorDeformacion;
-                    
-                if (verticesPared[i].Position.X > maximoDeformado.X)
-                {
-                    maximoDeformado.X = verticesPared[i].Position.X;
-                }
-                if (verticesPared[i].Position.Y > maximoDeformado.Y)
-                {
-                    maximoDeformado.Y = verticesPared[i].Position.Y;
-                }
-                if (verticesPared[i].Position.Z > maximoDeformado.Z)
-                {
-                    maximoDeformado.Z = verticesPared[i].Position.Z;
-                }
-                if (verticesPared[i].Position.X < minimoDeformado.X)
-                {
-                    minimoDeformado.X = verticesPared[i].Position.X;
-                }
-                if (verticesPared[i].Position.Y < minimoDeformado.Y)
-                {
-                    minimoDeformado.Y = verticesPared[i].Position.Y;
-                }
-                if (verticesPared[i].Position.Z < minimoDeformado.Z)
-                {
-                    minimoDeformado.Z = verticesPared[i].Position.Z;
-                }
                 
                 //uso el vectorDefo para la normal
                 vectorDeformacion.Normalize();
@@ -305,12 +279,11 @@ namespace AlumnoEjemplos.RandomGroup.src.walls
             //    minimoDeformado != new Vector3(1, 1, 1) * float.MaxValue)
             //    obb = TgcObb.computeFromPoints(new[] { origen, posUltimoVertice, posEsquina1, posEsquina2, maximoDeformado, minimoDeformado });
         }
-        */
+        
         public void deformarPared(Projectile proyectil, Vector3 ptoColision)
         {
             float radio = proyectil.boundingBall.Radius;
             Vector3 direccion = proyectil.direction;
-            Vector3 vectoraux;
             //Vector3 maximoDeformado = posUltimoVertice; //cualquier vertice dentro de la pared
             //Vector3 minimoDeformado = posUltimoVertice; //cualquier vertice dentro de la pared
             direccion.Normalize();
@@ -352,7 +325,7 @@ namespace AlumnoEjemplos.RandomGroup.src.walls
                 //Se desplaza cada vertice
                 if (distanciaCentroVertex >= 1)
                 {
-                    vectoraux = posicionInial;
+                    Vector3 vectoraux = posicionInial;
                     vectoraux.X += (vectorDeformacion.X / distanciaCentroVertex);
                     vectoraux.Y += (vectorDeformacion.Y / distanciaCentroVertex);
                     vectoraux.Z += (vectorDeformacion.Z / distanciaCentroVertex);

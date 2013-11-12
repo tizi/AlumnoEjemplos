@@ -71,6 +71,10 @@ namespace AlumnoEjemplos.RandomGroup.src
             textoCamara.Text = GuiController.Instance.CurrentCamera.getPosition().ToString();
             textoCamara.render();
 
+            weapon = (ProjectileWeapon)GuiController.Instance.Modifiers["Armas"];
+            weapon.technique = (ShootTechnique)GuiController.Instance.Modifiers["Tecnicas de Disparo"];
+            weapon.render();
+
             ///////////////INPUT//////////////////
             if (GuiController.Instance.D3dInput.buttonDown(TgcD3dInput.MouseButtons.BUTTON_LEFT))
             {
@@ -79,9 +83,7 @@ namespace AlumnoEjemplos.RandomGroup.src
 
             deteccionDeColisiones(elapsedTime);
 
-            weapon = (ProjectileWeapon)GuiController.Instance.Modifiers["Armas"];
-            weapon.technique = (ShootTechnique)GuiController.Instance.Modifiers["Tecnicas de Disparo"];
-            weapon.render();
+            
 
             bool showGrid = (bool)GuiController.Instance.Modifiers["showGrid"];
             grilla.render(GuiController.Instance.Frustum, (bool)GuiController.Instance.Modifiers["showGrid"], elapsedTime);
@@ -107,6 +109,7 @@ namespace AlumnoEjemplos.RandomGroup.src
                 Vector3 posActual = proyectil.getPosition();
                 Vector3 posAnterior = proyectil.posicionCuadroAnt;
                 
+                /*
                 //Deteccion entre pelotas
                 for (int j = i + 1; j < projectilesList.Count; j++)
                 {
@@ -116,6 +119,7 @@ namespace AlumnoEjemplos.RandomGroup.src
                         proyectilSound.play();
                     }
                 }
+                 */
 
                 //Deteccion contra las paredes no deformables
                 for (int pared = 0; pared < solidWallsList.Count; pared++)
@@ -207,10 +211,11 @@ namespace AlumnoEjemplos.RandomGroup.src
             GuiController.Instance.Modifiers.addFloat("Gravedad", -0.2f, 0.2f, 0.02f);
             GuiController.Instance.Modifiers.addFloat("Velocidad", 50f, 500f, 200f);
             GuiController.Instance.Modifiers.addFloat("Masa", 1f, 50f, 5f);
-            ShootTechnique[] opciones = { new SimpleShoot(), new ShrapnelShoot(), new RiversEnemy() };
-            ProjectileWeapon[] armas = { WeaponFactory.getCannon(), WeaponFactory.getTanque(), WeaponFactory.getGun() };
+            object[] opciones = { new SimpleShoot(), new ShrapnelShoot(), new RiversEnemy() };
+            object[] armas = { WeaponFactory.getCannon(), WeaponFactory.getTanque(), WeaponFactory.getGun() };
             GuiController.Instance.Modifiers.addInterval("Tecnicas de Disparo", opciones, 0);
             GuiController.Instance.Modifiers.addInterval("Armas", armas, 0);
+            GuiController.Instance.Modifiers.addBoolean("Defo Redonda", "Hacer Deformaciones redondas", false);
             GuiController.Instance.Modifiers.addBoolean("boundingSphere", "Mostrar Bounding Sphere", false);
             GuiController.Instance.Modifiers.addBoolean("boundingBox", "Mostrar Bounding Box", false);
             GuiController.Instance.Modifiers.addBoolean("showGrid", "Show Grid", false);

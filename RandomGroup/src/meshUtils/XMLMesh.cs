@@ -8,6 +8,7 @@ namespace AlumnoEjemplos.RandomGroup.src.meshUtils
     {
         TgcMesh mesh;
 
+
         public new void dispose()
         {
             mesh.dispose();
@@ -26,14 +27,17 @@ namespace AlumnoEjemplos.RandomGroup.src.meshUtils
         }
         public XMLMesh(string meshPath)
         {
-            TgcSceneLoader cargador = new TgcSceneLoader();
+            TgcSceneLoader cargador = new TgcSceneLoader();                        
             mesh = cargador.loadSceneFromFile(meshPath).Meshes[0];
             mesh.AutoTransformEnable=false;
             mesh.AutoUpdateBoundingBox = true;
+
+           
         }
 
         public override void renderReal()
         {
+            //render();
         }
 
         public override void render(float elapsedTime) {
@@ -50,7 +54,6 @@ namespace AlumnoEjemplos.RandomGroup.src.meshUtils
             mesh.BoundingBox.transform(mesh.Transform);
             if ((bool)GuiController.Instance.Modifiers["boundingBox"]) mesh.BoundingBox.render();
             mesh.render();
-            //mesh2.renderAll();
         }
 
         public override Drawable clone()
@@ -60,7 +63,11 @@ namespace AlumnoEjemplos.RandomGroup.src.meshUtils
 
         public override float getRadiusSize()
         {
-            //GuiController.Instance.Logger.log((((mesh.BoundingBox.PMax.Length() - mesh.BoundingBox.PMin.Length())*escala.Length()) / 2).ToString());
+            mesh.Transform = Matrix.Scaling(escala)
+                    * Matrix.RotationAxis(vectAxisY, angleY)
+                    * Matrix.RotationAxis(vectAxisXZ, angleXZ)
+                    * Matrix.Translation(position);
+            mesh.BoundingBox.transform(mesh.Transform);
             return mesh.BoundingBox.calculateBoxRadius();
         }
 

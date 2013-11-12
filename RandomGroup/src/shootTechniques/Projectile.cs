@@ -86,6 +86,7 @@ namespace AlumnoEjemplos.RandomGroup.src.shootTechniques
             projectile.setSpeed((getSpeed() * mass + projectile.getSpeed() * projectile.mass) / mass * mass);
             projectile.direction *= -1.0f;
         }
+         
 
         public void collisionWithSolidWall(ParedSolida pared)
         {
@@ -117,7 +118,8 @@ namespace AlumnoEjemplos.RandomGroup.src.shootTechniques
 
         public void collisionWithDeformableWall(ParedDeformable pared, Vector3 ptoColision)
         {
-            pared.deformarPared(this, ptoColision);
+            if ((bool)GuiController.Instance.Modifiers["Defo Redonda"]) pared.deformarParedRedondamente(this, ptoColision);
+            else pared.deformarPared(this, ptoColision);
             lifeTime = 0;
         }
 
