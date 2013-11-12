@@ -29,13 +29,9 @@ namespace AlumnoEjemplos.RandomGroup.src
         List<MeshPropio> decoration = new List<MeshPropio>();
         ProjectileWeapon weapon;
         GrillaRegular grilla;
-        //int cantMaximaProyectiles;
-
         TgcStaticSound paredSolidaSound = new TgcStaticSound();
         TgcStaticSound paredDeformableSound = new TgcStaticSound();
         TgcStaticSound proyectilSound = new TgcStaticSound();
-
-
 
         public override string getCategory()
         {
@@ -52,93 +48,47 @@ namespace AlumnoEjemplos.RandomGroup.src
             return "Para pausar el juego presionar P; Click Izquierdo para disparar.";
         }
 
-
         public override void init()
         {
-            //Carpeta de archivos Media del alumno
             string alumnoMediaFolder = GuiController.Instance.AlumnoEjemplosMediaDir;
 
-            paredSolidaSound.loadSound(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Sounds\\MetalHitsSolid.wav");
-            paredDeformableSound.loadSound(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Sounds\\DeformableHit.wav");
-            proyectilSound.loadSound(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Sounds\\MetalHitsSolid.wav");
+            loadSounds(alumnoMediaFolder);
 
-            ///////////////CONFIGURAR CAMARA PRIMERA PERSONA//////////////////
-            camera = new FpsCamera {MovementSpeed = 100, JumpSpeed = 50};
-            camera.setCamera(new Vector3(-150f, 40f, 175f), new Vector3(120f, 60f, 50f));
-            GuiController.Instance.CurrentCamera = camera;
+            configureCamera();
 
-            ///////////////MODIFIERS//////////////////
-            GuiController.Instance.Modifiers.addFloat("Gravedad", -0.2f, 0.2f, 0.02f);
-            GuiController.Instance.Modifiers.addFloat("Velocidad", 50f, 500f, 200f);
-            GuiController.Instance.Modifiers.addFloat("Masa", 1f, 50f, 5f);
-            ShootTechnique[] opciones = { new SimpleShoot(), new ShrapnelShoot(), new RiversEnemy() };
-            ProjectileWeapon[] armas = { WeaponFactory.getCannon(), WeaponFactory.getTanque(), WeaponFactory.getGun() };
-            GuiController.Instance.Modifiers.addInterval("Tecnicas de Disparo", opciones, 0);
-            GuiController.Instance.Modifiers.addInterval("Armas", armas, 0);
-            GuiController.Instance.Modifiers.addBoolean("boundingSphere", "Mostrar Bounding Sphere", false);
-            GuiController.Instance.Modifiers.addBoolean("boundingBox", "Mostrar Bounding Box", false);
-            GuiController.Instance.Modifiers.addBoolean("showGrid", "Show Grid", false);
-
-            // modifiers shader
-            //Modifiers de la luz
-            GuiController.Instance.Modifiers.addBoolean("lightEnable", "lightEnable", true);
-            GuiController.Instance.Modifiers.addColor("lightColor", Color.White);
-            GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 150, 20);
-            GuiController.Instance.Modifiers.addFloat("lightAttenuation", 0.1f, 2, 0.3f);
-            GuiController.Instance.Modifiers.addFloat("specularEx", 0, 20, 9f);
-
-            //Crear SkyBox
-            createSkyBox(alumnoMediaFolder);
+            createModifiers();
 
             //Creo texto para mostrar datos de camara
             textoCamara = new TgcText2d { Text = "Inicial", Color = Color.White };
 
-            //suelo
-            createGround(alumnoMediaFolder);
-            //Paredes deformables
-            createBoxesHouse(alumnoMediaFolder);
-            createHouse101(alumnoMediaFolder);
-            deformableWallsList.Add(new ParedDeformable(new Vector3(0, 0, 0), new Vector3(1, 0, 0), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
-            deformableWallsList.Add(new ParedDeformable(new Vector3(100, 0, 0), new Vector3(1, 0, 2), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
-            deformableWallsList.Add(new ParedDeformable(new Vector3(145, 0, 90), new Vector3(-30, 0, 30), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
-            createVegetation(alumnoMediaFolder);
+            createScene(alumnoMediaFolder);
 
             createGrid();
         }
 
-
-
-        /// elapsedTime: Tiempo en segundos transcurridos desde el último frame
         public override void render(float elapsedTime)
         {
-            //Device d3dDevice = GuiController.Instance.D3dDevice;
-
             textoCamara.Text = GuiController.Instance.CurrentCamera.getPosition().ToString();
             textoCamara.render();
 
-            //Obtener valores de Modifiers
-            weapon = (ProjectileWeapon)GuiController.Instance.Modifiers["Armas"];
-            weapon.technique = (ShootTechnique)GuiController.Instance.Modifiers["Tecnicas de Disparo"];
-            bool showGrid = (bool)GuiController.Instance.Modifiers["showGrid"];
-
             ///////////////INPUT//////////////////
-            //Capturar Input teclado 
-
-            //Capturar Input Mouse
             if (GuiController.Instance.D3dInput.buttonDown(TgcD3dInput.MouseButtons.BUTTON_LEFT))
             {
                 projectilesList.AddRange(weapon.doAction());
             }
 
-            grilla.render(GuiController.Instance.Frustum, showGrid, elapsedTime);
             deteccionDeColisiones(elapsedTime);
+
+            weapon = (ProjectileWeapon)GuiController.Instance.Modifiers["Armas"];
+            weapon.technique = (ShootTechnique)GuiController.Instance.Modifiers["Tecnicas de Disparo"];
             weapon.render();
+
+            bool showGrid = (bool)GuiController.Instance.Modifiers["showGrid"];
+            grilla.render(GuiController.Instance.Frustum, (bool)GuiController.Instance.Modifiers["showGrid"], elapsedTime);
+
             skyBox.render();
         }
-
-
-        /// Método que se llama cuando termina la ejecución del ejemplo.
-        /// Hacer dispose() de todos los objetos creados.        
+      
         public override void close()
         {
             skyBox.dispose();
@@ -168,7 +118,6 @@ namespace AlumnoEjemplos.RandomGroup.src
                 camera.lockUnlock();
             }
         }
-
 
         private void deteccionDeColisiones(float elapsedTime)
         {
@@ -266,26 +215,78 @@ namespace AlumnoEjemplos.RandomGroup.src
             grilla.createDebugMeshes();
         }
 
+        private void configureCamera()
+        {
+            camera = new FpsCamera { MovementSpeed = 100, JumpSpeed = 50 };
+            camera.setCamera(new Vector3(-150f, 40f, 175f), new Vector3(120f, 60f, 50f));
+            GuiController.Instance.CurrentCamera = camera;
+        }
+
+        private static void createModifiers()
+        {
+            GuiController.Instance.Modifiers.addFloat("Gravedad", -0.2f, 0.2f, 0.02f);
+            GuiController.Instance.Modifiers.addFloat("Velocidad", 50f, 500f, 200f);
+            GuiController.Instance.Modifiers.addFloat("Masa", 1f, 50f, 5f);
+            ShootTechnique[] opciones = { new SimpleShoot(), new ShrapnelShoot(), new RiversEnemy() };
+            ProjectileWeapon[] armas = { WeaponFactory.getCannon(), WeaponFactory.getTanque(), WeaponFactory.getGun() };
+            GuiController.Instance.Modifiers.addInterval("Tecnicas de Disparo", opciones, 0);
+            GuiController.Instance.Modifiers.addInterval("Armas", armas, 0);
+            GuiController.Instance.Modifiers.addBoolean("boundingSphere", "Mostrar Bounding Sphere", false);
+            GuiController.Instance.Modifiers.addBoolean("boundingBox", "Mostrar Bounding Box", false);
+            GuiController.Instance.Modifiers.addBoolean("showGrid", "Show Grid", false);
+            //Modifiers de la luz
+            GuiController.Instance.Modifiers.addBoolean("lightEnable", "lightEnable", true);
+            GuiController.Instance.Modifiers.addColor("lightColor", Color.White);
+            GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 150, 20);
+            GuiController.Instance.Modifiers.addFloat("lightAttenuation", 0.1f, 2, 0.3f);
+            GuiController.Instance.Modifiers.addFloat("specularEx", 0, 20, 9f);
+        }
+
+        private void loadSounds(string alumnoMediaFolder)
+        {
+            paredSolidaSound.loadSound(alumnoMediaFolder + "Random\\Sounds\\MetalHitsSolid.wav");
+            paredDeformableSound.loadSound(alumnoMediaFolder + "Random\\Sounds\\DeformableHit.wav");
+            proyectilSound.loadSound(alumnoMediaFolder + "Random\\Sounds\\MetalHitsSolid.wav");
+        }
+
+        private void createScene(string alumnoMediaFolder)
+        {
+            createSkyBox(alumnoMediaFolder);
+            createGround(alumnoMediaFolder);
+            createBoxesHouse(alumnoMediaFolder);
+            createHouse101(alumnoMediaFolder);
+            createFirstTest(alumnoMediaFolder);
+            createVegetation(alumnoMediaFolder);
+            createSandbox(alumnoMediaFolder);
+        }
+
         private void createGround(string alumnoMediaFolder)
         {
             TgcTexture texturaSuelo = TgcTexture.createTexture(alumnoMediaFolder + "Random\\Textures\\Terrain\\tileable_grass.jpg");
-            int i;
+            int x;
             const int largo = 2500;
             const int ancho = 2500;
             const int dimension = 250;
 
-            for (i = -largo  /2; i < largo / 2; i += dimension)
+            for (x = -largo / 2; x < largo / 2; x += dimension)
             {
-                int j;
-                for (j = -ancho / 2; j < ancho / 2; j += dimension)
+                int z;
+                for (z = -ancho / 2; z < ancho / 2; z += dimension)
                 {
-                    if(!(i == -500 && j == 0))
+                    if (!((x == -500 && z == 0) || (x == 250 && z == 250)))
                     {
-                    ground.Add(new ParedSolida(new Vector3(i, 0, j), new Vector3(dimension, 0, dimension), "XZ", texturaSuelo));
+                        ground.Add(new ParedSolida(new Vector3(x, 0, z), new Vector3(dimension, 0, dimension), "XZ", texturaSuelo));
                     }
                 }
             }
             solidWallsList.AddRange(ground);
+        }
+
+        private void createFirstTest(string alumnoMediaFolder)
+        {
+            deformableWallsList.Add(new ParedDeformable(new Vector3(0, 0, 0), new Vector3(1, 0, 0), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
+            deformableWallsList.Add(new ParedDeformable(new Vector3(100, 0, 0), new Vector3(1, 0, 2), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
+            deformableWallsList.Add(new ParedDeformable(new Vector3(145, 0, 90), new Vector3(-30, 0, 30), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
         }
 
         private void createBoxesHouse(string alumnoMediaFolder)
@@ -301,7 +302,7 @@ namespace AlumnoEjemplos.RandomGroup.src
             solidWallsList.Add(paredDerecha);
             ParedSolida paredDelanteIzquierda = new ParedSolida(new Vector3(-250, 0, 0), new Vector3(0, 150, 100), "YZ", texturaHabitacion);
             solidWallsList.Add(paredDelanteIzquierda);
-            ParedSolida paredDelanteDerecha = new ParedSolida(new Vector3(-250, 0, 250), new Vector3(0, 150, -100), "YZ", texturaHabitacion);
+            ParedSolida paredDelanteDerecha = new ParedSolida(new Vector3(-250, 0, 150), new Vector3(0, 150, 100), "YZ", texturaHabitacion);
             solidWallsList.Add(paredDelanteDerecha);
             ParedSolida paredDelanteArriba = new ParedSolida(new Vector3(-250, 100, 100), new Vector3(0, 50, 50), "YZ", texturaHabitacion);
             solidWallsList.Add(paredDelanteArriba);
@@ -313,8 +314,8 @@ namespace AlumnoEjemplos.RandomGroup.src
             ParedDeformable cartel = new ParedDeformable(new Vector3(-250, 50, 100), new Vector3(0, 0, 1), new Vector3(0, 1, 0), 50, alumnoMediaFolder + "Random\\Textures\\cartelBoxesHouse.png");
             deformableWallsList.Add(cartel);
 
-            crearCaja(new Vector3(-275, 0, 5), 20, alumnoMediaFolder + "Random\\Textures\\Walls\\madera.jpg");
-            crearCaja(new Vector3(-420, 20, 100), 50, alumnoMediaFolder + "Random\\Textures\\Walls\\tileable_metal.jpg");
+            crearCajaDeformable(new Vector3(-275, 0.1f, 5), 20, alumnoMediaFolder + "Random\\Textures\\Walls\\madera.jpg");
+            crearCajaDeformable(new Vector3(-420, 20, 100), 50, alumnoMediaFolder + "Random\\Textures\\Walls\\tileable_metal.jpg");
         }
 
         private void createVegetation(string alumnoMediaFolder)
@@ -400,50 +401,84 @@ namespace AlumnoEjemplos.RandomGroup.src
 
             ParedSolida paredAtras = new ParedSolida(new Vector3(300, 0, -400), new Vector3(0, 150, 150), "YZ", texturaHabitacion);
             solidWallsList.Add(paredAtras);
-            ParedSolida paredIzquierda1 = new ParedSolida(new Vector3(300, 0, -400), new Vector3(-100, 100, 0), "XY", texturaHabitacion);
+            ParedSolida paredIzquierda1 = new ParedSolida(new Vector3(200, 0, -400), new Vector3(100, 100, 0), "XY", texturaHabitacion);
             solidWallsList.Add(paredIzquierda1);
-            ParedSolida paredDerecha1 = new ParedSolida(new Vector3(300, 0, -250), new Vector3(-100, 100, 0), "XY", texturaHabitacion);
+            ParedSolida paredDerecha1 = new ParedSolida(new Vector3(200, 0, -250), new Vector3(100, 100, 0), "XY", texturaHabitacion);
             solidWallsList.Add(paredDerecha1);
 
-
-
-            ParedSolida tabla1 = new ParedSolida(new Vector3(300, 50, -400), new Vector3(-50, 0, 50), "XZ", texturaTablas);
+            ParedSolida tabla1 = new ParedSolida(new Vector3(250, 50, -400), new Vector3(50, 0, 50), "XZ", texturaTablas);
             solidWallsList.Add(tabla1);
-            ParedSolida tabla2 = new ParedSolida(new Vector3(300, 50, -250), new Vector3(-50, 0, -50), "XZ", texturaTablas);
+            ParedSolida tabla2 = new ParedSolida(new Vector3(250, 50, -300), new Vector3(50, 0, 50), "XZ", texturaTablas);
             solidWallsList.Add(tabla2);
-            ParedSolida tabla3 = new ParedSolida(new Vector3(300, 100, -375), new Vector3(-50, 0, 100), "XZ", texturaTablas);
+            ParedSolida tabla3 = new ParedSolida(new Vector3(250, 100, -375), new Vector3(50, 0, 100), "XZ", texturaTablas);
             solidWallsList.Add(tabla3);
-
 
             ParedSolida paredMedio = new ParedSolida(new Vector3(200, 0, -400), new Vector3(0, 50, 150), "YZ", texturaHabitacion);
             solidWallsList.Add(paredMedio);
-
-
 
             ParedSolida paredIzquierda2 = new ParedSolida(new Vector3(200, 0, -400), new Vector3(-100, 50, 0), "XY", texturaHabitacion);
             solidWallsList.Add(paredIzquierda2);
             ParedSolida paredDerecha2 = new ParedSolida(new Vector3(200, 0, -250), new Vector3(-100, 50, 0), "XY", texturaHabitacion);
             solidWallsList.Add(paredDerecha2);
 
-            crearCaja(new Vector3(270, 51, -270), 10, alumnoMediaFolder + "Random\\Textures\\Walls\\metal.jpg");
-            crearCaja(new Vector3(270, 51, -370), 10, alumnoMediaFolder + "Random\\Textures\\Walls\\metal.jpg");
-            crearCaja(new Vector3(270, 51, -390), 10, alumnoMediaFolder + "Random\\Textures\\Walls\\metal.jpg");
-
-
+            crearCajaDeformable(new Vector3(270, 51, -270), 10, alumnoMediaFolder + "Random\\Textures\\Walls\\metal.jpg");
+            crearCajaDeformable(new Vector3(270, 51, -370), 10, alumnoMediaFolder + "Random\\Textures\\Walls\\metal.jpg");
+            crearCajaDeformable(new Vector3(270, 51, -390), 10, alumnoMediaFolder + "Random\\Textures\\Walls\\metal.jpg");
         }
 
-
-        private void crearCaja(Vector3 origen, int tamanio, string textura)
+        private void createSandbox(string alumnoMediaFolder)
         {
+            TgcTexture texturaMadera = TgcTexture.createTexture(alumnoMediaFolder + "Random\\Textures\\Walls\\madera.jpg");
+            ParedSolida areneroBase = new ParedSolida(new Vector3(240, -5, 240), new Vector3(270, 0, 270), "XZ", texturaMadera);
+            solidWallsList.Add(areneroBase);
+            crearCajaSolida(new Vector3(240, -5, 240), 270, 10, 10, texturaMadera);
+            crearCajaSolida(new Vector3(500, -5, 240), 270, 10, 10, texturaMadera);
+            crearCajaSolida(new Vector3(250, -5, 240), 10, 250, 10, texturaMadera);
+            crearCajaSolida(new Vector3(250, -5, 500), 10, 250, 10, texturaMadera);
+ 
+            ParedDeformable suelo = new ParedDeformable(new Vector3(250, 0, 250), new Vector3(1, 0, 0), new Vector3(0, 0, 1), 250, alumnoMediaFolder + "Random\\Textures\\Terrain\\sand.jpg");
+            deformableWallsList.Add(suelo);
 
-            ParedDeformable atras = new ParedDeformable(origen, new Vector3(1, 0, 0), new Vector3(0, 1, 0), tamanio, textura);
-            ParedDeformable delante = new ParedDeformable((origen + new Vector3(0, 0, tamanio)), new Vector3(1, 0, 0), new Vector3(0, 1, 0), tamanio, textura);
+            //Kirby
+            crearCajaDeformable(new Vector3(380, 40, 280), 20, alumnoMediaFolder + "Random\\Textures\\Characters\\kirby_arm.jpg", alumnoMediaFolder + "Random\\Textures\\Characters\\kirby_arm.jpg", alumnoMediaFolder + "Random\\Textures\\Characters\\kirby_front.jpg", alumnoMediaFolder + "Random\\Textures\\Characters\\kirby_back.jpg", alumnoMediaFolder + "Random\\Textures\\Characters\\kirby_bottom.jpg", alumnoMediaFolder + "Random\\Textures\\Characters\\kirby_back.jpg");
+            TgcTexture texturaSangre = TgcTexture.createTexture(alumnoMediaFolder + "Random\\Textures\\Characters\\blood.png");
+            crearCajaSolida(new Vector3(384, 44, 284), 12, 12, 12, texturaSangre);
+        }
 
-            ParedDeformable izquierda = new ParedDeformable(origen, new Vector3(0, 0, 1), new Vector3(0, 1, 0), tamanio, textura);
-            ParedDeformable derecha = new ParedDeformable((origen + new Vector3(tamanio, 0, 0)), new Vector3(0, 0, 1), new Vector3(0, 1, 0), tamanio, textura);
+        private void crearCajaSolida(Vector3 origen, int largo, int ancho, int alto,TgcTexture textura)
+        {
+            ParedSolida atras = new ParedSolida(origen, new Vector3(ancho, alto, 0), "XY", textura);
+            ParedSolida delante = new ParedSolida(origen + new Vector3(0, 0, largo), new Vector3(ancho, alto, 0), "XY", textura);
 
-            ParedDeformable abajo = new ParedDeformable(origen, new Vector3(1, 0, 0), new Vector3(0, 0, 1), tamanio, textura);
-            ParedDeformable arriba = new ParedDeformable((origen + new Vector3(0, tamanio, 0)), new Vector3(1, 0, 0), new Vector3(0, 0, 1), tamanio, textura);
+            ParedSolida izquierda = new ParedSolida(origen, new Vector3(0, alto, largo), "YZ", textura);
+            ParedSolida derecha = new ParedSolida(origen + new Vector3(ancho, 0, 0), new Vector3(0, alto, largo), "YZ", textura);
+
+            ParedSolida abajo = new ParedSolida(origen, new Vector3(ancho, 0, largo), "XZ", textura);
+            ParedSolida arriba = new ParedSolida(origen + new Vector3(0, alto, 0), new Vector3(ancho, 0, largo), "XZ", textura);
+
+            solidWallsList.Add(atras);
+            solidWallsList.Add(delante);
+            solidWallsList.Add(izquierda);
+            solidWallsList.Add(derecha);
+            solidWallsList.Add(abajo);
+            solidWallsList.Add(arriba);
+        }
+
+        private void crearCajaDeformable(Vector3 origen, int tamanio, string textura)
+        {
+            crearCajaDeformable(origen, tamanio, textura, textura, textura, textura, textura, textura);
+        }
+    
+        private void crearCajaDeformable(Vector3 origen, int tamanio, string texturaBack, string texturaFront, string texturaLeft, string texturaRight, string texturaBottom, string texturaUp)
+        {
+            ParedDeformable atras = new ParedDeformable(origen, new Vector3(1, 0, 0), new Vector3(0, 1, 0), tamanio, texturaBack);
+            ParedDeformable delante = new ParedDeformable((origen + new Vector3(0, 0, tamanio)), new Vector3(1, 0, 0), new Vector3(0, 1, 0), tamanio, texturaFront);
+
+            ParedDeformable izquierda = new ParedDeformable(origen, new Vector3(0, 0, 1), new Vector3(0, 1, 0), tamanio, texturaLeft);
+            ParedDeformable derecha = new ParedDeformable((origen + new Vector3(tamanio, 0, 0)), new Vector3(0, 0, 1), new Vector3(0, 1, 0), tamanio, texturaRight);
+
+            ParedDeformable abajo = new ParedDeformable(origen, new Vector3(1, 0, 0), new Vector3(0, 0, 1), tamanio, texturaBottom);
+            ParedDeformable arriba = new ParedDeformable((origen + new Vector3(0, tamanio, 0)), new Vector3(1, 0, 0), new Vector3(0, 0, 1), tamanio, texturaUp);
 
             deformableWallsList.Add(atras);
             deformableWallsList.Add(delante);
@@ -451,8 +486,6 @@ namespace AlumnoEjemplos.RandomGroup.src
             deformableWallsList.Add(derecha);
             deformableWallsList.Add(abajo);
             deformableWallsList.Add(arriba);
-
-
         }
     }
 
