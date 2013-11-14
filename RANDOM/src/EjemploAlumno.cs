@@ -225,9 +225,9 @@ namespace AlumnoEjemplos.RANDOM.src
             //Modifiers de la luz
             GuiController.Instance.Modifiers.addBoolean("lightEnable", "lightEnable", true);
             GuiController.Instance.Modifiers.addColor("lightColor", Color.White);
-            GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 150, 35);
-            GuiController.Instance.Modifiers.addFloat("lightAttenuation", 0.1f, 2, 0.3f);
-            GuiController.Instance.Modifiers.addFloat("specularEx", 0, 20, 9f);
+            GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 150, 50f);
+            GuiController.Instance.Modifiers.addFloat("lightAttenuation", 0.1f, 2, 1f);
+            GuiController.Instance.Modifiers.addFloat("specularEx", 0, 20, 15f);
         }
 
         private void loadSounds(string alumnoMediaFolder)

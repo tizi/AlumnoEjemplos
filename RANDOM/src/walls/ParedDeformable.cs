@@ -367,6 +367,7 @@ namespace AlumnoEjemplos.RANDOM.src.walls
                     }*/
 
                 }
+                //calculo de la nueva normal
                 Vector3 vectorDesplazamiento = verticesPared[i].Position - posicionInial;
                 vectorDesplazamiento.Normalize();
                 Vector3 nuevaNormal = vectorDesplazamiento + verticesPared[i].Normal;
