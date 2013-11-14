@@ -218,16 +218,16 @@ namespace AlumnoEjemplos.RANDOM.src
             object[] armas = { WeaponFactory.getCannon(), WeaponFactory.getTanque(), WeaponFactory.getGun() };
             GuiController.Instance.Modifiers.addInterval("Tecnicas de Disparo", opciones, 0);
             GuiController.Instance.Modifiers.addInterval("Armas", armas, 0);
-            GuiController.Instance.Modifiers.addBoolean("Defo Redonda", "Hacer Deformaciones redondas", false);
+            GuiController.Instance.Modifiers.addBoolean("Defo Redonda", "Hacer Deformaciones redondas", true);
             GuiController.Instance.Modifiers.addBoolean("boundingSphere", "Mostrar Bounding Sphere", false);
             GuiController.Instance.Modifiers.addBoolean("boundingBox", "Mostrar Bounding Box", false);
             GuiController.Instance.Modifiers.addBoolean("showGrid", "Show Grid", false);
             //Modifiers de la luz
             GuiController.Instance.Modifiers.addBoolean("lightEnable", "lightEnable", true);
             GuiController.Instance.Modifiers.addColor("lightColor", Color.White);
-            GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 150, 50f);
-            GuiController.Instance.Modifiers.addFloat("lightAttenuation", 0.1f, 2, 1f);
-            GuiController.Instance.Modifiers.addFloat("specularEx", 0, 20, 15f);
+            GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 150, 60f);
+            GuiController.Instance.Modifiers.addFloat("lightAttenuation", 0.1f, 2, 1.2f);
+            GuiController.Instance.Modifiers.addFloat("specularEx", 0, 20, 19f);
         }
 
         private void loadSounds(string alumnoMediaFolder)
@@ -272,8 +272,8 @@ namespace AlumnoEjemplos.RANDOM.src
 
         private void createFirstTest(string alumnoMediaFolder)
         {
-            deformableWallsList.Add(new ParedDeformable(new Vector3(300, 0, -30), new Vector3(1, 0, 0), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
-            deformableWallsList.Add(new ParedDeformable(new Vector3(400, 0, -30), new Vector3(1, 0, 2), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
+            deformableWallsList.Add(new ParedDeformable(new Vector3(300, 0, -30), new Vector3(1, 0, 0), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\red_bricks.jpg"));
+            deformableWallsList.Add(new ParedDeformable(new Vector3(400, 0, -30), new Vector3(1, 0, 2), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\madera.jpg"));
             deformableWallsList.Add(new ParedDeformable(new Vector3(445, 0, 60), new Vector3(-30, 0, 30), new Vector3(0, 1, 0), 100, alumnoMediaFolder + "Random\\Textures\\Walls\\concrete.jpg"));
         }
 
