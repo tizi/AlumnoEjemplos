@@ -7,6 +7,7 @@ using TgcViewer;
 using TgcViewer.Utils.TgcGeometry;
 using TgcViewer.Utils.TgcSceneLoader;
 using AlumnoEjemplos.RANDOM.src.meshUtils;
+using TgcViewer.Utils.Shaders;
 
 namespace AlumnoEjemplos.RANDOM.src.walls
 {
@@ -30,8 +31,11 @@ namespace AlumnoEjemplos.RANDOM.src.walls
         private Vector3 posEsquina1;
         private Vector3 posEsquina2;
 
-        Effect currentShader = GuiController.Instance.Shaders.TgcMeshPointLightShader;
-        //string shadersPath;
+
+        
+        Effect currentShader = TgcShaders.loadEffect(GuiController.Instance.AlumnoEjemplosMediaDir + "Random\\Shaders\\Nuestro_MeshPointLightShader.fx");
+           /*GuiController.Instance.Shaders.TgcMeshPointLightShader */
+        //string shadersPath = GuiController.Instance.AlumnoEjemplosMediaDir;
         //float time;
 
 
@@ -80,7 +84,7 @@ namespace AlumnoEjemplos.RANDOM.src.walls
             {
                 Diffuse = Color.White,
                 Specular = Color.LightGray,
-                SpecularSharpness = 15.0F
+                SpecularSharpness = 5.0F
             };
             device.Material = material;
 
@@ -89,7 +93,8 @@ namespace AlumnoEjemplos.RANDOM.src.walls
             direccionVertical.Normalize();
             
             //Normal
-            normal = Vector3.Cross(direccionVertical, direccionHorizontal);                        
+            normal = Vector3.Cross(direccionVertical, direccionHorizontal);
+            //normal = new Vector3(0, 1, 0);
 
             //Contadores
             int verticesLado = cantCuadradosLado + 1;
@@ -190,11 +195,12 @@ namespace AlumnoEjemplos.RANDOM.src.walls
             Vector3 lightPos = (Vector3)GuiController.Instance.CurrentCamera.getPosition();
 
             if (lightEnable)
-            {                
-                //currentShader = TgcShaders.loadEffect(shadersPath + "PointLightShader.fx");
-                currentShader.SetValue("matWorld", device.Transform.World);
-                currentShader.SetValue("matWorldView", device.Transform.World * device.Transform.View);
-                currentShader.SetValue("matWorldViewProj", device.Transform.World * device.Transform.View * device.Transform.Projection);
+            {
+                //currentShader = TgcShaders.loadEffect(shadersPath + "Random\\Shaders\\Nuestro_MeshPointLightShader.fx");
+                currentShader.SetValue("matWorld", Matrix.Identity);
+                currentShader.SetValue("matWorldView", device.Transform.View);
+                currentShader.SetValue("matWorldViewProj", device.Transform.View * device.Transform.Projection);
+                currentShader.SetValue("matInverseTransposeWorld", Matrix.TransposeMatrix(Matrix.Invert(Matrix.Identity)));
 
                 //Cargar variables shader de la luz
                 currentShader.SetValue("lightColor", ColorValue.FromColor((Color)GuiController.Instance.Modifiers["lightColor"]));
