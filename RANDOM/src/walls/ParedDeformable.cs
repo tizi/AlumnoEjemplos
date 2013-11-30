@@ -274,8 +274,20 @@ namespace AlumnoEjemplos.RANDOM.src.walls
                 verticesPared[i].Position += vectorDeformacion;
                 
                 //uso el vectorDefo para la normal
-                vectorDeformacion.Normalize();
-                verticesPared[i].Normal = vectorDeformacion;
+                //vectorDeformacion.Normalize();
+                //verticesPared[i].Normal = vectorDeformacion;
+                if (i < 3)
+                {
+                    Vector3 nuevaNormal = Vector3.Cross((verticesPared[0].Position - verticesPared[1].Position), (verticesPared[2].Position - verticesPared[1].Position));
+                    nuevaNormal.Normalize();
+                    verticesPared[i].Normal = nuevaNormal;
+                }
+                else
+                {
+                    Vector3 nuevaNormal = Vector3.Cross((verticesPared[i - 1].Position - verticesPared[i].Position), (verticesPared[i - 2].Position - verticesPared[i].Position));
+                    nuevaNormal.Normalize();
+                    verticesPared[i].Normal = nuevaNormal;
+                }
 
             }
 
@@ -368,12 +380,24 @@ namespace AlumnoEjemplos.RANDOM.src.walls
 
                 }
                 //calculo de la nueva normal
-                Vector3 vectorDesplazamiento = verticesPared[i].Position - posicionInial;
+                if (i < 3)
+                {
+                    Vector3 nuevaNormal = Vector3.Cross((verticesPared[0].Position - verticesPared[1].Position), (verticesPared[2].Position - verticesPared[1].Position));
+                    nuevaNormal.Normalize();
+                    verticesPared[i].Normal = nuevaNormal;
+                }
+                else
+                {
+                    Vector3 nuevaNormal = Vector3.Cross((verticesPared[i-1].Position - verticesPared[i].Position), (verticesPared[i-2].Position - verticesPared[i].Position));
+                    nuevaNormal.Normalize();
+                    verticesPared[i].Normal = nuevaNormal;
+                }
+                /*Vector3 vectorDesplazamiento = verticesPared[i].Position - posicionInial;
                 vectorDesplazamiento.Normalize();
                 Vector3 nuevaNormal = vectorDesplazamiento + verticesPared[i].Normal;
                 nuevaNormal.Normalize();
                 verticesPared[i].Normal = nuevaNormal;
-
+                */
             }
 
             vertexBuffer.SetData(verticesPared, 0, LockFlags.None);
