@@ -277,27 +277,10 @@ namespace AlumnoEjemplos.RANDOM.src.walls
                 verticesPared[i].Position += vectorDeformacion;
 
                 //calculo de la nueva normal
-                if (i < 3)
-                {
-                    Vector3 nuevaNormal = Vector3.Cross((verticesPared[1].Position - verticesPared[2].Position), (verticesPared[0].Position - verticesPared[2].Position));
-                    nuevaNormal.Normalize();
-                    verticesPared[i].Normal = nuevaNormal;
-                }
-                else
-                {
-                    Vector3 nuevaNormal = Vector3.Cross((verticesPared[i - 1].Position - verticesPared[i].Position), (verticesPared[i - 2].Position - verticesPared[i].Position));
-                    nuevaNormal.Normalize();
-                    verticesPared[i].Normal = nuevaNormal;
-                }
-
+                recalcularNormal(i);
             }
-
             vertexBuffer.SetData(verticesPared, 0, LockFlags.None);
             //FIN MAGIA DEFORMACION
-            //Recalculo la obb
-            //if (maximoDeformado != new Vector3(1, 1, 1) * float.MinValue &&
-            //    minimoDeformado != new Vector3(1, 1, 1) * float.MaxValue)
-            //    obb = TgcObb.computeFromPoints(new[] { origen, posUltimoVertice, posEsquina1, posEsquina2, maximoDeformado, minimoDeformado });
         }
         
         public void deformarPared(Projectile proyectil, Vector3 ptoColision)
@@ -354,57 +337,31 @@ namespace AlumnoEjemplos.RANDOM.src.walls
                 else
                 {
                     verticesPared[i].Position += vectorDeformacion;
-                    /*if (verticesPared[i].Position.X > maximoDeformado.X)
-                    {
-                        maximoDeformado.X = verticesPared[i].Position.X;
-                    }
-                    if (verticesPared[i].Position.Y > maximoDeformado.Y)
-                    {
-                        maximoDeformado.Y = verticesPared[i].Position.Y;
-                    }
-                    if (verticesPared[i].Position.Z > maximoDeformado.Z)
-                    {
-                        maximoDeformado.Z = verticesPared[i].Position.Z;
-                    }
-                    if (verticesPared[i].Position.X < minimoDeformado.X)
-                    {
-                        minimoDeformado.X = verticesPared[i].Position.X;
-                    }
-                    if (verticesPared[i].Position.Y < minimoDeformado.Y)
-                    {
-                        minimoDeformado.Y = verticesPared[i].Position.Y;
-                    }
-                    if (verticesPared[i].Position.Z < minimoDeformado.Z)
-                    {
-                        minimoDeformado.Z = verticesPared[i].Position.Z;
-                    }*/
-
                 }
                 //calculo de la nueva normal
-                if (i < 3)
-                {
-                    Vector3 nuevaNormal = Vector3.Cross((verticesPared[1].Position - verticesPared[2].Position), (verticesPared[0].Position - verticesPared[2].Position));
-                    nuevaNormal.Normalize();
-                    verticesPared[i].Normal = nuevaNormal;
-                }
-                else
-                {
-                    Vector3 nuevaNormal = Vector3.Cross((verticesPared[i - 1].Position - verticesPared[i].Position), (verticesPared[i - 2].Position - verticesPared[i].Position));
-                    nuevaNormal.Normalize();
-                    verticesPared[i].Normal = nuevaNormal;
-                }
-                /*Vector3 vectorDesplazamiento = verticesPared[i].Position - posicionInial;
-                vectorDesplazamiento.Normalize();
-                Vector3 nuevaNormal = vectorDesplazamiento + verticesPared[i].Normal;
-                nuevaNormal.Normalize();
-                verticesPared[i].Normal = nuevaNormal;
-                */
+                recalcularNormal(i);
             }
 
             vertexBuffer.SetData(verticesPared, 0, LockFlags.None);
             //FIN MAGIA DEFORMACION
             //Recalculo la obb
             //obb = TgcObb.computeFromPoints(new[] { origen, posUltimoVertice, posEsquina1, posEsquina2, maximoDeformado, minimoDeformado });
+        }
+
+        private void recalcularNormal(int numeroVertice)
+        {
+            if (numeroVertice < 3)
+            {
+                Vector3 nuevaNormal = Vector3.Cross((verticesPared[1].Position - verticesPared[2].Position), (verticesPared[0].Position - verticesPared[2].Position));
+                nuevaNormal.Normalize();
+                verticesPared[numeroVertice].Normal = nuevaNormal;
+            }
+            else
+            {
+                Vector3 nuevaNormal = Vector3.Cross((verticesPared[numeroVertice - 1].Position - verticesPared[numeroVertice].Position), (verticesPared[numeroVertice - 2].Position - verticesPared[numeroVertice].Position));
+                nuevaNormal.Normalize();
+                verticesPared[numeroVertice].Normal = nuevaNormal;
+            }
         }
 
         public void dispose()
