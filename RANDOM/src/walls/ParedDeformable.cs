@@ -275,10 +275,8 @@ namespace AlumnoEjemplos.RANDOM.src.walls
 
                 //Se desplaza
                 verticesPared[i].Position += vectorDeformacion;
-                
-                //uso el vectorDefo para la normal
-                //vectorDeformacion.Normalize();
-                //verticesPared[i].Normal = vectorDeformacion;
+
+                //calculo de la nueva normal
                 if (i < 3)
                 {
                     Vector3 nuevaNormal = Vector3.Cross((verticesPared[1].Position - verticesPared[2].Position), (verticesPared[0].Position - verticesPared[2].Position));
