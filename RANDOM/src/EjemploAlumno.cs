@@ -35,6 +35,7 @@ namespace AlumnoEjemplos.RANDOM.src
         TgcStaticSound paredSolidaSound = new TgcStaticSound();
         TgcStaticSound paredDeformableSound = new TgcStaticSound();
         TgcStaticSound proyectilSound = new TgcStaticSound();
+        TgcBox lightMesh;
 
         public override string getCategory()
         {
@@ -90,7 +91,9 @@ namespace AlumnoEjemplos.RANDOM.src
 
             bool showGrid = (bool)GuiController.Instance.Modifiers["showGrid"];
             grilla.render(GuiController.Instance.Frustum, (bool)GuiController.Instance.Modifiers["showGrid"], elapsedTime);
-
+            Vector3 lightPos = (Vector3)GuiController.Instance.Modifiers["lightPos"];
+            lightMesh.Position = lightPos;
+            lightMesh.render();
             skyBox.render();
         }
       
@@ -222,12 +225,20 @@ namespace AlumnoEjemplos.RANDOM.src
             GuiController.Instance.Modifiers.addBoolean("boundingSphere", "Mostrar Bounding Sphere", false);
             GuiController.Instance.Modifiers.addBoolean("boundingBox", "Mostrar Bounding Box", false);
             GuiController.Instance.Modifiers.addBoolean("showGrid", "Show Grid", false);
+
             //Modifiers de la luz
             GuiController.Instance.Modifiers.addBoolean("lightEnable", "lightEnable", true);
+            GuiController.Instance.Modifiers.addVertex3f("lightPos", new Vector3(-700, -100, -700), new Vector3(700, 200, 700), new Vector3(60, 35, 250));
+            GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 150, 20);
+            GuiController.Instance.Modifiers.addFloat("lightAttenuation", 0.1f, 2, 0.3f);
+            GuiController.Instance.Modifiers.addFloat("specularEx", 0, 20, 9f);
             GuiController.Instance.Modifiers.addColor("lightColor", Color.White);
-            GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 150, 60f);
-            GuiController.Instance.Modifiers.addFloat("lightAttenuation", 0.1f, 2, 1.2f);
-            GuiController.Instance.Modifiers.addFloat("specularEx", 0, 20, 19f);
+
+            //Modifiers de material
+            GuiController.Instance.Modifiers.addColor("mEmissive", Color.Gray);
+            GuiController.Instance.Modifiers.addColor("mAmbient", Color.White);
+            GuiController.Instance.Modifiers.addColor("mDiffuse", Color.White);
+            GuiController.Instance.Modifiers.addColor("mSpecular", Color.White);
         }
 
         private void loadSounds(string alumnoMediaFolder)
@@ -246,6 +257,7 @@ namespace AlumnoEjemplos.RANDOM.src
             createFirstTest(alumnoMediaFolder);
             createVegetation(alumnoMediaFolder);
             createSandbox(alumnoMediaFolder);
+            lightMesh = TgcBox.fromSize(new Vector3(10, 10, 10), Color.Yellow);
         }
 
         private void createGround(string alumnoMediaFolder)

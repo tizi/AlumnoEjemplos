@@ -94,7 +94,7 @@ namespace AlumnoEjemplos.RANDOM.src.walls
             
             //Normal
             normal = Vector3.Cross(direccionVertical, direccionHorizontal);
-            //normal = new Vector3(0, 1, 0);
+            normal.Normalize();
 
             //Contadores
             int verticesLado = cantCuadradosLado + 1;
@@ -192,7 +192,10 @@ namespace AlumnoEjemplos.RANDOM.src.walls
             //time += elapsedTime;
 
             //Actualzar posición de la luz
-            Vector3 lightPos = (Vector3)GuiController.Instance.CurrentCamera.getPosition();
+            //Vector3 lightPos = (Vector3)GuiController.Instance.CurrentCamera.getPosition();
+            //Actualzar posición de la luz
+            Vector3 lightPos = (Vector3)GuiController.Instance.Modifiers["lightPos"];
+
 
             if (lightEnable)
             {
@@ -211,11 +214,11 @@ namespace AlumnoEjemplos.RANDOM.src.walls
                 currentShader.Technique = "DIFFUSE_MAP";
 
                  //Cargar variables de shader de Material. El Material en realidad deberia ser propio de cada mesh. Pero en este ejemplo se simplifica con uno comun para todos
-                 currentShader.SetValue("materialEmissiveColor", ColorValue.FromColor(Color.Black));
-                 currentShader.SetValue("materialAmbientColor", ColorValue.FromColor(Color.White));
-                 currentShader.SetValue("materialDiffuseColor", ColorValue.FromColor(Color.White));
-                 currentShader.SetValue("materialSpecularColor", ColorValue.FromColor(Color.White));
-                 currentShader.SetValue("materialSpecularExp", (float)GuiController.Instance.Modifiers["specularEx"]);
+                currentShader.SetValue("materialEmissiveColor", ColorValue.FromColor((Color)GuiController.Instance.Modifiers["mEmissive"]));
+                currentShader.SetValue("materialAmbientColor", ColorValue.FromColor((Color)GuiController.Instance.Modifiers["mAmbient"]));
+                currentShader.SetValue("materialDiffuseColor", ColorValue.FromColor((Color)GuiController.Instance.Modifiers["mDiffuse"]));
+                currentShader.SetValue("materialSpecularColor", ColorValue.FromColor((Color)GuiController.Instance.Modifiers["mSpecular"]));
+                currentShader.SetValue("materialSpecularExp", (float)GuiController.Instance.Modifiers["specularEx"]);
 
                 int numPasses = currentShader.Begin(0);
                 //texturesManager.clear(0);
@@ -278,7 +281,7 @@ namespace AlumnoEjemplos.RANDOM.src.walls
                 //verticesPared[i].Normal = vectorDeformacion;
                 if (i < 3)
                 {
-                    Vector3 nuevaNormal = Vector3.Cross((verticesPared[0].Position - verticesPared[1].Position), (verticesPared[2].Position - verticesPared[1].Position));
+                    Vector3 nuevaNormal = Vector3.Cross((verticesPared[1].Position - verticesPared[2].Position), (verticesPared[0].Position - verticesPared[2].Position));
                     nuevaNormal.Normalize();
                     verticesPared[i].Normal = nuevaNormal;
                 }
@@ -382,13 +385,13 @@ namespace AlumnoEjemplos.RANDOM.src.walls
                 //calculo de la nueva normal
                 if (i < 3)
                 {
-                    Vector3 nuevaNormal = Vector3.Cross((verticesPared[0].Position - verticesPared[1].Position), (verticesPared[2].Position - verticesPared[1].Position));
+                    Vector3 nuevaNormal = Vector3.Cross((verticesPared[1].Position - verticesPared[2].Position), (verticesPared[0].Position - verticesPared[2].Position));
                     nuevaNormal.Normalize();
                     verticesPared[i].Normal = nuevaNormal;
                 }
                 else
                 {
-                    Vector3 nuevaNormal = Vector3.Cross((verticesPared[i-1].Position - verticesPared[i].Position), (verticesPared[i-2].Position - verticesPared[i].Position));
+                    Vector3 nuevaNormal = Vector3.Cross((verticesPared[i - 1].Position - verticesPared[i].Position), (verticesPared[i - 2].Position - verticesPared[i].Position));
                     nuevaNormal.Normalize();
                     verticesPared[i].Normal = nuevaNormal;
                 }
