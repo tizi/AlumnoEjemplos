@@ -221,7 +221,7 @@ namespace AlumnoEjemplos.RANDOM.src
             object[] armas = { WeaponFactory.getCannon(), WeaponFactory.getTanque(), WeaponFactory.getGun() };
             GuiController.Instance.Modifiers.addInterval("Tecnicas de Disparo", opciones, 0);
             GuiController.Instance.Modifiers.addInterval("Armas", armas, 0);
-            GuiController.Instance.Modifiers.addBoolean("Defo Redonda", "Hacer Deformaciones redondas", true);
+            GuiController.Instance.Modifiers.addBoolean("Defo Redonda", "Hacer Deformaciones redondas", false);
             GuiController.Instance.Modifiers.addBoolean("boundingSphere", "Mostrar Bounding Sphere", false);
             GuiController.Instance.Modifiers.addBoolean("boundingBox", "Mostrar Bounding Box", false);
             GuiController.Instance.Modifiers.addBoolean("showGrid", "Show Grid", false);
@@ -229,10 +229,10 @@ namespace AlumnoEjemplos.RANDOM.src
 
             //Modifiers de la luz
             GuiController.Instance.Modifiers.addBoolean("lightEnable", "lightEnable", true);
-            GuiController.Instance.Modifiers.addVertex3f("lightPos", new Vector3(-700, -100, -700), new Vector3(700, 200, 700), new Vector3(60, 35, 250));
-            GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 150, 20);
-            GuiController.Instance.Modifiers.addFloat("lightAttenuation", 0.1f, 2, 0.3f);
-            GuiController.Instance.Modifiers.addFloat("specularEx", 0, 20, 9f);
+            GuiController.Instance.Modifiers.addVertex3f("lightPos", new Vector3(-700, -100, -700), new Vector3(700, 200, 700), new Vector3(210, 200, 70));
+            GuiController.Instance.Modifiers.addFloat("lightIntensity", 0, 150, 45);
+            GuiController.Instance.Modifiers.addFloat("lightAttenuation", 0.1f, 2, 0.5f);
+            GuiController.Instance.Modifiers.addFloat("specularEx", 0, 20, 11f);
             GuiController.Instance.Modifiers.addColor("lightColor", Color.White);
 
             //Modifiers de material
@@ -480,12 +480,12 @@ namespace AlumnoEjemplos.RANDOM.src
         private void crearCajaDeformable(Vector3 origen, int tamanio, string texturaBack, string texturaFront, string texturaLeft, string texturaRight, string texturaBottom, string texturaUp)
         {
             ParedDeformable atras = new ParedDeformable(origen, new Vector3(1, 0, 0), new Vector3(0, 1, 0), tamanio, texturaBack);
-            ParedDeformable delante = new ParedDeformable((origen + new Vector3(0, 0, tamanio)), new Vector3(1, 0, 0), new Vector3(0, 1, 0), tamanio, texturaFront);
+            ParedDeformable delante = new ParedDeformable((origen + new Vector3(tamanio, 0, tamanio)), new Vector3(-1, 0, 0), new Vector3(0, 1, 0), tamanio, texturaFront);
 
-            ParedDeformable izquierda = new ParedDeformable(origen, new Vector3(0, 0, 1), new Vector3(0, 1, 0), tamanio, texturaLeft);
+            ParedDeformable izquierda = new ParedDeformable((origen + new Vector3(0, 0, tamanio)), new Vector3(0, 0, -1), new Vector3(0, 1, 0), tamanio, texturaLeft);
             ParedDeformable derecha = new ParedDeformable((origen + new Vector3(tamanio, 0, 0)), new Vector3(0, 0, 1), new Vector3(0, 1, 0), tamanio, texturaRight);
 
-            ParedDeformable abajo = new ParedDeformable(origen, new Vector3(1, 0, 0), new Vector3(0, 0, 1), tamanio, texturaBottom);
+            ParedDeformable abajo = new ParedDeformable((origen + new Vector3(tamanio, 0, 0)), new Vector3(-1, 0, 0), new Vector3(0, 0, 1), tamanio, texturaBottom);
             ParedDeformable arriba = new ParedDeformable((origen + new Vector3(0, tamanio, 0)), new Vector3(1, 0, 0), new Vector3(0, 0, 1), tamanio, texturaUp);
 
             deformableWallsList.Add(atras);

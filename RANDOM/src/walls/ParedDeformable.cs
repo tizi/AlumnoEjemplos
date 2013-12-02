@@ -243,7 +243,7 @@ namespace AlumnoEjemplos.RANDOM.src.walls
             {
                 for (int i = 0; i < verticesPared.Length; i+=30)
                 {
-                    TgcArrow.fromDirection(verticesPared[i].Position,Vector3.Scale(verticesPared[i].Normal, 10)).render();
+                    TgcArrow.fromDirection(verticesPared[i].Position,Vector3.Scale(verticesPared[i].Normal, 5)).render();
                 }
             }
              
