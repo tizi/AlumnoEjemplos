@@ -225,6 +225,7 @@ namespace AlumnoEjemplos.RANDOM.src
             GuiController.Instance.Modifiers.addBoolean("boundingSphere", "Mostrar Bounding Sphere", false);
             GuiController.Instance.Modifiers.addBoolean("boundingBox", "Mostrar Bounding Box", false);
             GuiController.Instance.Modifiers.addBoolean("showGrid", "Show Grid", false);
+            GuiController.Instance.Modifiers.addBoolean("mostrarNormales", "mostrarNormales", false);
 
             //Modifiers de la luz
             GuiController.Instance.Modifiers.addBoolean("lightEnable", "lightEnable", true);

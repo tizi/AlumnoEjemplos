@@ -239,9 +239,12 @@ namespace AlumnoEjemplos.RANDOM.src.walls
 
 
             //MAGIA COSTOSA PARA VER LAS NORMALES --OJO CON EL LAG!!!!!
-            for (int i = 0; i < verticesPared.Length; i+=30)
+            if ((bool)GuiController.Instance.Modifiers["mostrarNormales"])
             {
-                TgcArrow.fromDirection(verticesPared[i].Position,Vector3.Scale(verticesPared[i].Normal, 10)).render();
+                for (int i = 0; i < verticesPared.Length; i+=30)
+                {
+                    TgcArrow.fromDirection(verticesPared[i].Position,Vector3.Scale(verticesPared[i].Normal, 10)).render();
+                }
             }
              
         }
