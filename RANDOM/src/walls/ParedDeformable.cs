@@ -16,8 +16,7 @@ namespace AlumnoEjemplos.RANDOM.src.walls
         public bool enabled;
         private Device device { get; set; }
         private Texture texture { get; set; }        
-        public Vector3 origen { get; set; }
-        public Vector3 normal { get; set; }                             
+        public Vector3 origen { get; set; }                       
         public TgcObb obb { get; set; }
         private int numVertices { get; set; }
         private int triangleCount { get; set; }
@@ -30,6 +29,7 @@ namespace AlumnoEjemplos.RANDOM.src.walls
         private Vector3 posUltimoVertice ;
         private Vector3 posEsquina1;
         private Vector3 posEsquina2;
+        private int[] indexData;
 
 
         
@@ -69,6 +69,8 @@ namespace AlumnoEjemplos.RANDOM.src.walls
         };
 
         
+
+
         //CONSTRUCTOR
         public ParedDeformable(Vector3 origen, Vector3 direccionHorizontal, Vector3 direccionVertical, int cantCuadradosLado, string texturePath)
         {
@@ -90,11 +92,7 @@ namespace AlumnoEjemplos.RANDOM.src.walls
 
             //Estas paredes crecen en Y, se les tiene que dar una dirección horizontal con Y = 0
             direccionHorizontal.Normalize();
-            direccionVertical.Normalize();
-            
-            //Normal
-            normal = Vector3.Cross(direccionVertical, direccionHorizontal);
-            normal.Normalize();
+            direccionVertical.Normalize();                        
 
             //Contadores
             int verticesLado = cantCuadradosLado + 1;
@@ -103,7 +101,7 @@ namespace AlumnoEjemplos.RANDOM.src.walls
             indexCount = triangleCount * 3;
             
             //Estructuras para dibujar los triangulos
-            var indexData = new int[indexCount];
+            indexData = new int[indexCount];
             indexBuffer = new IndexBuffer(typeof(int), indexCount, device, Usage.None, Pool.Default);
             vertexBuffer = new VertexBuffer(
                 typeof(CustomVertex.PositionNormalTextured), 
@@ -129,7 +127,7 @@ namespace AlumnoEjemplos.RANDOM.src.walls
                     //Se genera el vertice
                     verticesPared[j + i * verticesLado] = new CustomVertex.PositionNormalTextured(
                         posicion,
-                        normal,
+                        new Vector3(0,0,0), 
                         textura.X,
                         textura.Y
                     );
@@ -158,12 +156,12 @@ namespace AlumnoEjemplos.RANDOM.src.walls
                     indexData[idx + 2] = j + verticesLado * (i + 1);
 
                     indexData[idx + 3] = j + i * verticesLado + 1;
-                    indexData[idx + 4] = j + verticesLado * (i + 1);
-                    indexData[idx + 5] = j + verticesLado * (i + 1) + 1;
+                    indexData[idx + 4] = j + verticesLado * (i + 1) + 1;
+                    indexData[idx + 5] = j + verticesLado * (i + 1);
                     idx += 6;
                 }
             }
-
+            calcularNormales();
             indexBuffer.SetData(indexData, 0, LockFlags.None);
             vertexBuffer.SetData(verticesPared, 0, LockFlags.None);
 
@@ -238,9 +236,15 @@ namespace AlumnoEjemplos.RANDOM.src.walls
 
             //Renderizar OBB
             if ((bool)GuiController.Instance.Modifiers["boundingBox"]) obb.render();
+
+
+            //MAGIA COSTOSA PARA VER LAS NORMALES --OJO CON EL LAG!!!!!
+            for (int i = 0; i < verticesPared.Length; i+=30)
+            {
+                TgcArrow.fromDirection(verticesPared[i].Position,Vector3.Scale(verticesPared[i].Normal, 10)).render();
+            }
+             
         }
-
-
 
         public void deformarParedRedondamente(Projectile proyectil, Vector3 ptoColision)
         {            
@@ -277,8 +281,9 @@ namespace AlumnoEjemplos.RANDOM.src.walls
                 verticesPared[i].Position += vectorDeformacion;
 
                 //calculo de la nueva normal
-                recalcularNormal(i);
+                //recalcularNormal(i);
             }
+            calcularNormales();
             vertexBuffer.SetData(verticesPared, 0, LockFlags.None);
             //FIN MAGIA DEFORMACION
         }
@@ -339,15 +344,45 @@ namespace AlumnoEjemplos.RANDOM.src.walls
                     verticesPared[i].Position += vectorDeformacion;
                 }
                 //calculo de la nueva normal
-                recalcularNormal(i);
+                //recalcularNormal(i);
             }
 
+            calcularNormales();
             vertexBuffer.SetData(verticesPared, 0, LockFlags.None);
             //FIN MAGIA DEFORMACION
-            //Recalculo la obb
+            //Recalculo la obb -- COSTOSÍSIMO Y NO SIEMPRE ANDA BIEN
             //obb = TgcObb.computeFromPoints(new[] { origen, posUltimoVertice, posEsquina1, posEsquina2, maximoDeformado, minimoDeformado });
         }
 
+        //Da para optimizar así no calcula todos los vértices... una vez que funcione.
+        private void calcularNormales()
+        {            
+            //Se resetean las normales
+            for (int i = 0; i < verticesPared.Length; i++)
+                verticesPared[i].Normal = new Vector3(0, 0, 0);
+
+            for (int i = 0; i < indexCount / 3; i++)
+            {
+                //Se toman dos vectores por cada triangulo, para saber la normal de ese triángulo
+                //Luego esa normal se suma a los vértices, al final cada vértice tiene la suma normalizada
+                //De cada triángulo que lo toca
+                Vector3 vectorA = verticesPared[indexData[i * 3 + 1]].Position - verticesPared[indexData[i * 3]].Position;
+                Vector3 vectorB = verticesPared[indexData[i * 3]].Position - verticesPared[indexData[i * 3 + 2]].Position;
+                Vector3 normal = Vector3.Cross(vectorA, vectorB);
+                normal.Normalize();
+                verticesPared[indexData[i * 3]].Normal += normal;
+                verticesPared[indexData[i * 3 + 1]].Normal += normal;
+                verticesPared[indexData[i * 3 + 2]].Normal += normal;
+            }
+
+            //Se normaliza la suma total
+            for (int i = 0; i < verticesPared.Length; i++)
+            {                
+                verticesPared[i].Normal.Normalize();
+            }
+        }
+
+        //Queda por si no anda nada
         private void recalcularNormal(int numeroVertice)
         {
             if (numeroVertice < 3)
